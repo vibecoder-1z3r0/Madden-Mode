@@ -43,15 +43,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 37 | I think the timings for fade / dissipate need to be variable from 0.0s… | 01:57:16 | 12s | 32s | 9 | 1,983 | 1,073 | 581,863 |
 | 38 | 2 numbers | 01:58:00 | 13s | 1m 33s | 10 | 2,403 | 1,087 | 586,159 |
 | 39 | Thinking….. do I want dissipate happening right away, after a pen up o… | 01:59:46 | 13s | 1m 9s | 10 | 1,702 | 725 | 590,661 |
-| 40 | I guess that depends…. Don’t we have “all fade” mode? | 02:01:08 | 6s | — | 8 | 1,412 | 48 | 396,228 |
+| 40 | I guess that depends…. Don’t we have “all fade” mode? | 02:01:08 | 13s | 33s | 10 | 1,936 | 887 | 594,366 |
+| 41 | All fade could also be hot key driven. | 02:01:54 | 7s | — | 8 | 1,478 | 28 | 399,002 |
 
-**Total turns:** 40  
-**Total agent time spent (excl. flagged):** 15m 43s  
-**Total human think time (excl. outliers):** 48m 45s  
-**Average human think time (excl. outliers):** 1m 15s  
+**Total turns:** 41  
+**Total agent time spent (excl. flagged):** 15m 57s  
+**Total human think time (excl. outliers):** 49m 18s  
+**Average human think time (excl. outliers):** 1m 14s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 573  
-**Total output tokens:** 157,049  
-**Total cache-write tokens:** 259,648  
-**Total cache-read tokens:** 29,122,837  
+**Total input tokens:** 583  
+**Total output tokens:** 159,051  
+**Total cache-write tokens:** 260,515  
+**Total cache-read tokens:** 29,719,977  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

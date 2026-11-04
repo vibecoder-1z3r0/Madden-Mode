@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync --extra dev
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run mypy src/
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync --extra dev
+      - run: uv run pytest tests --cov=maddenmode --cov-report=term-missing
+
+  commit-lint:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check Conventional Commits and no session links
+        run: |
+          set -eu
+          range="origin/${{ github.base_ref }}..HEAD"
+          re='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9._-]+\))?!?: .+'
+          bad=0
+          for sha in $(git rev-list --no-merges "$range"); do
+            subject=$(git log -1 --format=%s "$sha")
+            if ! printf '%s' "$subject" | grep -Eq "$re"; then
+              echo "::error::Not a Conventional Commit: $sha $subject"; bad=1
+            fi
+            if git log -1 --format=%B "$sha" | grep -Eq 'claude\.ai/code/session_'; then
+              echo "::error::Session link in commit message: $sha"; bad=1
+            fi
+          done
+          exit $bad

@@ -51,6 +51,9 @@ so those are not used.
   - Design principles: never collide with the game; claim keys only while
     drawing; frequent actions are a single key; always show status; always
     have an obvious way out.
+  - A **modifier-prefix setting** switches all global keys between
+    `Ctrl+Shift` (default) and `Ctrl+Alt` in one step, for when a game or
+    app already uses one of them. Individual keys can still be rebound.
   - Known risk: `Ctrl+Shift` combos are used by some apps (browsers, chat
     and streaming tools), which is why they must be rebindable.
 - **Freehand only for now.** No shapes (arrows, circles, lines) in the first

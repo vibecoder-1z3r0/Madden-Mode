@@ -34,7 +34,7 @@ Co-authored-by: Vibe-Coder 1.z3r0 <243014891+vibecoder-1z3r0@users.noreply.githu
 
 ## Session log
 
-Every commit+push also refreshes `SESSION_LOG.md` via
+Every turn refreshes `SESSION_LOG.md`, which is committed and pushed, via
 `make session-log SESSION=<session-id>` (see CLAUDE.md).
 
 ## Checks

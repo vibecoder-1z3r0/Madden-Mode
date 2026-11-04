@@ -8,7 +8,8 @@
 - Stack decisions are inherited from `many-game-show`: Python 3.13, uv, ruff
   (lint + format, no black), mypy, pytest + pytest-cov. See ARCHITECTURE.md.
 - Run `make check` before committing.
-- **Refresh `SESSION_LOG.md` as part of every commit+push** (turn-by-turn
+- **Refresh `SESSION_LOG.md` every turn, committing and pushing it** (not
+  only when other changes are made) (turn-by-turn
   timing and token usage, ported from `many-game-show`):
   `make session-log SESSION=<session-id>`. The session id is the transcript
   filename under `~/.claude/projects/*/<session-id>.jsonl`. The script

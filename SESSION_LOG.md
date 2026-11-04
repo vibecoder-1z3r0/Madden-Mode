@@ -61,15 +61,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 55 | Chore session log exists | 02:38:10 | 28s | 3s | 20 | 5,952 | 5,112 | 2,635,991 |
 | 56 | Delete the chore branch please | 02:38:41 | 1m 18s | 5s | 29 | 7,884 | 15,751 | 4,939,639 |
 | 57 | Why are you making a separate branch for session logging? Just delete … | 02:40:04 | 37s | 7m 26s | 20 | 7,485 | 8,064 | 2,696,240 |
-| 58 | I removed the session branches | 02:48:07 | 4s | — | 4 | 900 | 92 | 776,620 |
+| 58 | I removed the session branches | 02:48:07 | 9s | 29s | 6 | 1,057 | 679 | 1,164,976 |
+| 59 | Do we have CI checks for windows testing? | 02:48:44 | 6s | — | 8 | 1,490 | 32 | 778,200 |
 
-**Total turns:** 58  
-**Total agent time spent (excl. flagged):** 34m 59s  
+**Total turns:** 59  
+**Total agent time spent (excl. flagged):** 35m 9s  
 **Total human think time (excl. outliers):** 1h 16m  
 **Average human think time (excl. outliers):** 1m 20s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 1,096  
-**Total output tokens:** 697,717  
-**Total cache-write tokens:** 829,051  
-**Total cache-read tokens:** 100,136,915  
+**Total input tokens:** 1,106  
+**Total output tokens:** 699,364  
+**Total cache-write tokens:** 829,670  
+**Total cache-read tokens:** 101,303,471  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

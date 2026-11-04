@@ -32,15 +32,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 26 | But Qt is lgpl? | 01:37:59 | 15s | 1m 23s | 10 | 2,119 | 829 | 465,333 |
 | 27 | Why is this so complex?  Qt in Python doesn’t have this same concern? | 01:39:37 | 14s | 48s | 10 | 1,968 | 777 | 469,789 |
 | 28 | Yes, go with Python and PySide6 | 01:40:39 | 44s | 1m 49s | 11 | 3,189 | 1,861 | 633,220 |
-| 29 | You can’t test anything in Linux? | 01:43:13 | 9s | — | 8 | 2,332 | 28 | 320,860 |
+| 29 | You can’t test anything in Linux? | 01:43:13 | 58s | 5m 0s | 28 | 6,597 | 8,114 | 1,940,109 |
+| 30 | Can you add those lib installs to the make file? | 01:49:11 | 31s | — | 19 | 4,333 | 6,067 | 1,490,674 |
 
-**Total turns:** 29  
-**Total agent time spent (excl. flagged):** 10m 48s  
-**Total human think time (excl. outliers):** 35m 47s  
-**Average human think time (excl. outliers):** 1m 17s  
+**Total turns:** 30  
+**Total agent time spent (excl. flagged):** 12m 9s  
+**Total human think time (excl. outliers):** 40m 47s  
+**Average human think time (excl. outliers):** 1m 24s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 371  
-**Total output tokens:** 85,487  
-**Total cache-write tokens:** 209,496  
-**Total cache-read tokens:** 15,795,479  
+**Total input tokens:** 410  
+**Total output tokens:** 94,085  
+**Total cache-write tokens:** 223,649  
+**Total cache-read tokens:** 18,905,402  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

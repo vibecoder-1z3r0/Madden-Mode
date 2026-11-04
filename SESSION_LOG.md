@@ -34,15 +34,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 28 | Yes, go with Python and PySide6 | 01:40:39 | 44s | 1m 49s | 11 | 3,189 | 1,861 | 633,220 |
 | 29 | You can’t test anything in Linux? | 01:43:13 | 58s | 5m 0s | 28 | 6,597 | 8,114 | 1,940,109 |
 | 30 | Can you add those lib installs to the make file? | 01:49:11 | 38s | 3s | 21 | 4,744 | 6,575 | 1,658,426 |
-| 31 | And pre flight? | 01:49:52 | 34s | — | 27 | 10,481 | 7,810 | 2,053,017 |
+| 31 | And pre flight? | 01:49:52 | 42s | 8s | 29 | 11,079 | 8,523 | 2,226,858 |
+| 32 | Can you take screenshots of this stuff running? | 01:50:42 | 25s | — | 16 | 9,740 | 5,957 | 875,794 |
 
-**Total turns:** 31  
-**Total agent time spent (excl. flagged):** 12m 50s  
-**Total human think time (excl. outliers):** 40m 50s  
-**Average human think time (excl. outliers):** 1m 22s  
+**Total turns:** 32  
+**Total agent time spent (excl. flagged):** 13m 23s  
+**Total human think time (excl. outliers):** 40m 58s  
+**Average human think time (excl. outliers):** 1m 19s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 439  
-**Total output tokens:** 104,977  
-**Total cache-write tokens:** 231,967  
-**Total cache-read tokens:** 21,126,171  
+**Total input tokens:** 457  
+**Total output tokens:** 115,315  
+**Total cache-write tokens:** 238,637  
+**Total cache-read tokens:** 22,175,806  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

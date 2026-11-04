@@ -35,6 +35,13 @@ rather than a web app, so those are added only if the design calls for them.
     rolling capture buffer.
 - **Overlay mode keeps no history.** Strokes are ephemeral. Persisted strokes
   and a timeline showing them are a studio-mode idea only.
+- **Pens** (draft): color, width, hardness/softness and dissipation.
+  - Colors: keep simple (small fixed palette).
+  - Hardness/softness: supported.
+  - Pressure-sensitive width: wanted, but deferred (hard to test). Strokes
+    carry a per-point pressure field defaulting to 1.0 so it can be added
+    later without changing the stroke format.
+  - Dissipation behavior: still to be decided.
 - No browser UI.
 
 ## Open questions

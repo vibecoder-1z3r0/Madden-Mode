@@ -50,9 +50,14 @@ so those are not used.
     - hold: stays until cleared
     - timed fade: whole stroke fades after N seconds
     - tail-first fade: oldest part of the line fades first
-  - Dissipation time is variable per pen from **0.0 s to 10.0 s**, where
-    **0.0 s means no fade or dissipation** (the stroke is held). Open: whether
-    timed fade also needs a separate delay before the fade starts.
+  - Dissipation uses **two numbers per pen**, each variable from **0.0 s to
+    10.0 s**:
+    - `hold_s`: how long the stroke stays solid before fading starts.
+    - `fade_s`: how long the fade takes. **`fade_s = 0.0` means no fade or
+      dissipation** (the stroke is held, whatever `hold_s` is).
+  - Timed fade measures `hold_s` from pen lift. Tail-first fade applies the
+    same two numbers per point, measured from when each point was drawn
+    (assumed; confirm).
 - **First target: Windows, windowed/borderless windows.** True fullscreen
   (exclusive) games are best-effort and later. macOS and Linux come after.
 - **Language and toolkit: Python 3.13 + PySide6 (Qt 6).** Chosen over

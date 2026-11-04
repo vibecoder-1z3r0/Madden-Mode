@@ -15,15 +15,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 9 | Yes, open the PR | 01:02:47 | 20s | 10s | 24 | 4,119 | 5,152 | 796,311 |
 | 10 | yes, watch it | 01:03:17 | 2m 19s | 29s | 50 | 4,912 | 27,406 | 2,344,047 |
 | 11 | Ok so let’s talk about what madden mode is.  Basically it’s telestrati… | 01:06:05 | 15s | 1m 30s | 10 | 1,679 | 749 | 397,898 |
-| 12 | Ok let’s tackle these one at a time (pun intended) | 01:07:49 | 4s | — | 8 | 822 | 44 | 267,944 |
+| 12 | Ok let’s tackle these one at a time (pun intended) | 01:07:49 | 11s | 1m 17s | 10 | 1,077 | 532 | 401,938 |
+| 13 | I think this needs to be drawn on top of any window or app or full scr… | 01:09:18 | 5s | — | 8 | 1,056 | 98 | 269,474 |
 
-**Total turns:** 12  
-**Total agent time spent (excl. flagged):** 6m 2s  
-**Total human think time (excl. outliers):** 5m 5s  
-**Average human think time (excl. outliers):** 28s  
+**Total turns:** 13  
+**Total agent time spent (excl. flagged):** 6m 14s  
+**Total human think time (excl. outliers):** 6m 22s  
+**Average human think time (excl. outliers):** 32s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 226  
-**Total output tokens:** 50,918  
-**Total cache-write tokens:** 190,793  
-**Total cache-read tokens:** 8,328,797  
+**Total input tokens:** 236  
+**Total output tokens:** 52,229  
+**Total cache-write tokens:** 191,379  
+**Total cache-read tokens:** 8,732,265  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 98%

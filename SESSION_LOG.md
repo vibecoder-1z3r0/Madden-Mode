@@ -39,15 +39,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 33 | The soft highlighter looks way too burry | 01:52:29 | 25s | 40s | 26 | 12,148 | 6,649 | 1,447,419 |
 | 34 | Try with a thinner line and 2px feather? | 01:53:34 | 18s | 24s | 19 | 5,294 | 2,558 | 1,109,486 |
 | 35 | 12/16 is fine | 01:54:15 | 12s | 24s | 10 | 1,999 | 842 | 562,344 |
-| 36 | Run the dissipation one again? | 01:54:51 | 22s | — | 16 | 12,952 | 48 | 755,132 |
+| 36 | Run the dissipation one again? | 01:54:51 | 32s | 1m 53s | 20 | 13,731 | 4,608 | 1,136,986 |
+| 37 | I think the timings for fade / dissipate need to be variable from 0.0s… | 01:57:16 | 6s | — | 8 | 1,572 | 80 | 387,882 |
 
-**Total turns:** 36  
-**Total agent time spent (excl. flagged):** 14m 50s  
-**Total human think time (excl. outliers):** 43m 37s  
-**Average human think time (excl. outliers):** 1m 15s  
+**Total turns:** 37  
+**Total agent time spent (excl. flagged):** 15m 6s  
+**Total human think time (excl. outliers):** 45m 31s  
+**Average human think time (excl. outliers):** 1m 16s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 532  
-**Total output tokens:** 148,770  
-**Total cache-write tokens:** 252,155  
-**Total cache-read tokens:** 26,586,072  
+**Total input tokens:** 544  
+**Total output tokens:** 151,121  
+**Total cache-write tokens:** 256,795  
+**Total cache-read tokens:** 27,355,808  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

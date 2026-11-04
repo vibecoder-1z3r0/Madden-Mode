@@ -38,7 +38,11 @@ so those are not used.
   and a timeline showing them are a studio-mode idea only.
 - **Pens** (draft): color, width, hardness/softness and dissipation.
   - Colors: keep simple (small fixed palette).
-  - Hardness/softness: supported.
+  - Hardness/softness: supported as a single **feather width in pixels**
+    (0 = hard edge), not a hard/soft switch. The feather is added on each
+    side of a solid core, so total width and color stay constant as it
+    changes. Default highlighter: **12-16 px wide with a 2 px feather**
+    (picked from mock-ups; a wider or blurrier stroke looked too soft).
   - Pressure-sensitive width: wanted, but deferred (hard to test). Strokes
     carry a per-point pressure field defaulting to 1.0 so it can be added
     later without changing the stroke format.

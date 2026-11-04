@@ -37,15 +37,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 31 | And pre flight? | 01:49:52 | 42s | 8s | 29 | 11,079 | 8,523 | 2,226,858 |
 | 32 | Can you take screenshots of this stuff running? | 01:50:42 | 35s | 1m 11s | 20 | 10,802 | 9,378 | 1,411,679 |
 | 33 | The soft highlighter looks way too burry | 01:52:29 | 25s | 40s | 26 | 12,148 | 6,649 | 1,447,419 |
-| 34 | Try with a thinner line and 2px feather? | 01:53:34 | 9s | — | 16 | 4,692 | 68 | 738,184 |
+| 34 | Try with a thinner line and 2px feather? | 01:53:34 | 18s | 24s | 19 | 5,294 | 2,558 | 1,109,486 |
+| 35 | 12/16 is fine | 01:54:15 | 6s | — | 8 | 1,494 | 18 | 374,890 |
 
-**Total turns:** 34  
-**Total agent time spent (excl. flagged):** 14m 7s  
-**Total human think time (excl. outliers):** 42m 50s  
-**Average human think time (excl. outliers):** 1m 18s  
+**Total turns:** 35  
+**Total agent time spent (excl. flagged):** 14m 21s  
+**Total human think time (excl. outliers):** 43m 13s  
+**Average human think time (excl. outliers):** 1m 16s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 503  
-**Total output tokens:** 133,217  
-**Total cache-write tokens:** 248,775  
-**Total cache-read tokens:** 24,897,294  
+**Total input tokens:** 514  
+**Total output tokens:** 135,313  
+**Total cache-write tokens:** 251,283  
+**Total cache-read tokens:** 25,643,486  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

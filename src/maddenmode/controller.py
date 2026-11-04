@@ -1,5 +1,6 @@
 """Draw-mode and hotkey logic. No GUI imports, so it is fully testable."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import StrEnum
 
@@ -86,6 +87,9 @@ class Controller:
         # None means "use each pen's own color" until a color is picked.
         self.color_index: int | None = None
         self.active_stroke: Stroke | None = None
+        # Called with the new value whenever draw mode actually changes, so a
+        # window can switch between click-through and drawing.
+        self.on_draw_mode_changed: Callable[[bool], None] | None = None
 
     @property
     def current_pen(self) -> Pen:
@@ -146,7 +150,10 @@ class Controller:
     def _set_draw_mode(self, on: bool, now: float) -> None:
         if self.draw_mode and not on:
             self.pointer_up(now)  # never leave a stroke dangling
+        changed = self.draw_mode != on
         self.draw_mode = on
+        if changed and self.on_draw_mode_changed is not None:
+            self.on_draw_mode_changed(on)
 
     # -- pointer ----------------------------------------------------------
 

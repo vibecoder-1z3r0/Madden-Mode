@@ -189,6 +189,16 @@ def test_release_is_ignored_in_toggle_mode() -> None:
     assert c.draw_mode
 
 
+def test_draw_mode_callback_fires_only_on_change() -> None:
+    c = make()
+    seen: list[bool] = []
+    c.on_draw_mode_changed = seen.append
+    c.press(TOGGLE, 0.0)  # on
+    c.press("Esc", 1.0)  # off
+    c.press("Esc", 2.0)  # already off: no call
+    assert seen == [True, False]
+
+
 def test_controller_needs_a_pen() -> None:
     with pytest.raises(ValueError):
         Controller(Scene(), pens=())

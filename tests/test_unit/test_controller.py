@@ -1,0 +1,202 @@
+import pytest
+
+from maddenmode.controller import (
+    Controller,
+    ModifierPrefix,
+    Settings,
+    global_bindings,
+    normalize_key,
+)
+from maddenmode.palette import PALETTE
+from maddenmode.pen import DEFAULT_PENS, Pen
+from maddenmode.scene import Scene
+
+TOGGLE = "Ctrl+Shift+D"
+CLEAR = "Ctrl+Shift+C"
+FADE = "Ctrl+Shift+F"
+
+
+def make(settings: Settings | None = None) -> Controller:
+    return Controller(Scene(), settings=settings)
+
+
+def test_global_bindings_use_the_prefix() -> None:
+    assert set(global_bindings(ModifierPrefix.CTRL_SHIFT)) == {
+        "Ctrl+Shift+D",
+        "Ctrl+Shift+C",
+        "Ctrl+Shift+F",
+    }
+    assert set(global_bindings(ModifierPrefix.CTRL_ALT)) == {
+        "Ctrl+Alt+D",
+        "Ctrl+Alt+C",
+        "Ctrl+Alt+F",
+    }
+
+
+def test_normalize_key() -> None:
+    assert normalize_key("ctrl+shift+d") == "Ctrl+Shift+D"
+    assert normalize_key("esc") == "Esc"
+    assert normalize_key("]") == "]"
+
+
+def test_toggle_draw_mode() -> None:
+    c = make()
+    assert not c.draw_mode
+    assert c.press(TOGGLE, 0.0)
+    assert c.draw_mode
+    assert c.press(TOGGLE, 1.0)
+    assert not c.draw_mode
+
+
+def test_switching_prefix_moves_the_global_keys() -> None:
+    c = make(Settings(prefix=ModifierPrefix.CTRL_ALT))
+    assert not c.press(TOGGLE, 0.0)  # old prefix now belongs to the game
+    assert not c.draw_mode
+    assert c.press("Ctrl+Alt+D", 0.0)
+    assert c.draw_mode
+
+
+def test_plain_keys_pass_through_when_not_drawing() -> None:
+    c = make()
+    for key in ("1", "]", "[", "Esc", "a"):
+        assert not c.press(key, 0.0)
+    assert c.color_index is None
+    assert c.pen_index == 0
+
+
+def test_number_keys_pick_colors_in_draw_mode() -> None:
+    c = make()
+    c.press(TOGGLE, 0.0)
+    assert c.press("3", 0.0)
+    assert c.current_pen.color == PALETTE[2]
+    assert c.press("8", 0.0)
+    assert c.current_pen.color == PALETTE[7]
+    assert not c.press("9", 0.0)  # only 8 colors
+
+
+def test_pen_cycling_wraps_in_draw_mode() -> None:
+    c = make()
+    c.press(TOGGLE, 0.0)
+    c.press("]", 0.0)
+    assert c.current_pen.name == DEFAULT_PENS[1].name
+    c.press("[", 0.0)
+    c.press("[", 0.0)
+    assert c.current_pen.name == DEFAULT_PENS[-1].name
+
+
+def test_picked_color_carries_across_pens() -> None:
+    c = make()
+    c.press(TOGGLE, 0.0)
+    c.press("5", 0.0)
+    c.press("]", 0.0)
+    assert c.current_pen.color == PALETTE[4]
+
+
+def test_esc_exits_draw_mode() -> None:
+    c = make()
+    c.press(TOGGLE, 0.0)
+    assert c.press("Esc", 1.0)
+    assert not c.draw_mode
+
+
+def test_pointer_is_ignored_outside_draw_mode() -> None:
+    c = make()
+    assert not c.pointer_down(1, 1, 0.0)
+    assert c.scene.strokes == []
+
+
+def test_drawing_a_stroke() -> None:
+    c = make()
+    c.press(TOGGLE, 0.0)
+    assert c.pointer_down(1, 1, 1.0)
+    c.pointer_move(2, 2, 1.1)
+    c.pointer_move(3, 3, 1.2)
+    c.pointer_up(1.3)
+    (stroke,) = c.scene.strokes
+    assert [(p.x, p.y) for p in stroke.points] == [(1, 1), (2, 2), (3, 3)]
+    assert stroke.pen_up_at == 1.3
+    c.pointer_move(9, 9, 2.0)  # no active stroke: ignored
+    assert len(stroke.points) == 3
+
+
+def test_leaving_draw_mode_lifts_the_active_stroke() -> None:
+    c = make()
+    c.press(TOGGLE, 0.0)
+    c.pointer_down(0, 0, 1.0)
+    c.press(TOGGLE, 2.0)
+    (stroke,) = c.scene.strokes
+    assert stroke.pen_up_at == 2.0
+    assert c.active_stroke is None
+
+
+def test_clear_all_works_outside_draw_mode() -> None:
+    c = make()
+    c.press(TOGGLE, 0.0)
+    c.pointer_down(0, 0, 0.0)
+    c.pointer_up(0.1)
+    c.press(TOGGLE, 0.2)
+    assert c.press(CLEAR, 0.3)
+    assert c.scene.strokes == []
+
+
+def test_clear_all_drops_the_stroke_being_drawn() -> None:
+    c = make()
+    c.press(TOGGLE, 0.0)
+    c.pointer_down(0, 0, 0.0)
+    c.press(CLEAR, 0.1)
+    c.pointer_move(5, 5, 0.2)
+    assert c.scene.strokes == []
+
+
+def test_fade_all_uses_the_global_time() -> None:
+    c = make(Settings(fade_all_s=3.0))
+    c.press(TOGGLE, 0.0)
+    c.pointer_down(0, 0, 0.0)
+    c.pointer_up(0.1)
+    c.press(FADE, 5.0)
+    (stroke,) = c.scene.strokes
+    assert stroke.cleared_at == 5.0
+    assert stroke.clear_fade_s == 3.0
+
+
+def test_settings_validate_fade_all_time() -> None:
+    with pytest.raises(ValueError):
+        Settings(fade_all_s=11.0)
+
+
+def test_hold_to_draw_follows_the_key() -> None:
+    c = make(Settings(hold_to_draw=True))
+    assert c.press(TOGGLE, 0.0)
+    assert c.draw_mode
+    c.pointer_down(0, 0, 0.5)
+    assert c.release(TOGGLE, 1.0)
+    assert not c.draw_mode
+    assert c.scene.strokes[0].pen_up_at == 1.0
+
+
+def test_hold_to_draw_ignores_release_of_other_keys() -> None:
+    c = make(Settings(hold_to_draw=True))
+    c.press(TOGGLE, 0.0)
+    assert not c.release(CLEAR, 0.5)
+    assert not c.release("a", 0.5)
+    assert c.draw_mode
+
+
+def test_release_is_ignored_in_toggle_mode() -> None:
+    c = make()
+    c.press(TOGGLE, 0.0)
+    assert not c.release(TOGGLE, 0.1)
+    assert c.draw_mode
+
+
+def test_controller_needs_a_pen() -> None:
+    with pytest.raises(ValueError):
+        Controller(Scene(), pens=())
+
+
+def test_custom_pens() -> None:
+    pen = Pen("only")
+    c = Controller(Scene(), pens=(pen,))
+    c.press(TOGGLE, 0.0)
+    c.press("]", 0.0)
+    assert c.current_pen.name == "only"

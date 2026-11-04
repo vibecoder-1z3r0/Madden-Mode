@@ -63,15 +63,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 57 | Why are you making a separate branch for session logging? Just delete … | 02:40:04 | 37s | 7m 26s | 20 | 7,485 | 8,064 | 2,696,240 |
 | 58 | I removed the session branches | 02:48:07 | 9s | 29s | 6 | 1,057 | 679 | 1,164,976 |
 | 59 | Do we have CI checks for windows testing? | 02:48:44 | 13s | 1m 36s | 9 | 2,215 | 1,809 | 1,167,316 |
-| 60 | Will this cost me $$? | 02:50:33 | 7s | — | 8 | 1,696 | 22 | 783,234 |
+| 60 | Will this cost me $$? | 02:50:33 | 13s | 1m 13s | 10 | 2,129 | 990 | 1,174,862 |
+| 61 | Add the windows CI jobs - also make forks untrusted so other people ca… | 02:52:00 | 2m 6s | — | 67 | 65,581 | 75,940 | 12,859,400 |
 
-**Total turns:** 60  
-**Total agent time spent (excl. flagged):** 35m 23s  
-**Total human think time (excl. outliers):** 1h 18m  
+**Total turns:** 61  
+**Total agent time spent (excl. flagged):** 37m 36s  
+**Total human think time (excl. outliers):** 1h 19m  
 **Average human think time (excl. outliers):** 1m 20s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 1,115  
-**Total output tokens:** 701,785  
-**Total cache-write tokens:** 831,469  
-**Total cache-read tokens:** 102,475,821  
+**Total input tokens:** 1,184  
+**Total output tokens:** 767,799  
+**Total cache-write tokens:** 908,377  
+**Total cache-read tokens:** 115,726,849  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

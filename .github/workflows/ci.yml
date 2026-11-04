@@ -3,20 +3,39 @@ name: CI
 on:
   push:
     branches: [main]
+  # Plain `pull_request`, never `pull_request_target`: a fork's PR must not
+  # get write access or secrets.
   pull_request:
+
+# Least privilege: CI only ever needs to read the repository.
+permissions:
+  contents: read
+
+# Fork pull requests are untrusted, so none of these jobs run for them.
+# The condition below is defense in depth only: a fork PR can edit this very
+# file, so the real control is the repository's Actions setting for fork pull
+# requests (see CONTRIBUTING.md). Pushes to this repo's own branches and PRs
+# opened from them run as normal.
 
 jobs:
   lint-and-typecheck:
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v3
       - run: uv sync --extra dev
       - run: uv run ruff check .
       - run: uv run ruff format --check .
+      # On Windows this also type-checks the win32-only code paths.
       - run: uv run mypy src/
 
   tests:
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
     strategy:
       fail-fast: false
       matrix:
@@ -28,10 +47,30 @@ jobs:
       - if: runner.os == 'Linux'
         run: make system-deps
       - run: uv sync --extra dev
+      # On Windows this includes the Win32 hotkey tests (skipped elsewhere).
       - run: uv run pytest tests --cov=maddenmode --cov-report=term-missing
 
+  # Starts the real app, lets it run briefly and fails on any startup problem.
+  # On Windows it registers the real global hotkeys.
+  smoke:
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - if: runner.os == 'Linux'
+        run: make system-deps
+      - run: uv sync --extra dev
+      - run: uv run python -m maddenmode --smoke-test --settings "${{ runner.temp }}/smoke-settings.json"
+
   commit-lint:
-    if: github.event_name == 'pull_request'
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

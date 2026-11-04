@@ -30,15 +30,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 24 | I could muddle my way through rust, the C++ options is kind of appeali… | 01:27:48 | 20s | 8m 9s | 4 | 2,786 | 1,266 | 452,908 |
 | 25 | What if we went with straight openGL? | 01:36:17 | 19s | 1m 23s | 10 | 2,698 | 912 | 459,397 |
 | 26 | But Qt is lgpl? | 01:37:59 | 15s | 1m 23s | 10 | 2,119 | 829 | 465,333 |
-| 27 | Why is this so complex?  Qt in Python doesn’t have this same concern? | 01:39:37 | 6s | — | 8 | 1,288 | 56 | 313,174 |
+| 27 | Why is this so complex?  Qt in Python doesn’t have this same concern? | 01:39:37 | 14s | 48s | 10 | 1,968 | 777 | 469,789 |
+| 28 | Yes, go with Python and PySide6 | 01:40:39 | 33s | — | 10 | 2,620 | 1,156 | 474,063 |
 
-**Total turns:** 27  
-**Total agent time spent (excl. flagged):** 9m 46s  
-**Total human think time (excl. outliers):** 33m 10s  
-**Average human think time (excl. outliers):** 1m 17s  
+**Total turns:** 28  
+**Total agent time spent (excl. flagged):** 10m 28s  
+**Total human think time (excl. outliers):** 33m 58s  
+**Average human think time (excl. outliers):** 1m 15s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 350  
-**Total output tokens:** 79,286  
-**Total cache-write tokens:** 206,886  
-**Total cache-read tokens:** 14,684,784  
+**Total input tokens:** 362  
+**Total output tokens:** 82,586  
+**Total cache-write tokens:** 208,763  
+**Total cache-read tokens:** 15,315,462  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

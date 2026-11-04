@@ -14,13 +14,14 @@ ARCHITECTURE.md). App architecture is **not yet decided**.
 | Lint / format | ruff only (no black) |
 | Type check | mypy (strict-ish: `disallow_untyped_defs`) |
 | Tests | pytest + pytest-cov |
+| GUI toolkit | PySide6 (Qt 6) |
 | CI | GitHub Actions: `lint-and-typecheck`, `tests`, `commit-lint` |
 
-## Deliberately not ported yet
+## Deliberately not ported
 
 `many-game-show` also uses FastAPI/SQLModel, a vanilla-JS frontend, djlint
-and pytest-playwright. Telestration over a window may be a desktop overlay
-rather than a web app, so those are added only if the design calls for them.
+and pytest-playwright. Madden Mode is a desktop overlay with no browser UI,
+so those are not used.
 
 ## Product decisions so far
 
@@ -47,6 +48,16 @@ rather than a web app, so those are added only if the design calls for them.
     - tail-first fade: oldest part of the line fades first
 - **First target: Windows, windowed/borderless windows.** True fullscreen
   (exclusive) games are best-effort and later. macOS and Linux come after.
+- **Language and toolkit: Python 3.13 + PySide6 (Qt 6).** Chosen over
+  C++/Qt, Rust, C#, and raw OpenGL for iteration speed and because the logic
+  is pure Python and testable in CI. Revisit if studio-mode screen capture
+  drops frames (move just that piece native) or if a single-exe installer
+  becomes important.
+  - Strokes, pens, dissipation math and mode logic stay free of GUI imports
+    so the window layer is thin and the core could be ported later.
+  - Licensing: PySide6 is LGPL v3 (not PyQt6, which is GPL/commercial). Fine
+    for MIT source distribution via pip/uv. If we ever bundle an installer
+    (PyInstaller etc.), add Qt LGPL notices and keep Qt as separate libraries.
 - No browser UI.
 
 ## Open questions

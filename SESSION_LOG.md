@@ -17,15 +17,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 11 | Ok so let’s talk about what madden mode is.  Basically it’s telestrati… | 01:06:05 | 15s | 1m 30s | 10 | 1,679 | 749 | 397,898 |
 | 12 | Ok let’s tackle these one at a time (pun intended) | 01:07:49 | 11s | 1m 17s | 10 | 1,077 | 532 | 401,938 |
 | 13 | I think this needs to be drawn on top of any window or app or full scr… | 01:09:18 | 14s | 5m 19s | 10 | 1,507 | 703 | 404,260 |
-| 14 | We can table studio mode as we should get overlay working and testable… | 01:14:50 | 5s | — | 2 | 1,516 | 380 | 271,684 |
+| 14 | We can table studio mode as we should get overlay working and testable… | 01:14:50 | 14s | 1m 10s | 4 | 1,955 | 1,212 | 407,716 |
+| 15 | I wasnt thinking we’d keep historic madden mode info but that’s intere… | 01:16:13 | 4s | — | 8 | 1,132 | 162 | 274,606 |
 
-**Total turns:** 14  
-**Total agent time spent (excl. flagged):** 6m 28s  
-**Total human think time (excl. outliers):** 11m 41s  
-**Average human think time (excl. outliers):** 54s  
+**Total turns:** 15  
+**Total agent time spent (excl. flagged):** 6m 41s  
+**Total human think time (excl. outliers):** 12m 50s  
+**Average human think time (excl. outliers):** 55s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 240  
-**Total output tokens:** 54,196  
-**Total cache-write tokens:** 192,364  
-**Total cache-read tokens:** 9,138,735  
+**Total input tokens:** 250  
+**Total output tokens:** 55,767  
+**Total cache-write tokens:** 193,358  
+**Total cache-read tokens:** 9,549,373  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 98%

@@ -33,6 +33,8 @@ rather than a web app, so those are added only if the design calls for them.
   - **Studio mode (tabled):** a "live feed" of the screen with pause, rewind
     and fast forward, then telestrate over the paused frame. Requires a
     rolling capture buffer.
+- **Overlay mode keeps no history.** Strokes are ephemeral. Persisted strokes
+  and a timeline showing them are a studio-mode idea only.
 - No browser UI.
 
 ## Open questions

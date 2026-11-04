@@ -22,6 +22,19 @@ ARCHITECTURE.md). App architecture is **not yet decided**.
 and pytest-playwright. Telestration over a window may be a desktop overlay
 rather than a web app, so those are added only if the design calls for them.
 
+## Product decisions so far
+
+- Madden Mode is **telestration**: freehand marks drawn over live content.
+- Two modes sharing one stroke engine (pen/arrow tools, fade-out, stroke
+  recording):
+  - **Overlay mode (build and test first):** transparent, always-on-top layer
+    drawn over any window, app or fullscreen game; click-through when not
+    drawing.
+  - **Studio mode (tabled):** a "live feed" of the screen with pause, rewind
+    and fast forward, then telestrate over the paused frame. Requires a
+    rolling capture buffer.
+- No browser UI.
+
 ## Open questions
 
 - Delivery shape: desktop overlay, browser-based, or both?

@@ -37,7 +37,12 @@ so those are not used.
 - **Overlay mode keeps no history.** Strokes are ephemeral. Persisted strokes
   and a timeline showing them are a studio-mode idea only.
 - **Pens** (draft): color, width, hardness/softness and dissipation.
-  - Colors: keep simple (small fixed palette).
+  - Colors: a fixed **8-color palette**, cycled with a hotkey (keys TBD):
+    yellow `#FFE600`, red `#FF2D2D`, white `#FFFFFF`, cyan `#00E5FF`,
+    orange `#FF8A00`, magenta `#FF3DCB`, blue `#3D7BFF`, black `#111111`.
+    Chosen for contrast on grass, dark scenes and light backgrounds; no
+    green (it vanishes on fields). White vanishes on snow/ice and black on
+    dark scenes, which is why there is a palette.
   - Hardness/softness: supported as a single **feather width in pixels**
     (0 = hard edge), not a hard/soft switch. The feather is added on each
     side of a solid core, so total width and color stay constant as it

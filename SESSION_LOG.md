@@ -28,15 +28,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 22 | What version of pyside is latest? | 01:24:28 | 12s | 28s | 10 | 1,549 | 893 | 443,313 |
 | 23 | We don’t have to stay in the Python ecosystem either | 01:25:08 | 18s | 2m 23s | 10 | 2,584 | 903 | 447,083 |
 | 24 | I could muddle my way through rust, the C++ options is kind of appeali… | 01:27:48 | 20s | 8m 9s | 4 | 2,786 | 1,266 | 452,908 |
-| 25 | What if we went with straight openGL? | 01:36:17 | 7s | — | 8 | 1,618 | 26 | 306,256 |
+| 25 | What if we went with straight openGL? | 01:36:17 | 19s | 1m 23s | 10 | 2,698 | 912 | 459,397 |
+| 26 | But Qt is lgpl? | 01:37:59 | 6s | — | 8 | 1,456 | 24 | 310,214 |
 
-**Total turns:** 25  
-**Total agent time spent (excl. flagged):** 9m 14s  
-**Total human think time (excl. outliers):** 30m 24s  
+**Total turns:** 26  
+**Total agent time spent (excl. flagged):** 9m 32s  
+**Total human think time (excl. outliers):** 31m 47s  
 **Average human think time (excl. outliers):** 1m 16s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 330  
-**Total output tokens:** 74,799  
-**Total cache-write tokens:** 205,115  
-**Total cache-read tokens:** 13,753,136  
+**Total input tokens:** 340  
+**Total output tokens:** 77,335  
+**Total cache-write tokens:** 206,025  
+**Total cache-read tokens:** 14,216,491  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

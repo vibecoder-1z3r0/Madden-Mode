@@ -19,15 +19,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 13 | I think this needs to be drawn on top of any window or app or full scr… | 01:09:18 | 14s | 5m 19s | 10 | 1,507 | 703 | 404,260 |
 | 14 | We can table studio mode as we should get overlay working and testable… | 01:14:50 | 14s | 1m 10s | 4 | 1,955 | 1,212 | 407,716 |
 | 15 | I wasnt thinking we’d keep historic madden mode info but that’s intere… | 01:16:13 | 14s | 1m 31s | 10 | 1,753 | 805 | 411,990 |
-| 16 | Simpler is better for colors, hardness / softness and pressure sounds … | 01:17:58 | 5s | — | 8 | 1,350 | 98 | 277,296 |
+| 16 | Simpler is better for colors, hardness / softness and pressure sounds … | 01:17:58 | 13s | 41s | 10 | 1,777 | 850 | 415,993 |
+| 17 | All three options, hold is default | 01:18:53 | 4s | — | 4 | 523 | 10 | 139,876 |
 
-**Total turns:** 16  
-**Total agent time spent (excl. flagged):** 6m 56s  
-**Total human think time (excl. outliers):** 14m 21s  
-**Average human think time (excl. outliers):** 57s  
+**Total turns:** 17  
+**Total agent time spent (excl. flagged):** 7m 8s  
+**Total human think time (excl. outliers):** 15m 2s  
+**Average human think time (excl. outliers):** 56s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 260  
-**Total output tokens:** 57,738  
-**Total cache-write tokens:** 194,099  
-**Total cache-read tokens:** 9,964,053  
+**Total input tokens:** 266  
+**Total output tokens:** 58,688  
+**Total cache-write tokens:** 194,861  
+**Total cache-read tokens:** 10,242,626  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 98%

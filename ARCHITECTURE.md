@@ -41,7 +41,10 @@ rather than a web app, so those are added only if the design calls for them.
   - Pressure-sensitive width: wanted, but deferred (hard to test). Strokes
     carry a per-point pressure field defaulting to 1.0 so it can be added
     later without changing the stroke format.
-  - Dissipation behavior: still to be decided.
+  - Dissipation: all three modes, set per pen, **hold is the default**:
+    - hold: stays until cleared
+    - timed fade: whole stroke fades after N seconds
+    - tail-first fade: oldest part of the line fades first
 - No browser UI.
 
 ## Open questions

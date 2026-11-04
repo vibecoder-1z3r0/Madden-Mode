@@ -64,15 +64,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 58 | I removed the session branches | 02:48:07 | 9s | 29s | 6 | 1,057 | 679 | 1,164,976 |
 | 59 | Do we have CI checks for windows testing? | 02:48:44 | 13s | 1m 36s | 9 | 2,215 | 1,809 | 1,167,316 |
 | 60 | Will this cost me $$? | 02:50:33 | 13s | 1m 13s | 10 | 2,129 | 990 | 1,174,862 |
-| 61 | Add the windows CI jobs - also make forks untrusted so other people ca… | 02:52:00 | 2m 6s | — | 67 | 65,581 | 75,940 | 12,859,400 |
+| 61 | Add the windows CI jobs - also make forks untrusted so other people ca… | 02:52:00 | 2m 16s | 4s | 69 | 66,408 | 77,834 | 13,271,492 |
+| 62 | Or make it so I have to approve workflow runs Can you take any screens… | 02:54:19 | 1m 16s | — | 39 | 39,945 | 44,851 | 7,133,492 |
 
-**Total turns:** 61  
-**Total agent time spent (excl. flagged):** 37m 36s  
+**Total turns:** 62  
+**Total agent time spent (excl. flagged):** 39m 2s  
 **Total human think time (excl. outliers):** 1h 19m  
-**Average human think time (excl. outliers):** 1m 20s  
+**Average human think time (excl. outliers):** 1m 18s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 1,184  
-**Total output tokens:** 767,799  
-**Total cache-write tokens:** 908,377  
-**Total cache-read tokens:** 115,726,849  
+**Total input tokens:** 1,225  
+**Total output tokens:** 808,571  
+**Total cache-write tokens:** 955,122  
+**Total cache-read tokens:** 123,272,433  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

@@ -38,15 +38,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 32 | Can you take screenshots of this stuff running? | 01:50:42 | 35s | 1m 11s | 20 | 10,802 | 9,378 | 1,411,679 |
 | 33 | The soft highlighter looks way too burry | 01:52:29 | 25s | 40s | 26 | 12,148 | 6,649 | 1,447,419 |
 | 34 | Try with a thinner line and 2px feather? | 01:53:34 | 18s | 24s | 19 | 5,294 | 2,558 | 1,109,486 |
-| 35 | 12/16 is fine | 01:54:15 | 6s | — | 8 | 1,494 | 18 | 374,890 |
+| 35 | 12/16 is fine | 01:54:15 | 12s | 24s | 10 | 1,999 | 842 | 562,344 |
+| 36 | Run the dissipation one again? | 01:54:51 | 22s | — | 16 | 12,952 | 48 | 755,132 |
 
-**Total turns:** 35  
-**Total agent time spent (excl. flagged):** 14m 21s  
-**Total human think time (excl. outliers):** 43m 13s  
-**Average human think time (excl. outliers):** 1m 16s  
+**Total turns:** 36  
+**Total agent time spent (excl. flagged):** 14m 50s  
+**Total human think time (excl. outliers):** 43m 37s  
+**Average human think time (excl. outliers):** 1m 15s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 514  
-**Total output tokens:** 135,313  
-**Total cache-write tokens:** 251,283  
-**Total cache-read tokens:** 25,643,486  
+**Total input tokens:** 532  
+**Total output tokens:** 148,770  
+**Total cache-write tokens:** 252,155  
+**Total cache-read tokens:** 26,586,072  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

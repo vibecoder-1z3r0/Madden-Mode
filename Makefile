@@ -1,4 +1,7 @@
-.PHONY: sync system-deps test lint format typecheck check session-log
+.PHONY: preflight sync system-deps test lint format typecheck check session-log
+
+preflight:
+	python3 scripts/preflight.py
 
 # Linux only: system libraries Qt needs to load and to run under a virtual
 # display (Xvfb). Uses sudo unless already root. Not needed on Windows/macOS.

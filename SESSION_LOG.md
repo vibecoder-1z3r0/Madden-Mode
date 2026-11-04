@@ -33,15 +33,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 27 | Why is this so complex?  Qt in Python doesn’t have this same concern? | 01:39:37 | 14s | 48s | 10 | 1,968 | 777 | 469,789 |
 | 28 | Yes, go with Python and PySide6 | 01:40:39 | 44s | 1m 49s | 11 | 3,189 | 1,861 | 633,220 |
 | 29 | You can’t test anything in Linux? | 01:43:13 | 58s | 5m 0s | 28 | 6,597 | 8,114 | 1,940,109 |
-| 30 | Can you add those lib installs to the make file? | 01:49:11 | 31s | — | 19 | 4,333 | 6,067 | 1,490,674 |
+| 30 | Can you add those lib installs to the make file? | 01:49:11 | 38s | 3s | 21 | 4,744 | 6,575 | 1,658,426 |
+| 31 | And pre flight? | 01:49:52 | 34s | — | 27 | 10,481 | 7,810 | 2,053,017 |
 
-**Total turns:** 30  
-**Total agent time spent (excl. flagged):** 12m 9s  
-**Total human think time (excl. outliers):** 40m 47s  
-**Average human think time (excl. outliers):** 1m 24s  
+**Total turns:** 31  
+**Total agent time spent (excl. flagged):** 12m 50s  
+**Total human think time (excl. outliers):** 40m 50s  
+**Average human think time (excl. outliers):** 1m 22s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 410  
-**Total output tokens:** 94,085  
-**Total cache-write tokens:** 223,649  
-**Total cache-read tokens:** 18,905,402  
+**Total input tokens:** 439  
+**Total output tokens:** 104,977  
+**Total cache-write tokens:** 231,967  
+**Total cache-read tokens:** 21,126,171  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

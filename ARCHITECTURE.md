@@ -45,6 +45,8 @@ rather than a web app, so those are added only if the design calls for them.
     - hold: stays until cleared
     - timed fade: whole stroke fades after N seconds
     - tail-first fade: oldest part of the line fades first
+- **First target: Windows, windowed/borderless windows.** True fullscreen
+  (exclusive) games are best-effort and later. macOS and Linux come after.
 - No browser UI.
 
 ## Open questions

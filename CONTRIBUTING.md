@@ -37,6 +37,24 @@ Co-authored-by: Vibe-Coder 1.z3r0 <243014891+vibecoder-1z3r0@users.noreply.githu
 Every turn refreshes `SESSION_LOG.md`, which is committed and pushed, via
 `make session-log SESSION=<session-id>` (see CLAUDE.md).
 
+## Security: pull requests from forks
+
+Pull requests from forks are untrusted. Their code must not run on this
+repository's CI.
+
+- The workflow (`.github/workflows/ci.yml`) uses plain `pull_request` (never
+  `pull_request_target`), has read-only permissions, and skips every job when
+  the PR comes from a fork. That is defense in depth only: a fork PR can edit
+  the workflow file itself, so it cannot be the real control.
+- The real control is a repository setting that only the owner can change
+  (Settings > Actions > General > "Fork pull request workflows"). Choose one:
+  - turn off running workflows from fork pull requests, or
+  - require approval for **all** outside collaborators before any workflow
+    runs (and read the PR's diff, including `.github/`, before approving).
+  Also keep "Send write tokens to workflows from pull requests" and "Send
+  secrets and variables to workflows from pull requests" **off**.
+  (Menu names are from memory and GitHub renames things; check the current UI.)
+
 ## Checks
 
 `make check` runs lint, format check, mypy and tests, same as CI.

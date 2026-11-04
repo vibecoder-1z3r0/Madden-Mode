@@ -1,4 +1,7 @@
-.PHONY: preflight sync system-deps test lint format typecheck check session-log
+.PHONY: screenshots preflight sync system-deps test lint format typecheck check session-log
+
+screenshots:
+	uv run python scripts/screenshots.py
 
 preflight:
 	python3 scripts/preflight.py

@@ -1,10 +1,10 @@
 from pathlib import Path
 
-from PySide6.QtCore import QRect
+from PySide6.QtCore import QRect, QTimer
 from PySide6.QtWidgets import QApplication, QDialog
 
 from maddenmode import settings_store
-from maddenmode.app import MaddenMode, _default_dialog
+from maddenmode.app import MaddenMode, _default_dialog, run_smoke_test
 from maddenmode.controller import ModifierPrefix, Settings
 from maddenmode.gui.settings_dialog import SettingsDialog
 from maddenmode.pen import DEFAULT_PENS, Pen
@@ -193,3 +193,62 @@ def test_quit_works_without_hotkeys(
 
 def test_the_default_dialog_is_the_real_settings_dialog(qapp: QApplication) -> None:
     assert isinstance(_default_dialog(Settings(), DEFAULT_PENS), SettingsDialog)
+
+
+def test_start_records_no_errors_when_all_is_well(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app = make(tmp_path, hotkeys=FakeBackend())
+    app.start(geometry=QRect(0, 0, 800, 500))
+    assert app.startup_errors == []
+    shutdown(app)
+
+
+def test_start_records_a_bad_settings_file_and_a_hotkey_clash(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    (tmp_path / "s.json").write_text("{nope")
+    app = make(tmp_path, hotkeys=FakeBackend(fail=True))
+    app.start(geometry=QRect(0, 0, 800, 500))
+    assert len(app.startup_errors) == 2
+    assert any("Could not read" in e for e in app.startup_errors)
+    assert any("another app" in e for e in app.startup_errors)
+    shutdown(app)
+
+
+def test_smoke_test_passes_on_a_healthy_start(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app = make(tmp_path, hotkeys=FakeBackend())
+    assert run_smoke_test(app, milliseconds=30) == 0
+    shutdown(app)
+
+
+def test_smoke_test_fails_on_a_bad_settings_file(
+    qapp: QApplication, tmp_path: Path, capsys
+) -> None:  # type: ignore[no-untyped-def]
+    (tmp_path / "s.json").write_text("{nope")
+    app = make(tmp_path)
+    assert run_smoke_test(app, milliseconds=30) == 1
+    assert "startup problem" in capsys.readouterr().err
+    shutdown(app)
+
+
+def test_smoke_test_fails_when_hotkeys_cannot_register(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app = make(tmp_path, hotkeys=FakeBackend(fail=True))
+    assert run_smoke_test(app, milliseconds=30) == 1
+    shutdown(app)
+
+
+def test_smoke_test_fails_if_the_overlay_or_toolbar_disappear(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app = make(tmp_path)
+    QTimer.singleShot(5, app.overlay.hide)
+    QTimer.singleShot(5, app.toolbar.hide)
+    assert run_smoke_test(app, milliseconds=60) == 1
+    assert "the overlay is not visible" in app.startup_errors
+    assert "the toolbar is not visible" in app.startup_errors
+    shutdown(app)

@@ -13,15 +13,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 7 | Please make sure you update session log with every turn and retcon it … | 01:01:42 | 19s | 33s | 11 | 1,945 | 1,770 | 444,013 |
 | 8 | Do I need to merge this branch to main for CI? | 01:02:34 | 5s | 9s | 8 | 960 | 36 | 225,478 |
 | 9 | Yes, open the PR | 01:02:47 | 20s | 10s | 24 | 4,119 | 5,152 | 796,311 |
-| 10 | yes, watch it | 01:03:17 | 4s | — | 8 | 978 | 16 | 232,054 |
+| 10 | yes, watch it | 01:03:17 | 2m 19s | 29s | 50 | 4,912 | 27,406 | 2,344,047 |
+| 11 | Ok so let’s talk about what madden mode is.  Basically it’s telestrati… | 01:06:05 | 4s | — | 8 | 1,050 | 58 | 265,246 |
 
-**Total turns:** 10  
-**Total agent time spent (excl. flagged):** 3m 28s  
-**Total human think time (excl. outliers):** 3m 6s  
+**Total turns:** 11  
+**Total agent time spent (excl. flagged):** 5m 48s  
+**Total human think time (excl. outliers):** 3m 35s  
 **Average human think time (excl. outliers):** 21s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 166  
-**Total output tokens:** 44,483  
-**Total cache-write tokens:** 162,610  
-**Total cache-read tokens:** 5,550,962  
-**Cache hit ratio (cache-read ÷ all prompt-side tokens):** 97%
+**Total input tokens:** 216  
+**Total output tokens:** 49,467  
+**Total cache-write tokens:** 190,058  
+**Total cache-read tokens:** 7,928,201  
+**Cache hit ratio (cache-read ÷ all prompt-side tokens):** 98%

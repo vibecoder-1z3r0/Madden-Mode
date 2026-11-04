@@ -56,14 +56,24 @@ class FakeBackend:
 def test_bind_controller_registers_the_three_global_chords() -> None:
     backend = FakeBackend()
     bind_controller(backend, Controller(Scene()), lambda: 0.0)
-    assert set(backend.bindings) == {"Ctrl+Shift+D", "Ctrl+Shift+C", "Ctrl+Shift+F"}
+    assert set(backend.bindings) == {
+        "Ctrl+Shift+D",
+        "Ctrl+Shift+C",
+        "Ctrl+Shift+F",
+        "Ctrl+Shift+H",
+    }
 
 
 def test_bind_controller_follows_the_prefix_setting() -> None:
     backend = FakeBackend()
     controller = Controller(Scene(), settings=Settings(prefix=ModifierPrefix.CTRL_ALT))
     bind_controller(backend, controller, lambda: 0.0)
-    assert set(backend.bindings) == {"Ctrl+Alt+D", "Ctrl+Alt+C", "Ctrl+Alt+F"}
+    assert set(backend.bindings) == {
+        "Ctrl+Alt+D",
+        "Ctrl+Alt+C",
+        "Ctrl+Alt+F",
+        "Ctrl+Alt+H",
+    }
 
 
 def test_triggering_a_binding_runs_the_controller_action() -> None:

@@ -25,11 +25,13 @@ def test_global_bindings_use_the_prefix() -> None:
         "Ctrl+Shift+D",
         "Ctrl+Shift+C",
         "Ctrl+Shift+F",
+        "Ctrl+Shift+H",
     }
     assert set(global_bindings(ModifierPrefix.CTRL_ALT)) == {
         "Ctrl+Alt+D",
         "Ctrl+Alt+C",
         "Ctrl+Alt+F",
+        "Ctrl+Alt+H",
     }
 
 
@@ -210,3 +212,71 @@ def test_custom_pens() -> None:
     c.press(TOGGLE, 0.0)
     c.press("]", 0.0)
     assert c.current_pen.name == "only"
+
+
+def test_toolbar_toggle_key_is_global() -> None:
+    c = make()
+    assert c.toolbar_visible
+    assert c.press("Ctrl+Shift+H", 0.0)
+    assert not c.toolbar_visible
+    assert c.press("Ctrl+Shift+H", 0.0)
+    assert c.toolbar_visible
+
+
+def test_listeners_hear_about_every_state_change() -> None:
+    c = make()
+    calls: list[int] = []
+    c.add_listener(lambda: calls.append(1))
+    c.toggle_draw(0.0)  # draw mode
+    c.select_color(2)
+    c.select_pen(1)
+    c.next_pen()
+    c.prev_pen()
+    c.toggle_toolbar()
+    assert len(calls) == 6
+
+
+def test_actions_without_ui_state_do_not_notify() -> None:
+    c = make()
+    calls: list[int] = []
+    c.add_listener(lambda: calls.append(1))
+    c.clear_all()
+    c.fade_all(0.0)
+    assert calls == []
+
+
+def test_select_color_and_pen_validate_their_index() -> None:
+    c = make()
+    with pytest.raises(ValueError):
+        c.select_color(8)
+    with pytest.raises(ValueError):
+        c.select_color(-1)
+    with pytest.raises(ValueError):
+        c.select_pen(len(c.pens))
+
+
+def test_set_draw_mode_directly() -> None:
+    c = make()
+    c.set_draw_mode(True, 0.0)
+    assert c.draw_mode
+    c.set_draw_mode(False, 1.0)
+    assert not c.draw_mode
+
+
+def test_apply_settings_replaces_settings_and_pens() -> None:
+    c = make()
+    c.select_pen(len(c.pens) - 1)
+    calls: list[int] = []
+    c.add_listener(lambda: calls.append(1))
+    only = (Pen("only"),)
+    c.apply_settings(Settings(prefix=ModifierPrefix.CTRL_ALT, fade_all_s=4.0), only)
+    assert c.pens == only
+    assert c.pen_index == 0  # clamped into range
+    assert c.settings.fade_all_s == 4.0
+    assert c.press("Ctrl+Alt+D", 0.0)  # new prefix is live
+    assert len(calls) >= 2
+
+
+def test_apply_settings_needs_a_pen() -> None:
+    with pytest.raises(ValueError):
+        make().apply_settings(Settings(), ())

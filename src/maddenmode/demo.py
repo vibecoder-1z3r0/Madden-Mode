@@ -1,24 +1,22 @@
-"""Try the overlay over a fake "game" window.  Run: python -m maddenmode.demo
+"""Try Madden Mode over a fake "game" window.  Run: python -m maddenmode.demo
 
 A moving ball stands in for a game so you can see the overlay sit on top of
-something that keeps animating. On Windows the global hotkeys are registered
-so they work while the fake game has focus. Elsewhere, hotkeys only work
-while the overlay itself has focus (i.e. in draw mode), so use --start-drawing.
+something that keeps animating, and see clicks reach it when you are not
+drawing. Settings go to a temporary file so your real settings are untouched.
 """
 
-import argparse
 import math
 import sys
+import tempfile
 import time
+from pathlib import Path
 
 from PySide6.QtCore import QPointF, QTimer
-from PySide6.QtGui import QColor, QPainter
+from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPaintEvent
 from PySide6.QtWidgets import QApplication, QWidget
 
-from maddenmode.controller import Controller, ModifierPrefix, Settings
-from maddenmode.gui.hotkeys import WindowsHotkeys, bind_controller
-from maddenmode.gui.overlay import OverlayWindow
-from maddenmode.scene import Scene
+from maddenmode.app import MaddenMode
+from maddenmode.gui.hotkeys import WindowsHotkeys
 
 
 class FakeGame(QWidget):  # pragma: no cover
@@ -28,16 +26,16 @@ class FakeGame(QWidget):  # pragma: no cover
         super().__init__()
         self.setWindowTitle("Fake game (Madden Mode demo)")
         self._t0 = time.monotonic()
+        self.clicks = 0
         timer = QTimer(self)
         timer.timeout.connect(self.update)
         timer.start(16)
-        self.clicks = 0
 
-    def mousePressEvent(self, event: object) -> None:
+    def mousePressEvent(self, event: QMouseEvent) -> None:
         self.clicks += 1  # proves clicks reach the "game" when not drawing
         self.setWindowTitle(f"Fake game: {self.clicks} clicks reached me")
 
-    def paintEvent(self, event: object) -> None:
+    def paintEvent(self, event: QPaintEvent) -> None:
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
         p.fillRect(self.rect(), QColor(34, 94, 52))
@@ -50,40 +48,20 @@ class FakeGame(QWidget):  # pragma: no cover
 
 
 def main() -> int:  # pragma: no cover
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--alt", action="store_true", help="use Ctrl+Alt instead of Ctrl+Shift"
-    )
-    parser.add_argument(
-        "--hold", action="store_true", help="hold-to-draw instead of toggle"
-    )
-    parser.add_argument(
-        "--start-drawing", action="store_true", help="begin in draw mode"
-    )
-    args = parser.parse_args()
-
-    app = QApplication(sys.argv)
-    prefix = ModifierPrefix.CTRL_ALT if args.alt else ModifierPrefix.CTRL_SHIFT
-    settings = Settings(prefix=prefix, hold_to_draw=args.hold)
-    controller = Controller(Scene(), settings=settings)
+    qapp = QApplication(sys.argv[:1])
+    qapp.setQuitOnLastWindowClosed(False)
 
     game = FakeGame()
-    game.resize(900, 600)
+    game.resize(1000, 650)
     game.show()
 
-    overlay = OverlayWindow(controller)
-    overlay.setGeometry(game.geometry())
-    overlay.start()
-
-    if sys.platform == "win32":
-        hotkeys = WindowsHotkeys()
-        bind_controller(hotkeys, controller, time.monotonic)
-    if args.start_drawing:
-        controller.press(f"{prefix}+D", time.monotonic())
-
-    print(f"{prefix}+D toggle draw | {prefix}+C clear all | {prefix}+F fade all")
-    print("In draw mode: 1-8 color, [ ] pen, Esc exit")
-    return app.exec()
+    settings = Path(tempfile.mkdtemp(prefix="madden-mode-demo-")) / "settings.json"
+    hotkeys = WindowsHotkeys() if sys.platform == "win32" else None
+    app = MaddenMode(qapp, settings_path=settings, hotkeys=hotkeys)
+    app.start(geometry=game.geometry())
+    print("Ctrl+Shift+D draw | C clear all | F fade all | H show/hide toolbar")
+    print("While drawing: 1-8 color, [ ] pen, Esc exit. Quit from the toolbar or tray.")
+    return qapp.exec()
 
 
 if __name__ == "__main__":  # pragma: no cover

@@ -41,6 +41,7 @@ so those are not used.
     - `Ctrl+Shift+D`: toggle draw mode
     - `Ctrl+Shift+C`: clear all (instant)
     - `Ctrl+Shift+F`: fade all
+    - `Ctrl+Shift+H`: show/hide the toolbar
   - Draw mode only (the overlay owns the keyboard, so plain keys are safe):
     - `1` to `8`: pick color
     - `]` / `[`: next / previous pen
@@ -56,6 +57,17 @@ so those are not used.
     app already uses one of them. Individual keys can still be rebound.
   - Known risk: `Ctrl+Shift` combos are used by some apps (browsers, chat
     and streaming tools), which is why they must be rebindable.
+- **On-screen UI (minimal):**
+  - Toolbar: small always-on-top window (draw toggle, 8 color swatches, pen
+    choice, clear, fade, settings, quit). It is its own window so it stays
+    clickable while the overlay is click-through, and it never takes keyboard
+    focus. It holds no state; everything is refreshed from the controller.
+  - Toast: a brief message when pen, color or draw mode changes.
+  - Tray icon: menu mirroring the toolbar, so Quit is always reachable even
+    with the toolbar hidden.
+  - Settings dialog: hotkey prefix, hold-to-draw, fade-all time and each pen's
+    width, feather, mode and times. Saved as JSON per user; a bad file falls
+    back to defaults with a visible warning.
 - **Freehand only for now.** No shapes (arrows, circles, lines) in the first
   version; those can come later.
 - **Pens** (draft): color, width, hardness/softness and dissipation.

@@ -19,6 +19,9 @@ dev = [
     "mypy>=1.13.0",
 ]
 
+[project.gui-scripts]
+madden-mode = "maddenmode.app:main"
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/maddenmode"]
 

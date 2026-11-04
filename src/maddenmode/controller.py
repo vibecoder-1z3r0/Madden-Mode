@@ -22,6 +22,7 @@ class Action(StrEnum):
     NEXT_PEN = "next_pen"
     PREV_PEN = "prev_pen"
     EXIT_DRAW = "exit_draw"
+    TOGGLE_TOOLBAR = "toggle_toolbar"
 
 
 # Global keys, active over the game. The modifier prefix is a setting.
@@ -29,6 +30,7 @@ GLOBAL_KEYS: dict[str, Action] = {
     "D": Action.TOGGLE_DRAW,
     "C": Action.CLEAR_ALL,
     "F": Action.FADE_ALL,
+    "H": Action.TOGGLE_TOOLBAR,
 }
 
 # Draw-mode keys. The overlay owns the keyboard while drawing, so these are
@@ -90,6 +92,9 @@ class Controller:
         # Called with the new value whenever draw mode actually changes, so a
         # window can switch between click-through and drawing.
         self.on_draw_mode_changed: Callable[[bool], None] | None = None
+        # Whether the on-screen toolbar should be showing (hotkey toggles it).
+        self.toolbar_visible = True
+        self._listeners: list[Callable[[], None]] = []
 
     @property
     def current_pen(self) -> Pen:
@@ -97,6 +102,66 @@ class Controller:
         if self.color_index is not None:
             pen = pen.with_color(PALETTE[self.color_index])
         return pen
+
+    # -- change notification ---------------------------------------------
+
+    def add_listener(self, listener: Callable[[], None]) -> None:
+        """Call `listener` whenever draw mode, pen, color, toolbar visibility
+        or settings change, so UI can redraw itself from the controller."""
+        self._listeners.append(listener)
+
+    def _notify(self) -> None:
+        for listener in list(self._listeners):
+            listener()
+
+    # -- actions (shared by hotkeys, toolbar and tray) -----------------------
+
+    def toggle_draw(self, now: float) -> None:
+        if self.settings.hold_to_draw:
+            self._set_draw_mode(True, now)
+        else:
+            self._set_draw_mode(not self.draw_mode, now)
+
+    def set_draw_mode(self, on: bool, now: float) -> None:
+        self._set_draw_mode(on, now)
+
+    def select_color(self, index: int) -> None:
+        if not 0 <= index < len(PALETTE):
+            raise ValueError(f"color index out of range: {index}")
+        self.color_index = index
+        self._notify()
+
+    def select_pen(self, index: int) -> None:
+        if not 0 <= index < len(self.pens):
+            raise ValueError(f"pen index out of range: {index}")
+        self.pen_index = index
+        self._notify()
+
+    def next_pen(self) -> None:
+        self.select_pen((self.pen_index + 1) % len(self.pens))
+
+    def prev_pen(self) -> None:
+        self.select_pen((self.pen_index - 1) % len(self.pens))
+
+    def clear_all(self) -> None:
+        self.active_stroke = None
+        self.scene.clear_all()
+
+    def fade_all(self, now: float) -> None:
+        self.scene.fade_all(now, self.settings.fade_all_s)
+
+    def toggle_toolbar(self) -> None:
+        self.toolbar_visible = not self.toolbar_visible
+        self._notify()
+
+    def apply_settings(self, settings: Settings, pens: tuple[Pen, ...]) -> None:
+        """Replace settings and pens (e.g. from the settings dialog)."""
+        if not pens:
+            raise ValueError("at least one pen is required")
+        self.settings = settings
+        self.pens = pens
+        self.pen_index = min(self.pen_index, len(pens) - 1)
+        self._notify()
 
     # -- keyboard ---------------------------------------------------------
 
@@ -110,7 +175,7 @@ class Controller:
         if not self.draw_mode:
             return False  # not drawing: every other key belongs to the game
         if key in {str(n) for n in range(1, len(PALETTE) + 1)}:
-            self.color_index = int(key) - 1
+            self.select_color(int(key) - 1)
             return True
         action = DRAW_MODE_KEYS.get(key)
         if action is not None:
@@ -131,29 +196,29 @@ class Controller:
 
     def _run(self, action: Action, now: float) -> None:
         if action == Action.TOGGLE_DRAW:
-            if self.settings.hold_to_draw:
-                self._set_draw_mode(True, now)
-            else:
-                self._set_draw_mode(not self.draw_mode, now)
+            self.toggle_draw(now)
         elif action == Action.EXIT_DRAW:
             self._set_draw_mode(False, now)
         elif action == Action.CLEAR_ALL:
-            self.active_stroke = None
-            self.scene.clear_all()
+            self.clear_all()
         elif action == Action.FADE_ALL:
-            self.scene.fade_all(now, self.settings.fade_all_s)
+            self.fade_all(now)
         elif action == Action.NEXT_PEN:
-            self.pen_index = (self.pen_index + 1) % len(self.pens)
+            self.next_pen()
         elif action == Action.PREV_PEN:
-            self.pen_index = (self.pen_index - 1) % len(self.pens)
+            self.prev_pen()
+        elif action == Action.TOGGLE_TOOLBAR:
+            self.toggle_toolbar()
 
     def _set_draw_mode(self, on: bool, now: float) -> None:
         if self.draw_mode and not on:
             self.pointer_up(now)  # never leave a stroke dangling
         changed = self.draw_mode != on
         self.draw_mode = on
-        if changed and self.on_draw_mode_changed is not None:
-            self.on_draw_mode_changed(on)
+        if changed:
+            if self.on_draw_mode_changed is not None:
+                self.on_draw_mode_changed(on)
+            self._notify()
 
     # -- pointer ----------------------------------------------------------
 

@@ -58,6 +58,14 @@ so those are not used.
   - Timed fade measures `hold_s` from pen lift. Tail-first fade applies the
     same two numbers per point, measured from when each point was drawn
     (assumed; confirm).
+- **Global hotkey actions** (affect everything on screen, from every pen,
+  including held strokes):
+  - **Clear all:** removes every stroke instantly, no timer.
+  - **Fade all:** fades every stroke out using one global **fade-all time**
+    (0.0 s to 10.0 s; 0.0 s is instant).
+  - There is no per-pen "all fade" idle-timer mode; "all fade" is driven by
+    the hotkey only.
+  - Which keys these use is not decided yet.
 - **First target: Windows, windowed/borderless windows.** True fullscreen
   (exclusive) games are best-effort and later. macOS and Linux come after.
 - **Language and toolkit: Python 3.13 + PySide6 (Qt 6).** Chosen over

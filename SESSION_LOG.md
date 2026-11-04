@@ -49,15 +49,16 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 43 | Color pallet… well what are the standard telestration colors? | 02:03:38 | 26s | 59s | 20 | 9,432 | 3,274 | 1,218,726 |
 | 44 | Let’s go with 8 colors | 02:05:04 | 11s | 9s | 6 | 1,089 | 740 | 413,145 |
 | 45 | Only freehand right now | 02:05:24 | 11s | 39s | 6 | 1,008 | 587 | 415,499 |
-| 46 | Hot keys - you’re the LLM and you’ve taken design UX classes, I haven’… | 02:06:15 | 12s | — | 2 | 2,726 | 366 | 417,678 |
+| 46 | Hot keys - you’re the LLM and you’ve taken design UX classes, I haven’… | 02:06:15 | 20s | 37s | 4 | 3,500 | 1,803 | 626,700 |
+| 47 | Let’s go with control + shift | 02:07:12 | 8s | — | 8 | 2,408 | 24 | 422,466 |
 
-**Total turns:** 46  
-**Total agent time spent (excl. flagged):** 17m 18s  
-**Total human think time (excl. outliers):** 52m 22s  
-**Average human think time (excl. outliers):** 1m 10s  
+**Total turns:** 47  
+**Total agent time spent (excl. flagged):** 17m 35s  
+**Total human think time (excl. outliers):** 52m 59s  
+**Average human think time (excl. outliers):** 1m 9s  
 **Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 628  
-**Total output tokens:** 176,414  
-**Total cache-write tokens:** 267,618  
-**Total cache-read tokens:** 32,987,060  
+**Total input tokens:** 638  
+**Total output tokens:** 179,596  
+**Total cache-write tokens:** 269,079  
+**Total cache-read tokens:** 33,618,548  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%

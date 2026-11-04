@@ -36,6 +36,23 @@ so those are not used.
     rolling capture buffer.
 - **Overlay mode keeps no history.** Strokes are ephemeral. Persisted strokes
   and a timeline showing them are a studio-mode idea only.
+- **Hotkeys** (two layers; all rebindable in a settings file):
+  - Global, active over the game, `Ctrl+Shift` prefix:
+    - `Ctrl+Shift+D`: toggle draw mode
+    - `Ctrl+Shift+C`: clear all (instant)
+    - `Ctrl+Shift+F`: fade all
+  - Draw mode only (the overlay owns the keyboard, so plain keys are safe):
+    - `1` to `8`: pick color
+    - `]` / `[`: next / previous pen
+    - `Esc`: exit draw mode
+  - Draw mode is always visibly indicated (e.g. a thin screen border or a
+    pen-color dot at the cursor).
+  - Optional hold-to-draw as a setting, so draw mode cannot get stuck on.
+  - Design principles: never collide with the game; claim keys only while
+    drawing; frequent actions are a single key; always show status; always
+    have an obvious way out.
+  - Known risk: `Ctrl+Shift` combos are used by some apps (browsers, chat
+    and streaming tools), which is why they must be rebindable.
 - **Freehand only for now.** No shapes (arrows, circles, lines) in the first
   version; those can come later.
 - **Pens** (draft): color, width, hardness/softness and dissipation.
@@ -72,7 +89,7 @@ so those are not used.
     (0.0 s to 10.0 s; 0.0 s is instant).
   - There is no per-pen "all fade" idle-timer mode; "all fade" is driven by
     the hotkey only.
-  - Which keys these use is not decided yet.
+  - Keys: see Hotkeys below.
 - **First target: Windows, windowed/borderless windows.** True fullscreen
   (exclusive) games are best-effort and later. macOS and Linux come after.
 - **Language and toolkit: Python 3.13 + PySide6 (Qt 6).** Chosen over

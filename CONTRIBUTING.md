@@ -47,12 +47,13 @@ repository's CI.
   the PR comes from a fork. That is defense in depth only: a fork PR can edit
   the workflow file itself, so it cannot be the real control.
 - The real control is a repository setting that only the owner can change
-  (Settings > Actions > General > "Fork pull request workflows"). Choose one:
-  - turn off running workflows from fork pull requests, or
-  - require approval for **all** outside collaborators before any workflow
-    runs (and read the PR's diff, including `.github/`, before approving).
-  Also keep "Send write tokens to workflows from pull requests" and "Send
-  secrets and variables to workflows from pull requests" **off**.
+  (Settings > Actions > General > "Fork pull request workflows"). **In effect:
+  approval is required for outside collaborators**, so no workflow from a fork
+  runs until the repository owner approves it. Before approving, read the
+  PR's whole diff, including `.github/` and `scripts/`, because approving runs
+  the PR's code on this repository's CI.
+- Keep "Send write tokens to workflows from pull requests" and "Send secrets
+  and variables to workflows from pull requests" **off**.
   (Menu names are from memory and GitHub renames things; check the current UI.)
 
 ## Checks

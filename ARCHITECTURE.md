@@ -36,6 +36,8 @@ so those are not used.
     rolling capture buffer.
 - **Overlay mode keeps no history.** Strokes are ephemeral. Persisted strokes
   and a timeline showing them are a studio-mode idea only.
+- **Freehand only for now.** No shapes (arrows, circles, lines) in the first
+  version; those can come later.
 - **Pens** (draft): color, width, hardness/softness and dissipation.
   - Colors: a fixed **8-color palette**, cycled with a hotkey (keys TBD):
     yellow `#FFE600`, red `#FF2D2D`, white `#FFFFFF`, cyan `#00E5FF`,

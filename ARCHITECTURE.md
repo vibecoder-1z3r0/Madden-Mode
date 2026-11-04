@@ -25,5 +25,6 @@ rather than a web app, so those are added only if the design calls for them.
 ## Open questions
 
 - Delivery shape: desktop overlay, browser-based, or both?
-- Session/turn recording: what is recorded and how it is stored (not present
-  in `many-game-show`; to be defined).
+- Session/turn recording: `scripts/session_timing.py` and `SESSION_LOG.md`
+  are ported from `many-game-show`. Is the app itself also meant to record
+  sessions/turns (e.g. telestration sessions), or only the dev workflow?

@@ -1,4 +1,4 @@
-.PHONY: sync test lint format typecheck check
+.PHONY: sync test lint format typecheck check session-log
 
 sync:
 	uv sync --extra dev
@@ -17,3 +17,7 @@ typecheck:
 	uv run mypy src/
 
 check: lint typecheck test
+
+# Usage: make session-log SESSION=<session-id>
+session-log:
+	python3 scripts/session_timing.py $(SESSION) > SESSION_LOG.md

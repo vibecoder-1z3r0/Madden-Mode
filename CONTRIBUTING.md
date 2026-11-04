@@ -32,6 +32,11 @@ Vibe-Coder: Vibe-Coder 1.z3r0 <243014891+vibecoder-1z3r0@users.noreply.github.co
 Co-authored-by: Vibe-Coder 1.z3r0 <243014891+vibecoder-1z3r0@users.noreply.github.com>
 ```
 
+## Session log
+
+Every commit+push also refreshes `SESSION_LOG.md` via
+`make session-log SESSION=<session-id>` (see CLAUDE.md).
+
 ## Checks
 
 `make check` runs lint, format check, mypy and tests, same as CI.

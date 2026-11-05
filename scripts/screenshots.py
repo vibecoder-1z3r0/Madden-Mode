@@ -79,6 +79,7 @@ def overlay_screenshot(out: Path) -> None:
     app = MaddenMode(qapp, settings_path=settings_path, clock=clock)  # type: ignore[arg-type]
     app.start(geometry=QRect(0, 0, W, H))
     c = app.controller
+    c.color_index = None  # the app starts on yellow; show each pen's own color
     c.set_draw_mode(True, 0.0)
 
     def draw(points: list[tuple[float, float]], t0: float, t1: float, lift: bool):

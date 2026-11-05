@@ -645,3 +645,79 @@ def test_settings_changed_in_the_real_dialog_are_written_to_disk(
     assert saved.fade_all_s == 6.5
     assert pens[0].mode.value == "timed_fade"
     shutdown(app)
+
+
+# -- the pen and color the app starts with --------------------------------------
+
+
+def test_the_app_starts_with_the_comet_in_yellow(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    from maddenmode.palette import PALETTE
+
+    app = make(tmp_path)
+    pen = app.controller.current_pen
+    assert pen.name == "comet"
+    assert pen.color == PALETTE[0]  # yellow
+    assert pen.color.name == "yellow"
+    shutdown(app)
+
+
+def test_the_toolbar_and_tray_show_the_starting_pen_and_color(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app = make(tmp_path)
+    assert app.toolbar.pen_combo.currentText() == "comet"
+    assert app.toolbar.swatches[0].isChecked()  # yellow
+    assert sum(s.isChecked() for s in app.toolbar.swatches) == 1
+    comet_row = next(i for i, p in enumerate(app.controller.pens) if p.name == "comet")
+    assert app.tray.pen_actions[comet_row].isChecked()
+    assert app.tray.color_actions[0].isChecked()
+    shutdown(app)
+
+
+def test_choosing_the_starting_pen_does_not_pop_up_a_message(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app = make(tmp_path)
+    assert app.toast.text == ""
+    assert not app.toast.isVisible()
+    shutdown(app)
+
+
+def test_the_first_stroke_is_a_yellow_comet(qapp: QApplication, tmp_path: Path) -> None:
+    app, _ = make_targeted(tmp_path)
+    app.controller.set_draw_mode(True, 0.0)
+    app.controller.pointer_down(10, 10, 0.1)
+    app.controller.pointer_up(0.2)
+    stroke = app.controller.scene.strokes[0]
+    assert stroke.pen.name == "comet"
+    assert stroke.pen.color.name == "yellow"
+    shutdown(app)
+
+
+def test_a_color_picked_later_still_wins(qapp: QApplication, tmp_path: Path) -> None:
+    app = make(tmp_path)
+    app.controller.set_draw_mode(True, 0.0)
+    app.controller.press("2", 0.0)  # red
+    assert app.controller.current_pen.name == "comet"
+    assert app.controller.current_pen.color.name == "red"
+    shutdown(app)
+
+
+def test_without_a_comet_the_first_pen_is_kept_but_the_color_is_still_yellow(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    settings_store.save(tmp_path / "s.json", Settings(), (Pen("mine"), Pen("other")))
+    app = make(tmp_path)
+    assert app.controller.current_pen.name == "mine"
+    assert app.controller.current_pen.color.name == "yellow"
+    shutdown(app)
+
+
+def test_the_start_values_are_the_documented_ones() -> None:
+    from maddenmode.app import START_COLOR, START_PEN
+    from maddenmode.palette import PALETTE
+
+    assert START_PEN == "comet"
+    assert PALETTE[START_COLOR].name == "yellow"

@@ -80,17 +80,18 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 74 | it actually works!! :) | 14:33:01 | 37s | 18s | 16 | 7,925 | 8,631 | 5,143,192 |
 | 75 | The settings box needs to be larger - also we need more sensible defau… | 14:33:56 | 2m 49s | 1m 20s | 64 | 55,726 | 79,182 | 20,436,445 |
 | 76 | flash and commet defaults should match - everything else is fine | 14:38:05 | 40s | 6s | 26 | 7,425 | 10,967 | 7,452,057 |
-| 77 | what's the hotkey for clear all? | 14:38:52 | 1m 18s | — | 45 | 15,257 | 31,985 | 12,367,492 |
+| 77 | what's the hotkey for clear all? | 14:38:52 | 2m 39s | 1m 20s | 66 | 22,879 | 54,256 | 20,049,694 |
+| 78 | comet on yellow should be default pen as well when the application sta… | 14:42:51 | 1m 8s | — | 29 | 22,377 | 16,582 | 9,213,913 |
 
-**Total turns:** 77  
-**Total agent time spent (excl. flagged):** 1h 6m  
-**Total human think time (excl. outliers):** 1h 37m  
+**Total turns:** 78  
+**Total agent time spent (excl. flagged):** 1h 9m  
+**Total human think time (excl. outliers):** 1h 38m  
 **Average human think time (excl. outliers):** 1m 20s  
 **Think-time outliers (> 15 min):** 3  
-**Total input tokens:** 1,819  
-**Total output tokens:** 1,328,404  
-**Total cache-write tokens:** 2,468,152  
-**Total cache-read tokens:** 279,922,890  
+**Total input tokens:** 1,869  
+**Total output tokens:** 1,358,403  
+**Total cache-write tokens:** 2,507,005  
+**Total cache-read tokens:** 296,819,005  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%
 
 ⏳ Turn(s) 65, 72, 73 had a 'human think time' over 15 min (total 34h 59m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).

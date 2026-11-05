@@ -30,6 +30,12 @@ from maddenmode.gui.render import paint_scene
 
 FRAME_INTERVAL_MS = 16  # about 60 frames per second
 BORDER_PX = 4  # the draw-mode indicator
+# While drawing, the whole overlay is filled with this almost-invisible alpha
+# (out of 255). On Windows a translucent window is hit-tested per pixel, and
+# pixels with alpha 0 let mouse clicks fall through to the window underneath,
+# whatever the click-through flag says. Any non-zero alpha makes the pixel
+# catch the click. 2/255 is below what the eye can see.
+HIT_ALPHA = 2
 
 
 class OverlayWindow(QWidget):
@@ -91,6 +97,8 @@ class OverlayWindow(QWidget):
     def paintEvent(self, event: QPaintEvent) -> None:
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        if self.controller.draw_mode:
+            painter.fillRect(self.rect(), QColor(0, 0, 0, HIT_ALPHA))
         paint_scene(painter, self.controller.scene, self.clock())
         if self.controller.draw_mode:
             self._paint_indicator(painter)

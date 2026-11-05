@@ -73,17 +73,18 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 67 | Implement 1 and 2 and then put 3 in a future considerations markdown d… | 12:39:08 | 6m 59s | 1m 60s | 117 | 184,231 | 198,285 | 29,481,303 |
 | 68 | are the system dependencies setup for fedora ? | 12:48:06 | 16s | 36s | 10 | 2,429 | 1,435 | 1,578,872 |
 | 69 | fedora is my wsl machine I'm testing from or should I really test this… | 12:48:59 | 28s | 1m 33s | 10 | 5,670 | 2,186 | 2,113,796 |
-| 70 | I'm not concerned about the session stuff - only running really - are … | 12:51:00 | 1m 37s | — | 40 | 42,284 | 32,291 | 8,591,784 |
+| 70 | I'm not concerned about the session stuff - only running really - are … | 12:51:00 | 1m 46s | 6m 32s | 41 | 43,031 | 33,696 | 9,137,139 |
+| 71 | the clicks are going right through to the demo app when running `uv ru… | 12:59:18 | 1m 3s | — | 30 | 22,161 | 27,783 | 8,270,991 |
 
-**Total turns:** 70  
-**Total agent time spent (excl. flagged):** 52m 1s  
-**Total human think time (excl. outliers):** 1h 28m  
-**Average human think time (excl. outliers):** 1m 18s  
+**Total turns:** 71  
+**Total agent time spent (excl. flagged):** 53m 14s  
+**Total human think time (excl. outliers):** 1h 34m  
+**Average human think time (excl. outliers):** 1m 22s  
 **Think-time outliers (> 15 min):** 1  
-**Total input tokens:** 1,491  
-**Total output tokens:** 1,063,642  
-**Total cache-write tokens:** 2,071,245  
-**Total cache-read tokens:** 180,638,067  
+**Total input tokens:** 1,522  
+**Total output tokens:** 1,086,550  
+**Total cache-write tokens:** 2,100,433  
+**Total cache-read tokens:** 189,454,413  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%
 
 ⏳ Turn(s) 65 had a 'human think time' over 15 min (total 33h 35m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).

@@ -6,7 +6,7 @@ Draw freehand marks on top of whatever is on your screen: circle a player, trace
 
 ![Overlay with the toolbar and a toast message](docs/screenshots/overlay.png)
 
-> **Status: early.** Built Windows-first, aimed at windowed and borderless windows (true fullscreen games often block overlays). The automated tests pass on Windows and Linux, but the overlay has **not yet been tried by hand on a real Windows desktop**, so expect rough edges. The screenshots are rendered offscreen: the overlay and toolbar are the real widgets, composited over a fake game.
+> **Status: early.** Built Windows-first, aimed at windowed and borderless windows (true fullscreen games often block overlays). The automated tests pass on Windows and Linux, and drawing over other windows has been confirmed working by hand on Windows. Other parts have had less hands-on testing (window pinning, the tray icon, and setups with several monitors or mixed display scaling), so expect rough edges. The screenshots are rendered offscreen: the overlay and toolbar are the real widgets, composited over a fake game.
 
 ## Quick start
 

@@ -76,17 +76,18 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 70 | I'm not concerned about the session stuff - only running really - are … | 12:51:00 | 1m 46s | 6m 32s | 41 | 43,031 | 33,696 | 9,137,139 |
 | 71 | the clicks are going right through to the demo app when running `uv ru… | 12:59:18 | 1m 12s | 46s | 32 | 22,874 | 28,713 | 8,827,758 |
 | 72 | yes i can toggle draw mode | 13:01:16 | 5m 5s | 30m 51s ⏳ | 70 | 125,271 | 145,445 | 20,933,086 |
-| 73 | Yes go ahead make the pr | 13:37:11 | 1m 55s | — | 52 | 24,229 | 68,181 | 16,606,201 |
+| 73 | Yes go ahead make the pr | 13:37:11 | 3m 6s | 52m 44s ⏳ | 74 | 29,537 | 90,579 | 23,579,438 |
+| 74 | it actually works!! :) | 14:33:01 | 24s | — | 10 | 6,956 | 2,819 | 3,210,649 |
 
-**Total turns:** 73  
-**Total agent time spent (excl. flagged):** 1h 0m  
+**Total turns:** 74  
+**Total agent time spent (excl. flagged):** 1h 1m  
 **Total human think time (excl. outliers):** 1h 35m  
 **Average human think time (excl. outliers):** 1m 22s  
-**Think-time outliers (> 15 min):** 2  
-**Total input tokens:** 1,646  
-**Total output tokens:** 1,236,763  
-**Total cache-write tokens:** 2,314,989  
-**Total cache-read tokens:** 227,550,467  
+**Think-time outliers (> 15 min):** 3  
+**Total input tokens:** 1,678  
+**Total output tokens:** 1,249,027  
+**Total cache-write tokens:** 2,340,206  
+**Total cache-read tokens:** 237,734,353  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%
 
-⏳ Turn(s) 65, 72 had a 'human think time' over 15 min (total 34h 6m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).
+⏳ Turn(s) 65, 72, 73 had a 'human think time' over 15 min (total 34h 59m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).

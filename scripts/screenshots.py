@@ -281,6 +281,16 @@ def icon_screenshot(out: Path) -> None:
     image.save(str(out / "icon.png"))
 
 
+def about_screenshot(out: Path) -> None:
+    """The About window at its own default size."""
+    from maddenmode.gui.about_dialog import AboutDialog
+
+    dialog = AboutDialog()
+    dialog.show()
+    dialog.grab().save(str(out / "about.png"))
+    dialog.close()
+
+
 def main() -> int:
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("docs/screenshots")
     out.mkdir(parents=True, exist_ok=True)
@@ -289,6 +299,7 @@ def main() -> int:
     dissipation_screenshot(out)
     target_screenshot(out)
     icon_screenshot(out)
+    about_screenshot(out)
     print(f"wrote {sorted(p.name for p in out.glob('*.png'))} to {out}")
     qapp.quit()
     return 0

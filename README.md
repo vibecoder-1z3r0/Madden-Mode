@@ -6,7 +6,7 @@ Draw freehand marks on top of whatever is on your screen: circle a player, trace
 
 ![Overlay with the toolbar and a toast message](docs/screenshots/overlay.png)
 
-> **Status: early.** Built Windows-first, aimed at windowed and borderless windows (true fullscreen games often block overlays). The automated tests pass on Windows and Linux, and drawing over other windows has been confirmed working by hand on Windows. Other parts have had less hands-on testing (window pinning, the tray icon, and setups with several monitors or mixed display scaling), so expect rough edges. **macOS:** the tests run there in CI, but nobody has tried it by hand, and it has no global hotkeys or window pinning yet (see below). The screenshots are rendered offscreen: the overlay and toolbar are the real widgets, composited over a fake game.
+> **Status: alpha.** Built Windows-first, aimed at windowed and borderless windows (true fullscreen games often block overlays). The automated tests pass on Windows and Linux, and drawing over other windows has been confirmed working by hand on Windows. Other parts have had less hands-on testing (window pinning, the tray icon, and setups with several monitors or mixed display scaling), so expect rough edges. **macOS:** the tests run there in CI, but nobody has tried it by hand, and it has no global hotkeys or window pinning yet (see below). The screenshots are rendered offscreen: the overlay and toolbar are the real widgets, composited over a fake game.
 
 ## Quick start
 
@@ -61,7 +61,9 @@ While draw mode is off, the overlay is invisible to the mouse: clicks go through
 | `[` and `]` | Previous / next pen |
 | `Esc` | Leave draw mode |
 
-The **toolbar** (draggable, always on top) has the same controls as buttons, plus **Settings** and **Quit**. A **tray icon** has the same menu, so Quit is always reachable even with the toolbar hidden. The icon shows your current pen color as a dot, and gets a white ring while draw mode is on.
+The **toolbar** (draggable, always on top) has the same controls as buttons, plus **Settings** and **Quit**. Choose **About Madden Mode...** from the tray menu (or **About...** in Settings) for the version, the project and license details, and a button that copies your version and platform for a bug report. Versions are calendar versions (`YYYY.M.MICRO`, such as `2026.11.0a1`), where `a1` means alpha 1.
+
+A **tray icon** has the same menu, so Quit is always reachable even with the toolbar hidden. The icon shows your current pen color as a dot, and gets a white ring while draw mode is on.
 
 ![The icon on light and dark taskbars](docs/screenshots/icon.png) A short **toast** message appears when the pen, color or mode changes.
 

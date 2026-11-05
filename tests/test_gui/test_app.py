@@ -721,3 +721,41 @@ def test_the_start_values_are_the_documented_ones() -> None:
 
     assert START_PEN == "comet"
     assert PALETTE[START_COLOR].name == "yellow"
+
+
+# -- the About window ---------------------------------------------------------
+
+
+def test_opening_about_shows_the_dialog(qapp: QApplication, tmp_path: Path) -> None:
+    shown: list[int] = []
+
+    class FakeAbout:
+        def exec(self) -> int:
+            shown.append(1)
+            return 0
+
+    app = make(tmp_path, about_dialog_factory=FakeAbout)
+    app.open_about()
+    assert shown == [1]
+    shutdown(app)
+
+
+def test_the_tray_about_entry_opens_it(qapp: QApplication, tmp_path: Path) -> None:
+    shown: list[int] = []
+
+    class FakeAbout:
+        def exec(self) -> int:
+            shown.append(1)
+            return 0
+
+    app = make(tmp_path, about_dialog_factory=FakeAbout)
+    app.tray.about_action.trigger()
+    assert shown == [1]
+    shutdown(app)
+
+
+def test_the_default_about_dialog_is_the_real_one(qapp: QApplication) -> None:
+    from maddenmode.app import _default_about_dialog
+    from maddenmode.gui.about_dialog import AboutDialog
+
+    assert isinstance(_default_about_dialog(), AboutDialog)

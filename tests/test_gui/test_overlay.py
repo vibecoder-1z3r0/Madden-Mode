@@ -201,3 +201,52 @@ def test_key_string(
 ) -> None:
     event = QKeyEvent(QKeyEvent.Type.KeyPress, key, mods)
     assert key_string(event) == expected
+
+
+def test_while_drawing_every_pixel_catches_clicks_on_windows(
+    qapp: QApplication,
+) -> None:
+    """Windows lets clicks through pixels with alpha 0, so none may be left."""
+    window, controller, _ = make()
+    click_toggle(window)
+    image = window.grab().toImage()
+    for x, y in [(30, 100), (150, 100), (270, 40), (150, 190), (20, 20)]:
+        assert image.pixelColor(x, y).alpha() >= 1, (x, y)
+    window.close()
+
+
+def test_the_click_catching_fill_is_too_faint_to_see(qapp: QApplication) -> None:
+    from maddenmode.gui.overlay import HIT_ALPHA
+
+    window, _, _ = make()
+    click_toggle(window)
+    image = window.grab().toImage()
+    inner = image.pixelColor(150, 100)  # well inside, away from the border
+    assert inner.alpha() == HIT_ALPHA
+    assert HIT_ALPHA <= 3  # under about 1% of full opacity
+    window.close()
+
+
+def test_when_not_drawing_the_overlay_stays_fully_transparent(
+    qapp: QApplication,
+) -> None:
+    window, controller, _ = make()
+    click_toggle(window)
+    controller.press("Esc", 1.0)
+    image = window.grab().toImage()
+    assert image.pixelColor(150, 100).alpha() == 0
+    window.close()
+
+
+def test_strokes_are_drawn_over_the_fill_in_full_color(qapp: QApplication) -> None:
+    pen = Pen("p", color=PALETTE[1], width=10, feather=0)
+    window, controller, clock = make(pens=(pen,))
+    click_toggle(window)
+    controller.pointer_down(20, 100, 0.0)
+    controller.pointer_move(280, 100, 0.1)
+    controller.pointer_up(0.2)
+    clock.now = 1.0  # after the points, as it always is in real use
+    px = window.grab().toImage().pixelColor(150, 100)
+    assert px.alpha() == 255
+    assert px.red() > 240 and px.green() < 60  # still the pen's red
+    window.close()

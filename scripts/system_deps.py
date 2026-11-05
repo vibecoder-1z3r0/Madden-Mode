@@ -99,6 +99,14 @@ def commands(manager: str, sudo: list[str]) -> list[list[str]]:
     return [[*sudo, "dnf", "install", "-y", *packages]]
 
 
+def running_as_root() -> bool:
+    return hasattr(os, "geteuid") and os.geteuid() == 0
+
+
+def has_sudo() -> bool:
+    return shutil.which("sudo") is not None
+
+
 def sudo_prefix(is_root: bool, has_sudo: bool) -> list[str]:
     if is_root:
         return []
@@ -136,8 +144,7 @@ def main(
         )
         return 1
 
-    is_root = hasattr(os, "geteuid") and os.geteuid() == 0
-    sudo = sudo_prefix(is_root, shutil.which("sudo") is not None)
+    sudo = sudo_prefix(running_as_root(), has_sudo())
     print(f"Detected {name}: using {manager}.")
     for command in commands(manager, sudo):
         print("+", " ".join(command))

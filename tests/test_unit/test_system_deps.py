@@ -19,6 +19,19 @@ def load() -> ModuleType:
 
 sd = load()
 
+
+@pytest.fixture(autouse=True)
+def pretend_to_be_root(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Make the tests independent of the machine they run on.
+
+    The script asks "am I root?" and "is sudo installed?". Those answers differ
+    between Linux, macOS and Windows (os.geteuid does not exist on Windows, and
+    sudo is not installed there), so each test states them instead.
+    """
+    monkeypatch.setattr(sd, "running_as_root", lambda: True)
+    monkeypatch.setattr(sd, "has_sudo", lambda: True)
+
+
 UBUNTU = 'NAME="Ubuntu"\nID=ubuntu\nID_LIKE=debian\nPRETTY_NAME="Ubuntu 24.04 LTS"\n'
 DEBIAN = 'PRETTY_NAME="Debian GNU/Linux 12"\nID=debian\n'
 POP = 'ID=pop\nID_LIKE="ubuntu debian"\n'
@@ -157,7 +170,6 @@ def test_a_failing_command_stops_and_returns_its_exit_code(
         return Result()
 
     monkeypatch.setattr(sd.subprocess, "run", fake_run)
-    monkeypatch.setattr(sd.os, "geteuid", lambda: 0)
     code, _ = run(tmp_path, UBUNTU, capsys)
     assert code == 7
     assert len(ran) == 1  # `apt-get update` failed, so no install was attempted
@@ -176,7 +188,38 @@ def test_all_commands_run_when_all_succeed(
     monkeypatch.setattr(
         sd.subprocess, "run", lambda command, check: (ran.append(command), Result())[1]
     )
-    monkeypatch.setattr(sd.os, "geteuid", lambda: 0)
     code, _ = run(tmp_path, UBUNTU, capsys)
     assert code == 0
     assert [c[:2] for c in ran] == [["apt-get", "update"], ["apt-get", "install"]]
+
+
+def test_a_non_root_user_with_sudo_gets_sudo_in_every_command(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys,  # type: ignore[no-untyped-def]
+) -> None:
+    monkeypatch.setattr(sd, "running_as_root", lambda: False)
+    code, out = run(tmp_path, UBUNTU, capsys, "--dry-run")
+    assert code == 0
+    assert "+ sudo apt-get update" in out
+    assert "+ sudo apt-get install -y" in out
+
+
+def test_a_non_root_user_without_sudo_is_told_what_to_do(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys,  # type: ignore[no-untyped-def]
+) -> None:
+    monkeypatch.setattr(sd, "running_as_root", lambda: False)
+    monkeypatch.setattr(sd, "has_sudo", lambda: False)
+    with pytest.raises(SystemExit, match="root"):
+        run(tmp_path, UBUNTU, capsys, "--dry-run")
+
+
+def test_the_real_root_check_does_not_need_geteuid(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    # Windows has no os.geteuid: the real helper must not raise there
+    monkeypatch.undo()  # drop the autouse stand-ins to test the real functions
+    monkeypatch.delattr(sd.os, "geteuid", raising=False)
+    assert sd.running_as_root() is False

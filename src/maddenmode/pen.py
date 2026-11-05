@@ -53,11 +53,10 @@ class Pen:
 
 # Placeholder defaults to be tuned by hand once there is a real overlay.
 DEFAULT_PENS: tuple[Pen, ...] = (
-    Pen("marker", color=PALETTE[1], width=6.0, feather=0.0),
-    Pen("highlighter", color=PALETTE[0], width=14.0, feather=2.0),
+    Pen("marker", width=6.0, feather=0.0),
+    Pen("highlighter", width=14.0, feather=2.0),
     Pen(
         "flash",
-        color=PALETTE[5],
         width=24.0,
         feather=2.0,
         mode=DissipationMode.TIMED_FADE,
@@ -66,7 +65,6 @@ DEFAULT_PENS: tuple[Pen, ...] = (
     ),
     Pen(
         "comet",
-        color=PALETTE[3],
         width=24.0,
         feather=2.0,
         mode=DissipationMode.TAIL_FIRST,

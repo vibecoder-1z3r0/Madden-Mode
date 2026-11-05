@@ -78,16 +78,16 @@ Things to know about pinning: the overlay is always on top, so it also covers an
 
 ### Pens
 
-The app starts with the **comet** pen in **yellow**. Pick another color with `1` to `8`; the color you pick applies to whichever pen you use.
+The app starts with the **comet** pen in **yellow**, and every pen is yellow until you pick another color with `1` to `8`. Color is not part of a pen: the color you pick applies to whichever pen you use.
 
 Each pen has a color, width, feather (softness of the edge, in pixels; 0 is a hard edge) and a dissipation mode:
 
-| Pen | Color | Width / feather | What happens to its marks |
-|---|---|---|---|
-| marker | red | 6 / 0 | held until cleared |
-| highlighter | yellow | 14 / 2 | held until cleared |
-| flash | magenta | 24 / 2 | timed fade: solid for 1.5 s after you lift the pen, then fades over 3 s |
-| comet | cyan | 24 / 2 | tail-first fade: each point holds 1.5 s, then fades over 3 s |
+| Pen | Width / feather | What happens to its marks |
+|---|---|---|
+| marker | 6 / 0 | held until cleared |
+| highlighter | 14 / 2 | held until cleared |
+| flash | 24 / 2 | timed fade: solid for 1.5 s after you lift the pen, then fades over 3 s |
+| comet | 24 / 2 | tail-first fade: each point holds 1.5 s, then fades over 3 s |
 
 ![The three dissipation modes over time](docs/screenshots/dissipation.png)
 

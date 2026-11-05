@@ -16,8 +16,8 @@ TAGLINE = (
     "Named after the greatest NFL sports casters in the honor of John Madden."
 )
 
-# Python writes an alpha, beta or release-candidate version as a suffix: 1a2 is alpha 2, 1b1 beta 1,
-# 1rc1 release candidate 1.
+# Python writes an alpha, beta or release-candidate version as a suffix: 1a2 is
+# alpha 2, 1b1 is beta 1, and 1rc1 is release candidate 1.
 _STAGES = {"a": "alpha", "b": "beta", "rc": "release candidate"}
 _STAGE_PATTERN = re.compile(r"(a|b|rc)\d+$")
 

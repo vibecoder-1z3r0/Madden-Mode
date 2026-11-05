@@ -16,7 +16,7 @@ TAGLINE = (
     "Named after the greatest NFL sports casters in the honor of John Madden."
 )
 
-# Python writes pre-release versions as a suffix: 1a2 is alpha 2, 1b1 beta 1,
+# Python writes an alpha, beta or release-candidate version as a suffix: 1a2 is alpha 2, 1b1 beta 1,
 # 1rc1 release candidate 1.
 _STAGES = {"a": "alpha", "b": "beta", "rc": "release candidate"}
 _STAGE_PATTERN = re.compile(r"(a|b|rc)\d+$")
@@ -35,7 +35,7 @@ def version_label(version: str = VERSION) -> str:
 
 
 def stage_note(version: str = VERSION) -> str | None:
-    """A plain-language heads-up for a pre-release, or None for a full release."""
+    """A plain-language heads-up for an alpha or beta, or None for no suffix."""
     stage = release_stage(version)
     if stage is None:
         return None

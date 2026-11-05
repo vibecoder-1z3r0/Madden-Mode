@@ -89,11 +89,12 @@ so those are not used.
   that in mind: Control gives `Ctrl`, and Command gives `Cmd`, which no hotkey uses, so
   Command is left free for the Mac's own shortcuts. macOS has no global hotkey or
   window-listing backend yet, so on a Mac the toolbar and tray are how you start drawing.
-- **Versions:** calendar versioning, `YYYY.M.MICRO` with an `aN`/`bN` suffix while it is
-  pre-release (see CONTRIBUTING.md). Defined once, in `src/maddenmode/__init__.py`, and read from
-  there by `pyproject.toml`. The About window shows it, with the license, the GitHub project,
-  the vibe-coder and the AI Attribution statement; every one of those facts is checked by a
-  test against the repository file it comes from.
+- **Versions:** calendar versioning, `YYYY.M.MICRO`, with an `aN`/`bN` suffix while the
+  project is young (see CONTRIBUTING.md). Nothing is released or tagged; the version only
+  labels the state of the code. It is defined once, in `src/maddenmode/__init__.py`, and
+  read from there by `pyproject.toml`. The About window shows it, with the license, the
+  GitHub project, the vibe-coder and the AI Attribution statement; every one of those facts
+  is checked by a test against the repository file it comes from.
 - **Freehand only for now.** No shapes (arrows, circles, lines) in the first
   version; those can come later.
 - **Pens** (draft): color, width, hardness/softness and dissipation.

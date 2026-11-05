@@ -2,7 +2,8 @@ from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QApplication
 
 from maddenmode.controller import Controller
-from maddenmode.gui.tray import TrayIcon, make_icon
+from maddenmode.gui.icons import make_icon
+from maddenmode.gui.tray import TrayIcon
 from maddenmode.palette import PALETTE
 from maddenmode.pen import Pen
 from maddenmode.scene import Scene
@@ -77,22 +78,33 @@ def test_pen_menu_is_rebuilt_when_pens_change(qapp: QApplication) -> None:
     assert [a.text() for a in tray.pen_actions] == ["one", "two"]
 
 
-def test_icon_shows_the_pen_color_and_a_ring_while_drawing(qapp: QApplication) -> None:
+def test_icon_shows_the_pen_color_and_a_ring_while_drawing(
+    qapp: QApplication,
+) -> None:
     red = QColor(255, 0, 0)
     idle = make_icon(red, drawing=False).pixmap(64, 64).toImage()
     active = make_icon(red, drawing=True).pixmap(64, 64).toImage()
-    assert idle.pixelColor(32, 32).red() == 255
-    assert idle.pixelColor(32, 32).green() == 0
-    assert idle.pixelColor(7, 32).alpha() == 0  # no ring when idle
-    assert active.pixelColor(7, 32).alpha() > 0  # ring when drawing
+    badge = idle.pixelColor(46, 46)  # the pen-color dot, lower right
+    assert (badge.red(), badge.green(), badge.blue()) == (255, 0, 0)
+    assert idle.pixelColor(32, 3).red() < 80  # no white ring when idle
+    assert active.pixelColor(32, 3).red() > 200  # white ring when drawing
 
 
 def test_icon_follows_the_controller(qapp: QApplication) -> None:
     tray, controller, _ = make()
     controller.select_color(1)  # red
-    pixmap = tray.icon().pixmap(64, 64).toImage()
-    assert pixmap.pixelColor(32, 32).red() > 200
-    assert pixmap.pixelColor(32, 32).green() < 100
+    badge = tray.icon().pixmap(64, 64).toImage().pixelColor(46, 46)
+    assert badge.red() > 200
+    assert badge.green() < 100
+    controller.select_color(3)  # cyan
+    badge = tray.icon().pixmap(64, 64).toImage().pixelColor(46, 46)
+    assert badge.red() < 100
+    assert badge.blue() > 200
+
+
+def test_it_always_has_an_icon(qapp: QApplication) -> None:
+    tray, _, _ = make()
+    assert not tray.icon().isNull()
 
 
 def test_target_action_calls_back(qapp: QApplication) -> None:

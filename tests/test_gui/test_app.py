@@ -549,3 +549,24 @@ def test_with_no_screens_at_all_it_still_shows_a_default_area(
     app.start()
     assert area(app) == (0, 0, 1280, 720)
     shutdown(app)
+
+
+def test_a_missing_tray_is_reported_but_never_hides_a_better_message(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app, _ = make_targeted(tmp_path)
+    app.start()
+    if not app.tray_available:  # true in the offscreen test platform
+        assert "No system tray" in app.toast.text
+    # a more important message already showing is not replaced
+    app.toast.show_message("Something more important")
+    app._check_tray()
+    assert app.toast.text == "Something more important"
+    shutdown(app)
+
+
+def test_the_app_is_given_its_own_identity(qapp: QApplication, tmp_path: Path) -> None:
+    app = make(tmp_path)
+    assert QApplication.applicationName() == "Madden Mode"
+    assert not QApplication.windowIcon().isNull()
+    shutdown(app)

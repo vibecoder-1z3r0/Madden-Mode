@@ -71,17 +71,18 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 65 | Approval required | 02:59:43 | 13s | 33h 35m ⏳ | 9 | 2,203 | 1,583 | 1,370,079 |
 | 66 | How do I pick the window I telestrate over? | 12:35:44 | 19s | 3m 5s | 6 | 2,354 | 826,756 | 554,364 |
 | 67 | Implement 1 and 2 and then put 3 in a future considerations markdown d… | 12:39:08 | 6m 59s | 1m 60s | 117 | 184,231 | 198,285 | 29,481,303 |
-| 68 | are the system dependencies setup for fedora ? | 12:48:06 | 7s | — | 8 | 1,764 | 34 | 1,052,570 |
+| 68 | are the system dependencies setup for fedora ? | 12:48:06 | 16s | 36s | 10 | 2,429 | 1,435 | 1,578,872 |
+| 69 | fedora is my wsl machine I'm testing from or should I really test this… | 12:48:59 | 6s | — | 2 | 1,496 | 324 | 1,056,736 |
 
-**Total turns:** 68  
-**Total agent time spent (excl. flagged):** 49m 47s  
-**Total human think time (excl. outliers):** 1h 25m  
-**Average human think time (excl. outliers):** 1m 18s  
+**Total turns:** 69  
+**Total agent time spent (excl. flagged):** 50m 2s  
+**Total human think time (excl. outliers):** 1h 26m  
+**Average human think time (excl. outliers):** 1m 17s  
 **Think-time outliers (> 15 min):** 1  
-**Total input tokens:** 1,439  
-**Total output tokens:** 1,015,023  
-**Total cache-write tokens:** 2,035,367  
-**Total cache-read tokens:** 169,406,185  
+**Total input tokens:** 1,443  
+**Total output tokens:** 1,017,184  
+**Total cache-write tokens:** 2,037,092  
+**Total cache-read tokens:** 170,989,223  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%
 
 ⏳ Turn(s) 65 had a 'human think time' over 15 min (total 33h 35m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).

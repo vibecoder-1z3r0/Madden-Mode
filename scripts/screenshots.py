@@ -234,6 +234,51 @@ def target_screenshot(out: Path) -> None:
     dialog.close()
 
 
+def icon_screenshot(out: Path) -> None:
+    """The icon at tray sizes on a light and a dark taskbar, idle and drawing."""
+    from maddenmode.gui.icons import draw_icon
+
+    sizes = [16, 24, 32, 48, 64]
+    variants = [
+        ("idle", PALETTE[0], False),
+        ("idle", PALETTE[1], False),
+        ("idle", PALETTE[3], False),
+        ("drawing", PALETTE[1], True),
+    ]
+    cell = 150
+    bars = [
+        ("light taskbar", QColor(243, 243, 243)),
+        ("dark taskbar", QColor(32, 32, 32)),
+    ]
+    image = QImage(
+        cell * len(sizes) + 160,
+        len(bars) * len(variants) * 70 + 40,
+        QImage.Format.Format_ARGB32_Premultiplied,
+    )
+    image.fill(QColor(120, 120, 120))
+    p = QPainter(image)
+    font = QFont()
+    font.setPointSize(9)
+    p.setFont(font)
+    y = 20
+    for bar_name, bar in bars:
+        for label, color, drawing in variants:
+            p.fillRect(0, y, image.width(), 66, bar)
+            p.setPen(
+                QColor(0, 0, 0) if bar.lightness() > 128 else QColor(255, 255, 255)
+            )
+            rgb = QColor(*color.rgb)
+            p.drawText(8, y + 28, bar_name)
+            p.drawText(8, y + 46, f"{label}, {color.name}")
+            for i, size in enumerate(sizes):
+                p.drawPixmap(
+                    170 + i * cell, y + (66 - size) // 2, draw_icon(size, rgb, drawing)
+                )
+            y += 70
+    p.end()
+    image.save(str(out / "icon.png"))
+
+
 def main() -> int:
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("docs/screenshots")
     out.mkdir(parents=True, exist_ok=True)
@@ -241,6 +286,7 @@ def main() -> int:
     overlay_screenshot(out)
     dissipation_screenshot(out)
     target_screenshot(out)
+    icon_screenshot(out)
     print(f"wrote {sorted(p.name for p in out.glob('*.png'))} to {out}")
     qapp.quit()
     return 0

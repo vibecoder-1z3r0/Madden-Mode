@@ -59,7 +59,9 @@ While draw mode is off, the overlay is invisible to the mouse: clicks go through
 | `[` and `]` | Previous / next pen |
 | `Esc` | Leave draw mode |
 
-The **toolbar** (draggable, always on top) has the same controls as buttons, plus **Settings** and **Quit**. A **tray icon** has the same menu, so Quit is always reachable even with the toolbar hidden. A short **toast** message appears when the pen, color or mode changes.
+The **toolbar** (draggable, always on top) has the same controls as buttons, plus **Settings** and **Quit**. A **tray icon** has the same menu, so Quit is always reachable even with the toolbar hidden. The icon shows your current pen color as a dot, and gets a white ring while draw mode is on.
+
+![The icon on light and dark taskbars](docs/screenshots/icon.png) A short **toast** message appears when the pen, color or mode changes.
 
 ### Choosing where to draw
 
@@ -102,6 +104,15 @@ A damaged settings file never stops the app: it starts with defaults and tells y
 
 - **A hotkey does nothing, or a message says another app is using it:** switch the prefix to `Ctrl+Alt` in Settings.
 - **The overlay does not appear over a game:** try the game in windowed or borderless mode.
+- **Clicks go through to the app underneath while drawing:** make sure the Draw button is green and a colored border shows around the screen. If it is, run it again with diagnostics on and note the line it prints each time you toggle draw mode:
+
+  ```powershell
+  $env:MADDEN_DEBUG = 1
+  uv run python -m maddenmode
+  ```
+
+  If clicks still fall through, try a stronger (still hard to see) click-catching fill: `$env:MADDEN_HIT_ALPHA = 20` before running (the default is 2, out of 255).
+- **No icon in the tray:** Windows often hides new tray icons. Click the `^` arrow at the right of the taskbar and drag the Madden Mode icon out, or open Settings, Personalization, Taskbar, "Other system tray icons" and switch it on (names vary by Windows version). While running from source it is listed as `python`, because Windows shows the program file's name. If there is no tray at all, a message says so; the toolbar still does everything.
 - **The game is on another monitor:** press **Target** and choose that monitor.
 - **The window list is empty or disabled:** pinning needs Windows, and only windows that are visible, not minimized and have a title are listed. Open the window and press **Refresh**.
 - **On Linux:** hotkeys only work while the overlay has focus, because there is no global hotkey backend yet. Wayland restricts always-on-top overlays; X11 works better. If Qt fails to load, `make system-deps` installs the libraries it needs. It detects your distro from `/etc/os-release` and uses `apt` (Debian, Ubuntu) or `dnf` (Fedora, RHEL); for other distros it lists what to install. The Ubuntu path is tested; the Fedora package names are not yet tried on a real Fedora machine.

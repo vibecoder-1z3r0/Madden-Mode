@@ -14,6 +14,7 @@ from PySide6.QtWidgets import QApplication, QDialog, QSystemTrayIcon
 
 from maddenmode import settings_store
 from maddenmode.controller import Controller, Settings
+from maddenmode.gui.about_dialog import AboutDialog
 from maddenmode.gui.follow import WindowFollower
 from maddenmode.gui.hotkeys import HotkeyBackend, WindowsHotkeys, bind_controller
 from maddenmode.gui.icons import set_app_identity
@@ -54,6 +55,14 @@ class TargetPrompt(Protocol):
     def result_target(self) -> Target | None: ...
 
 
+class AboutPrompt(Protocol):
+    def exec(self) -> int: ...
+
+
+def _default_about_dialog() -> AboutPrompt:
+    return AboutDialog()
+
+
 def _default_dialog(settings: Settings, pens: tuple[Pen, ...]) -> SettingsPrompt:
     return SettingsDialog(settings, pens)
 
@@ -87,6 +96,7 @@ class MaddenMode:
         target_dialog_factory: Callable[
             [list[ScreenInfo], WindowBackend, Target], TargetPrompt
         ] = _default_target_dialog,
+        about_dialog_factory: Callable[[], AboutPrompt] = _default_about_dialog,
     ) -> None:
         self.qapp = qapp
         set_app_identity(qapp)
@@ -98,6 +108,7 @@ class MaddenMode:
         )
         self.screens = screens
         self.target_dialog_factory = target_dialog_factory
+        self.about_dialog_factory = about_dialog_factory
         self.settings_path = settings_path or settings_store.default_path()
 
         settings, pens, self.load_warning = settings_store.load(self.settings_path)
@@ -121,6 +132,7 @@ class MaddenMode:
             self.quit,
             clock,
             on_target=self.open_target_dialog,
+            on_about=self.open_about,
         )
         self.follower = WindowFollower(
             self.overlay, self.window_backend, self.screens, self._window_gone
@@ -233,6 +245,12 @@ class MaddenMode:
         self.toast.show_message(
             f"{reason}. Back to {describe_target(monitor, self.screens())}."
         )
+
+    # -- about --------------------------------------------------------------
+
+    def open_about(self) -> None:
+        """Show the About window."""
+        self.about_dialog_factory().exec()
 
     # -- settings -----------------------------------------------------------
 

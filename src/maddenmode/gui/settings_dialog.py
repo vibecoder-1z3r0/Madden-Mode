@@ -5,6 +5,8 @@ values it returns are always valid.
 """
 
 import sys
+from collections.abc import Callable
+from typing import Protocol
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QGuiApplication
@@ -24,6 +26,7 @@ from PySide6.QtWidgets import (
 )
 
 from maddenmode.controller import ModifierPrefix, Settings
+from maddenmode.gui.about_dialog import AboutDialog
 from maddenmode.labels import display_chord, mode_label
 from maddenmode.pen import DEFAULT_PENS, MAX_TIME_S, DissipationMode, Pen
 
@@ -60,6 +63,10 @@ def _spin(
     return spin
 
 
+class _Executable(Protocol):
+    def exec(self) -> int: ...
+
+
 class SettingsDialog(QDialog):
     def __init__(
         self,
@@ -67,6 +74,7 @@ class SettingsDialog(QDialog):
         pens: tuple[Pen, ...],
         parent: QWidget | None = None,
         platform: str = sys.platform,
+        about_factory: Callable[[QWidget], _Executable] | None = None,
     ) -> None:
         super().__init__(parent)
         self.setWindowTitle("Madden Mode settings")
@@ -153,9 +161,15 @@ class SettingsDialog(QDialog):
         reset = buttons.button(QDialogButtonBox.StandardButton.RestoreDefaults)
         reset.setText("Reset to defaults")
         reset.clicked.connect(self.reset_to_defaults)
+        self._about_factory = about_factory or AboutDialog
+        about = buttons.addButton("About...", QDialogButtonBox.ButtonRole.HelpRole)
+        about.clicked.connect(self.show_about)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
+
+    def show_about(self) -> None:
+        self._about_factory(self).exec()
 
     def reset_to_defaults(self) -> None:
         """Put the default values into the form. Nothing is saved until OK."""

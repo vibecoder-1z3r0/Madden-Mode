@@ -122,3 +122,19 @@ def test_target_action_calls_back(qapp: QApplication) -> None:
 def test_target_action_without_a_callback_is_harmless(qapp: QApplication) -> None:
     tray, _, _ = make()
     tray.target_action.trigger()
+
+
+def test_the_tray_menu_has_an_about_entry_just_above_quit(qapp: QApplication) -> None:
+    hits: list[int] = []
+    tray = TrayIcon(
+        Controller(Scene()), lambda: True, lambda: None, on_about=lambda: hits.append(1)
+    )
+    tray.about_action.trigger()
+    assert hits == [1]
+    texts = [a.text() for a in tray.menu.actions() if not a.isSeparator()]
+    assert texts.index("About Madden Mode...") == texts.index("Quit") - 1
+
+
+def test_the_about_entry_without_a_callback_is_harmless(qapp: QApplication) -> None:
+    tray, _, _ = make()
+    tray.about_action.trigger()

@@ -19,6 +19,7 @@ class TrayIcon(QSystemTrayIcon):
         on_quit: Callable[[], None],
         clock: Callable[[], float] = time.monotonic,
         on_target: Callable[[], object] | None = None,
+        on_about: Callable[[], object] | None = None,
     ) -> None:
         super().__init__()
         self.controller = controller
@@ -63,6 +64,8 @@ class TrayIcon(QSystemTrayIcon):
         self.target_action.triggered.connect(lambda: on_target() if on_target else None)
         self.settings_action = menu.addAction("Settings...")
         self.settings_action.triggered.connect(lambda: on_settings())
+        self.about_action = menu.addAction("About Madden Mode...")
+        self.about_action.triggered.connect(lambda: on_about() if on_about else None)
         menu.addSeparator()
         self.quit_action = menu.addAction("Quit")
         self.quit_action.triggered.connect(lambda: on_quit())

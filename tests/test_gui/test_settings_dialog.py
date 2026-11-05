@@ -366,3 +366,36 @@ def test_the_header_text_fits_its_column_at_the_default_size(
     needed = header.fontMetrics().horizontalAdvance(fade_text)
     assert header.sectionSize(5) >= needed + 8, (header.sectionSize(5), needed)
     dialog.close()
+
+
+# -- the About button -----------------------------------------------------------
+
+
+def test_the_settings_dialog_has_an_about_button_that_opens_about(
+    qapp: QApplication,
+) -> None:
+    from PySide6.QtWidgets import QDialogButtonBox
+
+    opened: list[object] = []
+
+    class FakeAbout:
+        def __init__(self, parent) -> None:  # type: ignore[no-untyped-def]
+            opened.append(parent)
+
+        def exec(self) -> int:
+            return 0
+
+    dialog = SettingsDialog(Settings(), DEFAULT_PENS, about_factory=FakeAbout)
+    box = dialog.findChildren(QDialogButtonBox)[0]
+    about_button = next(b for b in box.buttons() if b.text() == "About...")
+    about_button.click()
+    assert opened == [dialog]  # opened over the settings dialog
+
+
+def test_the_settings_about_button_uses_the_real_dialog_by_default(
+    qapp: QApplication,
+) -> None:
+    from maddenmode.gui.about_dialog import AboutDialog
+
+    dialog = SettingsDialog(Settings(), DEFAULT_PENS)
+    assert dialog._about_factory is AboutDialog

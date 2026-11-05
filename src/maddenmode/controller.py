@@ -31,7 +31,7 @@ GLOBAL_KEYS: dict[str, Action] = {
     "D": Action.TOGGLE_DRAW,
     "C": Action.CLEAR_ALL,
     "F": Action.FADE_ALL,
-    "H": Action.TOGGLE_TOOLBAR,
+    "X": Action.TOGGLE_TOOLBAR,
 }
 
 # Draw-mode keys. The overlay owns the keyboard while drawing, so these are

@@ -26,13 +26,13 @@ def test_global_bindings_use_the_prefix() -> None:
         "Ctrl+Shift+D",
         "Ctrl+Shift+C",
         "Ctrl+Shift+F",
-        "Ctrl+Shift+H",
+        "Ctrl+Shift+X",
     }
     assert set(global_bindings(ModifierPrefix.CTRL_ALT)) == {
         "Ctrl+Alt+D",
         "Ctrl+Alt+C",
         "Ctrl+Alt+F",
-        "Ctrl+Alt+H",
+        "Ctrl+Alt+X",
     }
 
 
@@ -218,9 +218,9 @@ def test_custom_pens() -> None:
 def test_toolbar_toggle_key_is_global() -> None:
     c = make()
     assert c.toolbar_visible
-    assert c.press("Ctrl+Shift+H", 0.0)
+    assert c.press("Ctrl+Shift+X", 0.0)
     assert not c.toolbar_visible
-    assert c.press("Ctrl+Shift+H", 0.0)
+    assert c.press("Ctrl+Shift+X", 0.0)
     assert c.toolbar_visible
 
 
@@ -313,3 +313,17 @@ def test_applying_settings_leaves_a_pinned_window_alone() -> None:
     c.set_target(WindowTarget(7, "Game"))
     c.apply_settings(Settings(monitor=3), c.pens)
     assert c.target == WindowTarget(7, "Game")
+
+
+def test_the_old_toolbar_key_no_longer_does_anything() -> None:
+    c = make()
+    assert not c.press("Ctrl+Shift+H", 0.0)  # moved to X; H is free for the game
+    assert c.toolbar_visible
+
+
+def test_every_global_hotkey_is_on_the_left_hand_side_of_the_keyboard() -> None:
+    # one hand on the keys, the other on the mouse or stylus
+    from maddenmode.controller import GLOBAL_KEYS
+
+    assert set(GLOBAL_KEYS) == {"D", "C", "F", "X"}
+    assert all(key in "QWERTASDFGZXCVB" for key in GLOBAL_KEYS)

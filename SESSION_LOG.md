@@ -68,15 +68,18 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 62 | Or make it so I have to approve workflow runs Can you take any screens… | 02:54:19 | 1m 27s | 3s | 41 | 40,606 | 46,796 | 7,561,196 |
 | 63 | Open a PR | 02:55:49 | 2m 46s | 11s | 62 | 13,553 | 50,826 | 11,881,013 |
 | 64 | I did the forks thing | 02:58:45 | 11s | 47s | 10 | 1,686 | 816 | 1,366,719 |
-| 65 | Approval required | 02:59:43 | 6s | — | 8 | 1,898 | 12 | 913,382 |
+| 65 | Approval required | 02:59:43 | 13s | 33h 35m ⏳ | 9 | 2,203 | 1,583 | 1,370,079 |
+| 66 | How do I pick the window I telestrate over? | 12:35:44 | 10s | — | 4 | 1,764 | 825,570 | 94,386 |
 
-**Total turns:** 65  
-**Total agent time spent (excl. flagged):** 42m 15s  
+**Total turns:** 66  
+**Total agent time spent (excl. flagged):** 42m 32s  
 **Total human think time (excl. outliers):** 1h 20m  
 **Average human think time (excl. outliers):** 1m 16s  
-**Think-time outliers (> 15 min):** 0  
-**Total input tokens:** 1,307  
-**Total output tokens:** 826,369  
-**Total cache-write tokens:** 1,008,721  
-**Total cache-read tokens:** 137,861,251  
+**Think-time outliers (> 15 min):** 1  
+**Total input tokens:** 1,312  
+**Total output tokens:** 828,438  
+**Total cache-write tokens:** 1,835,862  
+**Total cache-read tokens:** 138,412,334  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%
+
+⏳ Turn(s) 65 had a 'human think time' over 15 min (total 33h 35m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).

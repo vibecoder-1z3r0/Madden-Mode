@@ -82,6 +82,11 @@ so those are not used.
     has a real one. The logic (coordinate conversion, which windows to offer,
     following) is plain code with tests; only the Win32 calls are thin.
   - Not built: drawing over a region. See FUTURE_CONSIDERATIONS.md.
+- **Platforms and key names:** CI runs on Linux, Windows and macOS. Only Windows has been tried by hand.
+  Internally the modifier names stay `Ctrl` and `Alt` everywhere, because Qt reports the
+  macOS Command key as its Control modifier; they are only *shown* as `Cmd` and `Option`
+  on macOS (`labels.display_chord`). macOS has no global hotkey or window-listing backend
+  yet, so on a Mac the toolbar and tray are how you start drawing.
 - **Freehand only for now.** No shapes (arrows, circles, lines) in the first
   version; those can come later.
 - **Pens** (draft): color, width, hardness/softness and dissipation.

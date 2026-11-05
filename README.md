@@ -6,7 +6,7 @@ Draw freehand marks on top of whatever is on your screen: circle a player, trace
 
 ![Overlay with the toolbar and a toast message](docs/screenshots/overlay.png)
 
-> **Status: early.** Built Windows-first, aimed at windowed and borderless windows (true fullscreen games often block overlays). The automated tests pass on Windows and Linux, and drawing over other windows has been confirmed working by hand on Windows. Other parts have had less hands-on testing (window pinning, the tray icon, and setups with several monitors or mixed display scaling), so expect rough edges. The screenshots are rendered offscreen: the overlay and toolbar are the real widgets, composited over a fake game.
+> **Status: early.** Built Windows-first, aimed at windowed and borderless windows (true fullscreen games often block overlays). The automated tests pass on Windows and Linux, and drawing over other windows has been confirmed working by hand on Windows. Other parts have had less hands-on testing (window pinning, the tray icon, and setups with several monitors or mixed display scaling), so expect rough edges. **macOS:** the tests run there in CI, but nobody has tried it by hand, and it has no global hotkeys or window pinning yet (see below). The screenshots are rendered offscreen: the overlay and toolbar are the real widgets, composited over a fake game.
 
 ## Quick start
 
@@ -50,6 +50,8 @@ While draw mode is off, the overlay is invisible to the mouse: clicks go through
 | `Ctrl+Shift+C` | Clear everything instantly |
 | `Ctrl+Shift+F` | Fade everything out |
 | `Ctrl+Shift+X` | Show or hide the toolbar |
+
+**On macOS** the keys are shown as `Cmd` and `Option` instead of `Ctrl` and `Alt` (so `Cmd+Shift+D` to draw). macOS has no global hotkey support yet, so these only work while Madden Mode's own window has focus; use the toolbar or the menu bar icon to start drawing.
 
 **While drawing:**
 
@@ -117,6 +119,7 @@ A damaged settings file never stops the app: it starts with defaults and tells y
 - **No icon in the tray:** Windows often hides new tray icons. Click the `^` arrow at the right of the taskbar and drag the Madden Mode icon out, or open Settings, Personalization, Taskbar, "Other system tray icons" and switch it on (names vary by Windows version). While running from source it is listed as `python`, because Windows shows the program file's name. If there is no tray at all, a message says so; the toolbar still does everything.
 - **The game is on another monitor:** press **Target** and choose that monitor.
 - **The window list is empty or disabled:** pinning needs Windows, and only windows that are visible, not minimized and have a title are listed. Open the window and press **Refresh**.
+- **On macOS:** it has never been tried by hand. There are no global hotkeys and no window pinning, so use the toolbar's Draw button and **Target** for monitors only. An overlay may not appear over a native fullscreen app. Tell us what you see.
 - **On Linux:** hotkeys only work while the overlay has focus, because there is no global hotkey backend yet. Wayland restricts always-on-top overlays; X11 works better. If Qt fails to load, `make system-deps` installs the libraries it needs. It detects your distro from `/etc/os-release` and uses `apt` (Debian, Ubuntu) or `dnf` (Fedora, RHEL); for other distros it lists what to install. The Ubuntu path is tested; the Fedora package names are not yet tried on a real Fedora machine.
 
 ## Development

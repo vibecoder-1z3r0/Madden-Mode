@@ -6,17 +6,11 @@ screenshots:
 preflight:
 	python3 scripts/preflight.py
 
-# Linux only: system libraries Qt needs to load and to run under a virtual
-# display (Xvfb). Uses sudo unless already root. Not needed on Windows/macOS.
-SUDO := $(shell [ "$$(id -u)" = 0 ] || echo sudo)
-SYSTEM_DEPS := libegl1 libgl1 libxkbcommon0 libxkbcommon-x11-0 libdbus-1-3 \
-	libfontconfig1 xvfb libxcb-cursor0 libxcb-icccm4 libxcb-image0 \
-	libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 \
-	libxcb-shape0
-
+# Linux only: installs the system libraries Qt needs (and Xvfb for headless GUI
+# tests), choosing apt or dnf from /etc/os-release. See scripts/system_deps.py.
+# Not needed on Windows or macOS.
 system-deps:
-	$(SUDO) apt-get update
-	$(SUDO) apt-get install -y $(SYSTEM_DEPS)
+	python3 scripts/system_deps.py
 
 sync:
 	uv sync --extra dev

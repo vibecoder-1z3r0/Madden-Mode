@@ -82,7 +82,7 @@ Each pen has a color, width, feather (softness of the edge, in pixels; 0 is a ha
 |---|---|---|---|
 | marker | red | 6 / 0 | held until cleared |
 | highlighter | yellow | 14 / 2 | held until cleared |
-| flash | magenta | 8 / 2 | timed fade: solid for 1 s after you lift the pen, then fade over 2 s |
+| flash | magenta | 24 / 2 | timed fade: solid for 1.5 s after you lift the pen, then fades over 3 s |
 | comet | cyan | 24 / 2 | tail-first fade: each point holds 1.5 s, then fades over 3 s |
 
 ![The three dissipation modes over time](docs/screenshots/dissipation.png)

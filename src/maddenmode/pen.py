@@ -58,11 +58,11 @@ DEFAULT_PENS: tuple[Pen, ...] = (
     Pen(
         "flash",
         color=PALETTE[5],
-        width=8.0,
+        width=24.0,
         feather=2.0,
         mode=DissipationMode.TIMED_FADE,
-        hold_s=1.0,
-        fade_s=2.0,
+        hold_s=1.5,
+        fade_s=3.0,
     ),
     Pen(
         "comet",

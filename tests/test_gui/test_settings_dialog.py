@@ -231,3 +231,37 @@ def test_the_other_default_pens_are_unchanged() -> None:
     assert (by_name["marker"].width, by_name["marker"].feather) == (6.0, 0.0)
     assert (by_name["highlighter"].width, by_name["highlighter"].feather) == (14.0, 2.0)
     assert by_name["marker"].fade_s == by_name["highlighter"].fade_s == 0.0
+
+
+# -- macOS key names ------------------------------------------------------------
+
+
+def combo_texts(dialog: SettingsDialog) -> list[str]:
+    return [dialog.prefix_combo.itemText(i) for i in range(dialog.prefix_combo.count())]
+
+
+def test_the_prefix_choices_say_cmd_and_option_on_a_mac(qapp: QApplication) -> None:
+    dialog = SettingsDialog(Settings(), DEFAULT_PENS, platform="darwin")
+    assert combo_texts(dialog) == ["Cmd+Shift", "Cmd+Option"]
+
+
+def test_the_prefix_choices_are_unchanged_elsewhere(qapp: QApplication) -> None:
+    for platform in ("win32", "linux"):
+        dialog = SettingsDialog(Settings(), DEFAULT_PENS, platform=platform)
+        assert combo_texts(dialog) == ["Ctrl+Shift", "Ctrl+Alt"]
+
+
+def test_a_mac_user_still_gets_the_internal_prefix_back(qapp: QApplication) -> None:
+    """The label is cosmetic: what is saved and matched is still Ctrl+..."""
+    dialog = SettingsDialog(Settings(), DEFAULT_PENS, platform="darwin")
+    dialog.prefix_combo.setCurrentIndex(1)  # shown as "Cmd+Option"
+    settings, _ = dialog.result_values()
+    assert settings.prefix == ModifierPrefix.CTRL_ALT
+    assert type(settings.prefix) is ModifierPrefix
+
+
+def test_the_current_prefix_is_selected_on_a_mac(qapp: QApplication) -> None:
+    dialog = SettingsDialog(
+        Settings(prefix=ModifierPrefix.CTRL_ALT), DEFAULT_PENS, platform="darwin"
+    )
+    assert dialog.prefix_combo.currentText() == "Cmd+Option"

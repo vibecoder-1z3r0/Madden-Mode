@@ -250,3 +250,21 @@ def test_strokes_are_drawn_over_the_fill_in_full_color(qapp: QApplication) -> No
     assert px.alpha() == 255
     assert px.red() > 240 and px.green() < 60  # still the pen's red
     window.close()
+
+
+def test_command_on_a_mac_arrives_as_qts_control_modifier_and_matches(
+    qapp: QApplication,
+) -> None:
+    """Qt reports the Command key as ControlModifier on macOS, so the internal
+    "Ctrl+Shift+D" chord is what a Cmd+Shift+D press produces. This pins that
+    the key matching depends only on that modifier, not on the platform."""
+    window, controller, _ = make()
+    event = QKeyEvent(
+        QKeyEvent.Type.KeyPress,
+        Qt.Key.Key_D,
+        Qt.KeyboardModifier.ControlModifier | Qt.KeyboardModifier.ShiftModifier,
+    )
+    assert key_string(event) == "Ctrl+Shift+D"
+    window.keyPressEvent(event)
+    assert controller.draw_mode
+    window.close()

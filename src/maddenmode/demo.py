@@ -17,6 +17,7 @@ from PySide6.QtWidgets import QApplication, QWidget
 
 from maddenmode.app import MaddenMode
 from maddenmode.gui.hotkeys import WindowsHotkeys
+from maddenmode.labels import display_chord
 
 
 class FakeGame(QWidget):  # pragma: no cover
@@ -59,7 +60,8 @@ def main() -> int:  # pragma: no cover
     hotkeys = WindowsHotkeys() if sys.platform == "win32" else None
     app = MaddenMode(qapp, settings_path=settings, hotkeys=hotkeys)
     app.start(geometry=game.geometry())
-    print("Ctrl+Shift+D draw | C clear all | F fade all | H show/hide toolbar")
+    prefix = display_chord("Ctrl+Shift")
+    print(f"{prefix}+D draw | C clear all | F fade all | X show/hide toolbar")
     print("While drawing: 1-8 color, [ ] pen, Esc exit. Quit from the toolbar or tray.")
     return qapp.exec()
 

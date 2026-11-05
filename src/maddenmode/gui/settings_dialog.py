@@ -4,6 +4,8 @@ The widgets' ranges already match the limits in Pen and Settings, so the
 values it returns are always valid.
 """
 
+import sys
+
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import (
@@ -22,7 +24,7 @@ from PySide6.QtWidgets import (
 )
 
 from maddenmode.controller import ModifierPrefix, Settings
-from maddenmode.labels import mode_label
+from maddenmode.labels import display_chord, mode_label
 from maddenmode.pen import DEFAULT_PENS, MAX_TIME_S, DissipationMode, Pen
 
 COLUMNS = ["Pen", "Width (px)", "Feather (px)", "Mode", "Hold (s)", "Fade (s)"]
@@ -60,6 +62,7 @@ class SettingsDialog(QDialog):
         settings: Settings,
         pens: tuple[Pen, ...],
         parent: QWidget | None = None,
+        platform: str = sys.platform,
     ) -> None:
         super().__init__(parent)
         self.setWindowTitle("Madden Mode settings")
@@ -86,7 +89,8 @@ class SettingsDialog(QDialog):
         self.prefix_combo = QComboBox()
         self.prefix_combo.setMinimumHeight(CONTROL_HEIGHT)
         for prefix in ModifierPrefix:
-            self.prefix_combo.addItem(str(prefix), prefix)
+            # shown as Cmd/Option on macOS; the value stays the ModifierPrefix
+            self.prefix_combo.addItem(display_chord(str(prefix), platform), prefix)
         self.prefix_combo.setCurrentIndex(list(ModifierPrefix).index(settings.prefix))
         form.addRow("Global hotkey prefix", self.prefix_combo)
         self.hold_check = QCheckBox("Draw only while the draw key is held")

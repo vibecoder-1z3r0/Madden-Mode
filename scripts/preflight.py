@@ -96,7 +96,11 @@ def check_display() -> None:
     if system == "Windows":
         report("ok", "Windows: primary target; layered click-through supported")
     elif system == "Darwin":
-        report("warn", "macOS: overlay support comes after Windows")
+        report(
+            "warn",
+            "macOS: tests run in CI but it has never been tried by hand. There are "
+            "no global hotkeys or window pinning yet, so use the toolbar",
+        )
     elif system == "Linux":
         wayland = os.environ.get("WAYLAND_DISPLAY")
         x11 = os.environ.get("DISPLAY")

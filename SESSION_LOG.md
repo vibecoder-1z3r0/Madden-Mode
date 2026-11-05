@@ -90,17 +90,17 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 84 | Linting* | 16:53:20 | 6m 46s | 1m 11s | 42 | 13,869 | 37,945 | 14,641,058 |
 | 85 | pull and prune - PR is merged and branch is gone | 17:01:17 | 20s | 1m 5s | 12 | 2,757 | 2,609 | 4,120,908 |
 | 86 | you still have comet as cyan as default... maybe all defaults should b… | 17:02:42 | 7m 14s | 22s | 191 | 161,886 | 206,571 | 71,792,664 |
-| 87 | what docs say tag releases?  we aren't releasing, this is still just c… | 17:10:18 | 31s | — | 24 | 12,711 | 16,689 | 8,024,631 |
+| 87 | what docs say tag releases?  we aren't releasing, this is still just c… | 17:10:18 | 3m 8s | — | 93 | 35,632 | 218,012 | 21,047,998 |
 
 **Total turns:** 87  
-**Total agent time spent (excl. flagged):** 1h 41m  
+**Total agent time spent (excl. flagged):** 1h 44m  
 **Total human think time (excl. outliers):** 1h 49m  
 **Average human think time (excl. outliers):** 1m 20s  
 **Think-time outliers (> 15 min):** 4  
-**Total input tokens:** 2,349  
-**Total output tokens:** 1,679,714  
-**Total cache-write tokens:** 4,341,416  
-**Total cache-read tokens:** 468,123,822  
+**Total input tokens:** 2,418  
+**Total output tokens:** 1,702,635  
+**Total cache-write tokens:** 4,542,739  
+**Total cache-read tokens:** 481,147,189  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%
 
 ⏳ Turn(s) 65, 72, 73, 79 had a 'human think time' over 15 min (total 36h 42m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).

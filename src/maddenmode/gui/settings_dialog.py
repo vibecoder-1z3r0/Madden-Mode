@@ -38,7 +38,8 @@ COLUMNS = ["Pen", "Mode", "Width (px)", "Feather (px)", "Hold (s)", FADE_HEADER]
 DEFAULT_SIZE = (940, 580)
 MIN_SIZE = (780, 460)
 ROW_HEIGHT = 46
-NAME_COLUMN_WIDTH = 140
+NAME_COLUMN_WIDTH = 140  # a floor; the column grows to fit the longest name
+COLUMN_PADDING = 12
 CONTROL_HEIGHT = 32
 
 
@@ -148,9 +149,28 @@ class SettingsDialog(QDialog):
         self.table.verticalHeader().setDefaultSectionSize(ROW_HEIGHT)
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        # the pen names are cell widgets, which "resize to contents" ignores
-        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
-        self.table.setColumnWidth(0, NAME_COLUMN_WIDTH)
+        # The pen names are cell widgets, which "resize to contents" ignores, and
+        # the fade header is long. Size both from the font in use, since fonts
+        # are wider on some systems (Windows) than others.
+        widest_name = max(
+            (
+                label.fontMetrics().horizontalAdvance(label.text())
+                for row in range(len(pens))
+                if isinstance(label := self.table.cellWidget(row, 0), QLabel)
+            ),
+            default=0,
+        )
+        fade_column = COLUMNS.index(FADE_HEADER)
+        for column, needed in (
+            (0, max(NAME_COLUMN_WIDTH, widest_name + 2 * COLUMN_PADDING)),
+            (
+                fade_column,
+                header.fontMetrics().horizontalAdvance(FADE_HEADER)
+                + 2 * COLUMN_PADDING,
+            ),
+        ):
+            header.setSectionResizeMode(column, QHeaderView.ResizeMode.Fixed)
+            self.table.setColumnWidth(column, needed)
         layout.addWidget(self.table, 1)  # takes any extra height
 
         buttons = QDialogButtonBox(

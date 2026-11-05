@@ -74,7 +74,9 @@ def test_stays_above_the_always_on_top_overlay(qapp: QApplication) -> None:
 from PySide6.QtWidgets import QHeaderView  # noqa: E402
 
 from maddenmode.gui.settings_dialog import (  # noqa: E402
+    COLUMNS,
     DEFAULT_SIZE,
+    FADE_HEADER,
     MIN_SIZE,
     ROW_HEIGHT,
     fit_size,
@@ -106,7 +108,9 @@ def test_it_can_be_resized_but_not_below_its_minimum(qapp: QApplication) -> None
 def test_the_table_columns_share_the_width(qapp: QApplication) -> None:
     dialog = SettingsDialog(Settings(), DEFAULT_PENS)
     header = dialog.table.horizontalHeader()
-    for column in range(1, dialog.table.columnCount()):
+    # the name and the (long-headed) fade column are sized to their text
+    fixed = {0, COLUMNS.index(FADE_HEADER)}
+    for column in set(range(dialog.table.columnCount())) - fixed:
         assert header.sectionResizeMode(column) == QHeaderView.ResizeMode.Stretch
 
 

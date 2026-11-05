@@ -68,6 +68,20 @@ so those are not used.
   - Settings dialog: hotkey prefix, hold-to-draw, fade-all time and each pen's
     width, feather, mode and times. Saved as JSON per user; a bad file falls
     back to defaults with a visible warning.
+- **Where it draws:** a target that is either a **monitor** or a **pinned
+  window**.
+  - Monitor: any screen, chosen in the "Where to draw" dialog. The choice is
+    saved (`monitor` in the settings). A missing monitor falls back to the
+    primary one with a message.
+  - Pinned window (Windows only for now): the overlay is sized to the window,
+    follows it by polling every 100 ms, hides while it is minimized, and falls
+    back to the saved monitor if the window closes. A pinned window is not
+    saved, because window handles do not survive a restart. Strokes live in
+    the overlay's own coordinates, so they move with the window.
+  - The window listing sits behind a `WindowBackend` interface; only Windows
+    has a real one. The logic (coordinate conversion, which windows to offer,
+    following) is plain code with tests; only the Win32 calls are thin.
+  - Not built: drawing over a region. See FUTURE_CONSIDERATIONS.md.
 - **Freehand only for now.** No shapes (arrows, circles, lines) in the first
   version; those can come later.
 - **Pens** (draft): color, width, hardness/softness and dissipation.

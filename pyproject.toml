@@ -4,8 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "madden-mode"
-version = "0.1.0"
+# The version lives in one place: src/maddenmode/__init__.py (see
+# [tool.hatch.version]). It is a calendar version, YYYY.M.MICRO, with an
+# alpha/beta suffix while the project is young (see CONTRIBUTING.md).
+dynamic = ["version"]
 description = "Telestration over your favorite game/window."
+classifiers = ["Development Status :: 3 - Alpha"]
 requires-python = ">=3.13"
 dependencies = [
     "pyside6>=6.12,<7",
@@ -21,6 +25,9 @@ dev = [
 
 [project.gui-scripts]
 madden-mode = "maddenmode.app:main"
+
+[tool.hatch.version]
+path = "src/maddenmode/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/maddenmode"]

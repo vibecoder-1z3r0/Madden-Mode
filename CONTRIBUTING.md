@@ -1,5 +1,23 @@
 # Contributing
 
+## Versions
+
+Madden Mode uses calendar versioning, written `YYYY.M.MICRO`: the year, the
+month of the release **without a leading zero**, and a counter for releases
+within that month, starting at 0. A pre-release adds a suffix, so
+`2026.11.0a1` is the first alpha of the first release of November 2026, and
+`2026.11.0` would be the full release.
+
+- The version is written in **one place**, `src/maddenmode/__init__.py`.
+  `pyproject.toml` reads it from there, and the About window shows it.
+- The month has no leading zero because Python rewrites `2026.01.0` as
+  `2026.1.0`; writing it that way keeps the app and the installed package in
+  agreement. A test checks this.
+- Change the version when you cut a release, not with every change. Tag the
+  release `v` plus the version (for example `v2026.11.0a1`).
+- While the project is young it stays an alpha (`aN`), then beta (`bN`), and
+  loses the suffix when it is a full release.
+
 ## Commits: Conventional Commits
 
 Format: `<type>(<optional scope>): <description>`, imperative, lowercase,

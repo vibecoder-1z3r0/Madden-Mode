@@ -47,8 +47,22 @@ Drag a rectangle once, and the overlay covers only that area.
 - **All monitors at once,** as one overlay spanning every screen.
 - **True fullscreen (exclusive) games.** Many block overlays. Borderless or
   windowed is the supported case; fullscreen would be best-effort at most.
-- **macOS and Linux.** Windows is the first target. Window pinning and global
-  hotkeys each need a backend per platform; Wayland restricts both heavily.
+- **macOS.** CI now runs the tests and a startup check there, and key names are
+  shown as Cmd and Option, but nothing has been tried on a Mac. What is still
+  missing, all of which needs a Mac to build and verify:
+  - **Global hotkeys.** A backend for the Mac's system-wide hotkey API, plus the
+    permission prompts macOS shows for apps that watch the keyboard.
+  - **Window pinning.** Listing and following other apps' windows through the
+    macOS window list.
+  - **Fullscreen apps.** A macOS fullscreen app lives in its own Space, and an
+    overlay does not show over it unless its window is marked to join all
+    Spaces.
+  - **Click-through.** The Qt flag used today is the method that proved
+    unreliable on Windows, so it needs checking on a Mac.
+  - **Menu bar and Dock.** The tray icon should be a monochrome template image
+    for the menu bar, and the app probably should not show a Dock icon.
+- **Linux.** Same gaps as macOS for hotkeys and window pinning; Wayland restricts
+  both heavily.
 
 ## Drawing
 

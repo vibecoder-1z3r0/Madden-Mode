@@ -81,17 +81,20 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 75 | The settings box needs to be larger - also we need more sensible defau… | 14:33:56 | 2m 49s | 1m 20s | 64 | 55,726 | 79,182 | 20,436,445 |
 | 76 | flash and commet defaults should match - everything else is fine | 14:38:05 | 40s | 6s | 26 | 7,425 | 10,967 | 7,452,057 |
 | 77 | what's the hotkey for clear all? | 14:38:52 | 2m 39s | 1m 20s | 66 | 22,879 | 54,256 | 20,049,694 |
-| 78 | comet on yellow should be default pen as well when the application sta… | 14:42:51 | 1m 8s | — | 29 | 22,377 | 16,582 | 9,213,913 |
+| 78 | comet on yellow should be default pen as well when the application sta… | 14:42:51 | 5m 33s | 38s | 55 | 27,170 | 29,374 | 17,108,723 |
+| 79 | i merged and deleted the branch - please pull from main | 14:49:02 | 26s | 1h 43m ⏳ | 10 | 3,064 | 3,013 | 4,341,826 |
+| 80 | Does Madden mode work on macOS? | 16:32:38 | 29s | 1m 5s | 6 | 5,244 | 1,360,510 | 820,384 |
+| 81 | I don’t have a Mac - fire up the CI stuff and then can you add macOS d… | 16:34:11 | 1m 57s | — | 39 | 41,862 | 41,121 | 13,236,732 |
 
-**Total turns:** 78  
-**Total agent time spent (excl. flagged):** 1h 9m  
-**Total human think time (excl. outliers):** 1h 38m  
-**Average human think time (excl. outliers):** 1m 20s  
-**Think-time outliers (> 15 min):** 3  
-**Total input tokens:** 1,869  
-**Total output tokens:** 1,358,403  
-**Total cache-write tokens:** 2,507,005  
-**Total cache-read tokens:** 296,819,005  
+**Total turns:** 81  
+**Total agent time spent (excl. flagged):** 1h 16m  
+**Total human think time (excl. outliers):** 1h 40m  
+**Average human think time (excl. outliers):** 1m 19s  
+**Think-time outliers (> 15 min):** 4  
+**Total input tokens:** 1,950  
+**Total output tokens:** 1,413,366  
+**Total cache-write tokens:** 3,924,441  
+**Total cache-read tokens:** 323,112,757  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%
 
-⏳ Turn(s) 65, 72, 73 had a 'human think time' over 15 min (total 34h 59m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).
+⏳ Turn(s) 65, 72, 73, 79 had a 'human think time' over 15 min (total 36h 42m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).

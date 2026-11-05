@@ -94,3 +94,30 @@ def test_default_path_is_per_user_and_named_madden_mode(
     assert path.name == "settings.json"
     assert path.parent.name == "madden-mode"
     assert path.is_relative_to(tmp_path)
+
+
+def test_monitor_is_saved_and_loaded(tmp_path: Path) -> None:
+    path = tmp_path / "s.json"
+    settings_store.save(path, Settings(monitor=2), DEFAULT_PENS)
+    assert settings_store.load(path)[0].monitor == 2
+
+
+def test_files_saved_before_monitor_existed_still_load(tmp_path: Path) -> None:
+    data = settings_store.to_dict(Settings(), DEFAULT_PENS)
+    del data["monitor"]
+    path = tmp_path / "old.json"
+    path.write_text(json.dumps(data))
+    settings, pens, warning = settings_store.load(path)
+    assert warning is None
+    assert settings.monitor == 0
+    assert pens == DEFAULT_PENS
+
+
+def test_a_negative_saved_monitor_falls_back_with_a_warning(tmp_path: Path) -> None:
+    data = settings_store.to_dict(Settings(), DEFAULT_PENS)
+    data["monitor"] = -4
+    path = tmp_path / "bad.json"
+    path.write_text(json.dumps(data))
+    settings, _, warning = settings_store.load(path)
+    assert warning is not None
+    assert settings == Settings()

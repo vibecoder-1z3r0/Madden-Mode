@@ -36,6 +36,7 @@ class Toolbar(QWidget):
         on_quit: Callable[[], None],
         clock: Callable[[], float] = time.monotonic,
         parent: QWidget | None = None,
+        on_target: Callable[[], object] | None = None,
     ) -> None:
         super().__init__(parent)
         self.controller = controller
@@ -86,6 +87,10 @@ class Toolbar(QWidget):
         self.pen_combo.setToolTip("Pen ( [ and ] while drawing )")
         self.pen_combo.currentIndexChanged.connect(self._on_pen_chosen)
         layout.addWidget(self.pen_combo)
+
+        self.target_button = self._button("Target", "Choose a monitor or window")
+        self.target_button.clicked.connect(lambda: on_target() if on_target else None)
+        layout.addWidget(self.target_button)
 
         self.clear_button = self._button("Clear", "Clear everything now")
         self.clear_button.clicked.connect(controller.clear_all)

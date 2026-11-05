@@ -93,3 +93,20 @@ def test_icon_follows_the_controller(qapp: QApplication) -> None:
     pixmap = tray.icon().pixmap(64, 64).toImage()
     assert pixmap.pixelColor(32, 32).red() > 200
     assert pixmap.pixelColor(32, 32).green() < 100
+
+
+def test_target_action_calls_back(qapp: QApplication) -> None:
+    hits: list[int] = []
+    tray = TrayIcon(
+        Controller(Scene()),
+        lambda: True,
+        lambda: None,
+        on_target=lambda: hits.append(1),
+    )
+    tray.target_action.trigger()
+    assert hits == [1]
+
+
+def test_target_action_without_a_callback_is_harmless(qapp: QApplication) -> None:
+    tray, _, _ = make()
+    tray.target_action.trigger()

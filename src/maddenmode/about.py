@@ -11,7 +11,10 @@ from maddenmode import __version__
 
 APP_NAME = "Madden Mode"
 VERSION = __version__
-TAGLINE = "Telestration over your favorite game or window."
+TAGLINE = (
+    "Telestration technology over your favorite game/window. "
+    "Named after the greatest NFL sports casters in the honor of John Madden."
+)
 
 # Python writes pre-release versions as a suffix: 1a2 is alpha 2, 1b1 beta 1,
 # 1rc1 release candidate 1.

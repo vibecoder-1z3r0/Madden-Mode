@@ -164,3 +164,17 @@ def test_the_bug_report_details() -> None:
         "Qt 6.12.0 (PySide6 6.12.0)",
         "Platform: Windows-11",
     ]
+
+
+# -- the description -------------------------------------------------------------
+
+
+def test_the_tagline_is_the_readmes_description_word_for_word() -> None:
+    lines = [line for line in read("README.md").splitlines() if line.strip()]
+    assert squash(about.TAGLINE) == squash(lines[1])  # the line under the title
+
+
+def test_the_package_description_is_its_first_sentence() -> None:
+    project = tomllib.loads(read("pyproject.toml"))["project"]
+    first_sentence = about.TAGLINE.split(". ")[0] + "."
+    assert project["description"] == first_sentence

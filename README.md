@@ -10,19 +10,25 @@ Draw freehand marks on top of whatever is on your screen: circle a player, trace
 
 ## Quick start
 
-You need [uv](https://docs.astral.sh/uv/) (it installs the right Python for you) and git.
+You need [uv](https://docs.astral.sh/uv/) (it installs the right Python for you) and git. Run this in **PowerShell** on Windows, the platform this is built for. You do not need `make` or a separate Python install.
 
 ```powershell
-# Windows: install uv once (other platforms: see the uv docs)
+# Install uv once (other platforms: see the uv docs)
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
 
+Then **close that window and open a new PowerShell**, so the `uv` command is found:
+
+```powershell
 git clone https://github.com/vibecoder-1z3r0/Madden-Mode
 cd Madden-Mode
 uv sync
 uv run python -m maddenmode
 ```
 
-Then press **Ctrl+Shift+D** and drag with the left mouse button.
+Then press **Ctrl+Shift+D** and drag with the left mouse button. To run it again another day, open PowerShell in the `Madden-Mode` folder and run `uv run python -m maddenmode`. To update, `git pull` and run `uv sync`.
+
+> **Use Windows itself, not WSL.** Inside WSL the app runs as a Linux program: it cannot draw over your Windows apps, and the Windows hotkeys and window pinning are not used. WSL is fine for running the tests, but try the overlay on Windows.
 
 To try it without a game, run the demo. It opens a window with a moving ball and puts the overlay on top:
 
@@ -30,7 +36,7 @@ To try it without a game, run the demo. It opens a window with a moving ball and
 uv run python -m maddenmode.demo
 ```
 
-If something does not work, `python scripts/preflight.py` (or `make preflight`) checks your setup.
+If something does not work, run `uv run python scripts/preflight.py`. It checks your setup.
 
 ## Using it
 
@@ -98,17 +104,29 @@ A damaged settings file never stops the app: it starts with defaults and tells y
 - **The overlay does not appear over a game:** try the game in windowed or borderless mode.
 - **The game is on another monitor:** press **Target** and choose that monitor.
 - **The window list is empty or disabled:** pinning needs Windows, and only windows that are visible, not minimized and have a title are listed. Open the window and press **Refresh**.
-- **On Linux:** hotkeys only work while the overlay has focus, there is no global hotkey backend yet. Wayland restricts always-on-top overlays; X11 works better. `make system-deps` installs the libraries Qt needs.
+- **On Linux:** hotkeys only work while the overlay has focus, because there is no global hotkey backend yet. Wayland restricts always-on-top overlays; X11 works better. If Qt fails to load, `make system-deps` installs the libraries it needs. It detects your distro from `/etc/os-release` and uses `apt` (Debian, Ubuntu) or `dnf` (Fedora, RHEL); for other distros it lists what to install. The Ubuntu path is tested; the Fedora package names are not yet tried on a real Fedora machine.
 
 ## Development
+
+On Linux and macOS the Makefile has shortcuts:
 
 ```
 make sync          # install dependencies
 make check         # lint, format check, type check, tests (what CI runs)
 make preflight     # check this machine
 make screenshots   # regenerate the images above
-make system-deps   # Linux only: libraries Qt needs
+make system-deps   # Linux only: libraries Qt needs (apt or dnf)
 ```
+
+Windows does not have `make`. Run the same things directly (this is exactly what CI does on Windows):
+
+| Instead of | Run in PowerShell |
+|---|---|
+| `make sync` | `uv sync --extra dev` |
+| `make check` | `uv run ruff check .`, then `uv run ruff format --check .`, `uv run mypy src/` and `uv run pytest tests` |
+| `make preflight` | `uv run python scripts/preflight.py` |
+| `make screenshots` | `uv run python scripts/screenshots.py` |
+| `make system-deps` | not needed on Windows |
 
 The code is split so the decisions live outside the windows: `controller`, `pen`, `scene`, `dissipation` and `settings_store` have no GUI imports and are tested directly. The `gui/` package is a thin Qt layer. Tests render offscreen, so they need no display.
 

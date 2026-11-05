@@ -3,30 +3,12 @@
 import time
 from collections.abc import Callable
 
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QAction, QActionGroup, QColor, QIcon, QPainter, QPen, QPixmap
+from PySide6.QtGui import QAction, QActionGroup, QColor
 from PySide6.QtWidgets import QMenu, QSystemTrayIcon
 
 from maddenmode.controller import Controller
+from maddenmode.gui.icons import make_icon
 from maddenmode.palette import PALETTE
-
-
-def make_icon(color: QColor, drawing: bool) -> QIcon:
-    """A dot in the current pen color; ringed while draw mode is on."""
-    size = 64
-    pixmap = QPixmap(size, size)
-    pixmap.fill(Qt.GlobalColor.transparent)
-    painter = QPainter(pixmap)
-    painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-    painter.setPen(Qt.PenStyle.NoPen)
-    painter.setBrush(color)
-    painter.drawEllipse(14, 14, size - 28, size - 28)
-    if drawing:
-        painter.setBrush(Qt.BrushStyle.NoBrush)
-        painter.setPen(QPen(QColor(255, 255, 255), 6))
-        painter.drawEllipse(5, 5, size - 10, size - 10)
-    painter.end()
-    return QIcon(pixmap)
 
 
 class TrayIcon(QSystemTrayIcon):
@@ -42,6 +24,7 @@ class TrayIcon(QSystemTrayIcon):
         self.controller = controller
         self.clock = clock
         self.setToolTip("Madden Mode")
+        self.setIcon(make_icon())  # never leave it without an icon, even briefly
 
         menu = QMenu()
         self.menu = menu

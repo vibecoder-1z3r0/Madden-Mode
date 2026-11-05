@@ -9,12 +9,13 @@ from pathlib import Path
 from typing import Protocol
 
 from PySide6.QtCore import QRect, QTimer
-from PySide6.QtWidgets import QApplication, QDialog
+from PySide6.QtWidgets import QApplication, QDialog, QSystemTrayIcon
 
 from maddenmode import settings_store
 from maddenmode.controller import Controller, Settings
 from maddenmode.gui.follow import WindowFollower
 from maddenmode.gui.hotkeys import HotkeyBackend, WindowsHotkeys, bind_controller
+from maddenmode.gui.icons import set_app_identity
 from maddenmode.gui.overlay import OverlayWindow
 from maddenmode.gui.screens import list_screens, to_qrect
 from maddenmode.gui.settings_dialog import SettingsDialog
@@ -82,6 +83,7 @@ class MaddenMode:
         ] = _default_target_dialog,
     ) -> None:
         self.qapp = qapp
+        set_app_identity(qapp)
         self.clock = clock
         self.hotkeys = hotkeys
         self.dialog_factory = dialog_factory
@@ -116,6 +118,7 @@ class MaddenMode:
         # Problems found while starting (bad settings file, hotkey clash).
         # They are also shown on screen; this list lets a smoke test fail on them.
         self.startup_errors: list[str] = []
+        self.tray_available = False
 
     # -- lifecycle ----------------------------------------------------------
 
@@ -129,12 +132,22 @@ class MaddenMode:
         self.overlay.start()
         self.toolbar.start()
         self.tray.show()
+        self._check_tray()
         hotkey_error = self._bind_hotkeys()
         if self.load_warning:
             self.startup_errors.append(self.load_warning)
             self.toast.show_message(self.load_warning)
         if hotkey_error:
             self.startup_errors.append(hotkey_error)
+
+    def _check_tray(self) -> None:
+        """Say so if there is no tray to show the icon in: the toolbar still works."""
+        self.tray_available = QSystemTrayIcon.isSystemTrayAvailable()
+        # Lowest priority: never replace a message that is already showing.
+        if not self.tray_available and not self.toast.isVisible():
+            self.toast.show_message(
+                "No system tray found: use the toolbar to control Madden Mode"
+            )
 
     def quit(self) -> None:
         self.follower.stop()

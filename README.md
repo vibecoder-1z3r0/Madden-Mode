@@ -146,7 +146,7 @@ Windows does not have `make`. Run the same things directly (this is exactly what
 
 The code is split so the decisions live outside the windows: `controller`, `pen`, `scene`, `dissipation` and `settings_store` have no GUI imports and are tested directly. The `gui/` package is a thin Qt layer. Tests render offscreen, so they need no display.
 
-CI runs lint, type checking, the tests and a startup smoke test on Linux and Windows. See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions and the policy for pull requests from forks, and [ARCHITECTURE.md](ARCHITECTURE.md) for the decisions behind the design. Ideas we have not built yet are in [FUTURE_CONSIDERATIONS.md](FUTURE_CONSIDERATIONS.md).
+CI runs linting once, type checking once for each of Linux, Windows and macOS (using mypy's `--platform` flag, in a single job), and the tests and a startup smoke test on all three. See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions and the policy for pull requests from forks, and [ARCHITECTURE.md](ARCHITECTURE.md) for the decisions behind the design. Ideas we have not built yet are in [FUTURE_CONSIDERATIONS.md](FUTURE_CONSIDERATIONS.md).
 
 ## Contributing and AI attribution
 

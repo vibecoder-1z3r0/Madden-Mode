@@ -15,7 +15,7 @@ ARCHITECTURE.md). App architecture is **not yet decided**.
 | Type check | mypy (strict-ish: `disallow_untyped_defs`) |
 | Tests | pytest + pytest-cov |
 | GUI toolkit | PySide6 (Qt 6) |
-| CI | GitHub Actions: `lint-and-typecheck`, `tests`, `commit-lint` |
+| CI | GitHub Actions: `lint-and-typecheck` (one job; mypy runs per platform), `tests` and `smoke` (Linux, Windows, macOS), `commit-lint` |
 
 ## Deliberately not ported
 

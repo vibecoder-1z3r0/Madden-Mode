@@ -1,0 +1,75 @@
+# Future considerations
+
+Ideas we talked about but have not built. None of these is a commitment, and
+the notes are starting points, not designs.
+
+## Draw over a region
+
+Drag a rectangle once, and the overlay covers only that area.
+
+- **Why:** some things worth drawing over are not a window of their own, such
+  as one part of the screen or a video inside another app. Pinning to a window
+  does not help there, and a whole monitor is more than you want.
+- **How it differs from pinning:** a region never follows anything. It stays
+  put until you change it.
+- **Saving it:** unlike a window handle, a region (a rectangle plus which
+  monitor it is on) still makes sense after a restart, so it could be saved in
+  the settings. It needs a fallback if that monitor is gone.
+- **Picking it:** a translucent selector over the chosen monitor with a
+  crosshair; drag to select, `Esc` cancels. A "Region..." entry next to
+  "Target" in the toolbar and tray.
+- **Testing:** the rectangle maths (normalizing a drag in any direction,
+  clamping to the monitor, a minimum size) is plain logic. The selector can be
+  tested offscreen.
+
+## Choosing and pinning windows
+
+- **Click to pick a window,** instead of choosing from a list. The list is
+  simpler and more dependable; clicking is quicker. It needs a temporary
+  full-screen "pick" mode.
+- **Stack only above the pinned window.** Today the overlay is always on top, so
+  it also covers any other window that overlaps the pinned window's area. A
+  smarter version would sit just above the target window in the stacking order
+  (on Windows, by placing it right after that window with `SetWindowPos`), which
+  needs care so it does not fight the toolbar and toast.
+- **Remember the pinned window across restarts,** by matching its title or
+  program name. Window handles do not survive a restart, so today only the
+  monitor is saved.
+- **Rescale strokes when the pinned window is resized.** Today strokes keep
+  their pixel position from the window's top-left corner and are not scaled.
+- **Mixed-scaling monitors.** The conversion from Windows' physical pixels to
+  Qt's logical pixels assumes Qt keeps each screen's origin fixed and scales
+  only its size. That is exact at 100% scaling and unverified on mixed-scaling
+  setups.
+
+## Where the overlay can draw
+
+- **All monitors at once,** as one overlay spanning every screen.
+- **True fullscreen (exclusive) games.** Many block overlays. Borderless or
+  windowed is the supported case; fullscreen would be best-effort at most.
+- **macOS and Linux.** Windows is the first target. Window pinning and global
+  hotkeys each need a backend per platform; Wayland restricts both heavily.
+
+## Drawing
+
+- **Shapes** (arrows, circles, lines) on top of freehand.
+- **Pressure-sensitive width** for styluses. Each point already carries a
+  pressure value (always 1.0 for now), so the stroke format will not change.
+
+## Studio mode
+
+A "live feed" of the screen you can pause, rewind and fast forward, then
+telestrate over. It needs a rolling screen-capture buffer. Strokes would be
+stored with timestamps, separate from the picture, so a mark made at 2:14 of the
+buffer replays when you rewind, and a timeline could show where the strokes are.
+Overlay mode keeps no history, by design.
+
+## Housekeeping
+
+- **Pin the Python version in CI** so the runners and your machine agree. The
+  project allows 3.13 and newer, and the Windows runner used a newer version
+  than the one we developed on.
+- **Measure performance at 4K.** The renderer allocates a layer per stroke per
+  frame, which has not been profiled.
+- **A packaged installer.** That would also mean shipping the Qt licence
+  notices; see `ARCHITECTURE.md`.

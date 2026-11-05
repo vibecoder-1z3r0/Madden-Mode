@@ -204,12 +204,43 @@ def dissipation_screenshot(out: Path) -> None:
     image.save(str(out / "dissipation.png"))
 
 
+def target_screenshot(out: Path) -> None:
+    """The "Where to draw" dialog with two monitors and a few example windows."""
+    from maddenmode.gui.target_dialog import TargetDialog
+    from maddenmode.targeting import MonitorTarget, Rect, ScreenInfo
+    from maddenmode.windows import WindowInfo, WindowState
+
+    class SampleWindows:
+        available = True
+
+        def list_windows(self) -> list[WindowInfo]:
+            return [
+                WindowInfo(1, "Match replay - Game", Rect(0, 0, 1600, 900)),
+                WindowInfo(2, "Browser", Rect(0, 0, 1280, 800)),
+                WindowInfo(3, "Video call", Rect(0, 0, 960, 540)),
+            ]
+
+        def get_state(self, handle: int) -> WindowState:
+            raise AssertionError("the dialog only lists windows")
+
+    screens = [
+        ScreenInfo(0, "Main display", Rect(0, 0, 1920, 1080), 1.0, primary=True),
+        ScreenInfo(1, "Second display", Rect(1920, 0, 2560, 1440), 1.0),
+    ]
+    dialog = TargetDialog(screens, SampleWindows(), MonitorTarget(0))
+    dialog.resize(560, 460)
+    dialog.show()
+    dialog.grab().save(str(out / "target.png"))
+    dialog.close()
+
+
 def main() -> int:
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("docs/screenshots")
     out.mkdir(parents=True, exist_ok=True)
     qapp = QApplication.instance() or QApplication([])
     overlay_screenshot(out)
     dissipation_screenshot(out)
+    target_screenshot(out)
     print(f"wrote {sorted(p.name for p in out.glob('*.png'))} to {out}")
     qapp.quit()
     return 0

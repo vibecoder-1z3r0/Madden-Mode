@@ -55,6 +55,17 @@ While draw mode is off, the overlay is invisible to the mouse: clicks go through
 
 The **toolbar** (draggable, always on top) has the same controls as buttons, plus **Settings** and **Quit**. A **tray icon** has the same menu, so Quit is always reachable even with the toolbar hidden. A short **toast** message appears when the pen, color or mode changes.
 
+### Choosing where to draw
+
+By default the overlay covers your first monitor. Press **Target** on the toolbar (or **Where to draw...** in the tray menu) to change that:
+
+![The Where to draw dialog](docs/screenshots/target.png)
+
+- **A monitor:** pick any screen. Your choice is remembered.
+- **A window (Windows only):** pin the overlay to one window. It sizes itself to that window, follows it when you move or resize it, and hides while it is minimized. If the window closes, it goes back to your saved monitor. A pinned window is not remembered after a restart.
+
+Things to know about pinning: the overlay is always on top, so it also covers any other window that overlaps the pinned one, and marks keep their position from the window's top-left corner when it is resized.
+
 ### Pens
 
 Each pen has a color, width, feather (softness of the edge, in pixels; 0 is a hard edge) and a dissipation mode:
@@ -85,6 +96,8 @@ A damaged settings file never stops the app: it starts with defaults and tells y
 
 - **A hotkey does nothing, or a message says another app is using it:** switch the prefix to `Ctrl+Alt` in Settings.
 - **The overlay does not appear over a game:** try the game in windowed or borderless mode.
+- **The game is on another monitor:** press **Target** and choose that monitor.
+- **The window list is empty or disabled:** pinning needs Windows, and only windows that are visible, not minimized and have a title are listed. Open the window and press **Refresh**.
 - **On Linux:** hotkeys only work while the overlay has focus, there is no global hotkey backend yet. Wayland restricts always-on-top overlays; X11 works better. `make system-deps` installs the libraries Qt needs.
 
 ## Development
@@ -99,7 +112,7 @@ make system-deps   # Linux only: libraries Qt needs
 
 The code is split so the decisions live outside the windows: `controller`, `pen`, `scene`, `dissipation` and `settings_store` have no GUI imports and are tested directly. The `gui/` package is a thin Qt layer. Tests render offscreen, so they need no display.
 
-CI runs lint, type checking, the tests and a startup smoke test on Linux and Windows. See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions and the policy for pull requests from forks, and [ARCHITECTURE.md](ARCHITECTURE.md) for the decisions behind the design.
+CI runs lint, type checking, the tests and a startup smoke test on Linux and Windows. See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions and the policy for pull requests from forks, and [ARCHITECTURE.md](ARCHITECTURE.md) for the decisions behind the design. Ideas we have not built yet are in [FUTURE_CONSIDERATIONS.md](FUTURE_CONSIDERATIONS.md).
 
 ## Contributing and AI attribution
 

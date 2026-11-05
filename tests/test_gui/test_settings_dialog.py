@@ -213,3 +213,21 @@ def test_values_from_the_real_dialog_can_be_saved_and_read_back(
         1.5,
         3.0,
     )
+
+
+def test_flash_and_comet_share_their_size_and_timing() -> None:
+    by_name = {p.name: p for p in DEFAULT_PENS}
+    flash, comet = by_name["flash"], by_name["comet"]
+    assert (flash.width, flash.feather) == (comet.width, comet.feather) == (24.0, 2.0)
+    assert (flash.hold_s, flash.fade_s) == (comet.hold_s, comet.fade_s) == (1.5, 3.0)
+    # what makes them different pens is how they fade, and their color
+    assert flash.mode == DissipationMode.TIMED_FADE
+    assert comet.mode == DissipationMode.TAIL_FIRST
+    assert flash.color != comet.color
+
+
+def test_the_other_default_pens_are_unchanged() -> None:
+    by_name = {p.name: p for p in DEFAULT_PENS}
+    assert (by_name["marker"].width, by_name["marker"].feather) == (6.0, 0.0)
+    assert (by_name["highlighter"].width, by_name["highlighter"].feather) == (14.0, 2.0)
+    assert by_name["marker"].fade_s == by_name["highlighter"].fade_s == 0.0

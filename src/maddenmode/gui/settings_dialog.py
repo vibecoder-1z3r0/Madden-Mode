@@ -32,6 +32,7 @@ COLUMNS = ["Pen", "Width (px)", "Feather (px)", "Mode", "Hold (s)", "Fade (s)"]
 DEFAULT_SIZE = (940, 580)
 MIN_SIZE = (780, 460)
 ROW_HEIGHT = 46
+NAME_COLUMN_WIDTH = 140
 CONTROL_HEIGHT = 32
 
 
@@ -110,7 +111,7 @@ class SettingsDialog(QDialog):
         self.hold_spins: list[QDoubleSpinBox] = []
         self.fade_spins: list[QDoubleSpinBox] = []
         for row, pen in enumerate(pens):
-            self.table.setCellWidget(row, 0, QLabel(f"  {pen.name} ({pen.color.name})"))
+            self.table.setCellWidget(row, 0, QLabel(f"  {pen.name}"))
             width = _spin(pen.width, 1.0, 200.0, 1.0)
             feather = _spin(pen.feather, 0.0, 50.0, 0.5)
             mode = QComboBox()
@@ -133,7 +134,9 @@ class SettingsDialog(QDialog):
         self.table.verticalHeader().setDefaultSectionSize(ROW_HEIGHT)
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
+        # the pen names are cell widgets, which "resize to contents" ignores
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
+        self.table.setColumnWidth(0, NAME_COLUMN_WIDTH)
         layout.addWidget(self.table, 1)  # takes any extra height
 
         buttons = QDialogButtonBox(

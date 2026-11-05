@@ -220,10 +220,9 @@ def test_flash_and_comet_share_their_size_and_timing() -> None:
     flash, comet = by_name["flash"], by_name["comet"]
     assert (flash.width, flash.feather) == (comet.width, comet.feather) == (24.0, 2.0)
     assert (flash.hold_s, flash.fade_s) == (comet.hold_s, comet.fade_s) == (1.5, 3.0)
-    # what makes them different pens is how they fade, and their color
+    # what makes them different pens is how they fade
     assert flash.mode == DissipationMode.TIMED_FADE
     assert comet.mode == DissipationMode.TAIL_FIRST
-    assert flash.color != comet.color
 
 
 def test_the_other_default_pens_are_unchanged() -> None:
@@ -267,3 +266,39 @@ def test_the_current_prefix_is_selected_on_a_mac(qapp: QApplication) -> None:
         Settings(prefix=ModifierPrefix.CTRL_ALT), DEFAULT_PENS, platform="darwin"
     )
     assert dialog.prefix_combo.currentText() == "Ctrl+Option"
+
+
+def test_every_default_pen_is_yellow() -> None:
+    """Color is not part of a pen: the palette picks it, for whichever pen is used."""
+    assert {p.color.name for p in DEFAULT_PENS} == {"yellow"}
+
+
+def test_the_pen_names_in_the_dialog_have_no_color_in_brackets(
+    qapp: QApplication,
+) -> None:
+    from PySide6.QtWidgets import QLabel
+
+    dialog = SettingsDialog(Settings(), DEFAULT_PENS)
+    labels = [
+        dialog.table.cellWidget(row, 0).text()
+        for row in range(dialog.table.rowCount())
+        if isinstance(dialog.table.cellWidget(row, 0), QLabel)
+    ]
+    assert [t.strip() for t in labels] == [p.name for p in DEFAULT_PENS]
+    assert not any("(" in t or ")" in t for t in labels)
+
+
+def test_the_pen_name_column_is_wide_enough_for_the_longest_name(
+    qapp: QApplication,
+) -> None:
+    from PySide6.QtWidgets import QLabel
+
+    dialog = SettingsDialog(Settings(), DEFAULT_PENS)
+    widest = max(
+        dialog.table.cellWidget(row, 0)
+        .fontMetrics()
+        .horizontalAdvance(dialog.table.cellWidget(row, 0).text())
+        for row in range(dialog.table.rowCount())
+        if isinstance(dialog.table.cellWidget(row, 0), QLabel)
+    )
+    assert dialog.table.columnWidth(0) >= widest + 16  # room to breathe

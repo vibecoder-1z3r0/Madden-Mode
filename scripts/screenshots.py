@@ -79,7 +79,6 @@ def overlay_screenshot(out: Path) -> None:
     app = MaddenMode(qapp, settings_path=settings_path, clock=clock)  # type: ignore[arg-type]
     app.start(geometry=QRect(0, 0, W, H))
     c = app.controller
-    c.color_index = None  # the app starts on yellow; show each pen's own color
     c.set_draw_mode(True, 0.0)
 
     def draw(points: list[tuple[float, float]], t0: float, t1: float, lift: bool):
@@ -92,6 +91,7 @@ def overlay_screenshot(out: Path) -> None:
 
     now = 3.5
     c.select_pen(0)  # marker
+    c.select_color(1)  # red
     circle = [
         (
             300 + 42 * math.cos(i / 40 * 2 * math.pi),
@@ -103,8 +103,10 @@ def overlay_screenshot(out: Path) -> None:
     draw([(342, 200), (400, 174), (470, 172), (458, 158)], 0.9, 1.3, True)
     draw([(470, 172), (456, 188)], 1.3, 1.4, True)
     c.select_pen(1)  # highlighter
+    c.select_color(0)  # yellow
     draw([(150 + i * 6, 320 + 10 * math.sin(i / 9)) for i in range(60)], 1.5, 2.0, True)
     c.select_pen(3)  # comet, still being drawn
+    c.select_color(3)  # cyan
     comet = [
         (560 + i * 4.2, 190 + 60 * math.sin(i / 70 * 2 * math.pi) + i * 0.6)
         for i in range(71)

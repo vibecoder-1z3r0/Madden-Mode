@@ -85,17 +85,17 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 79 | i merged and deleted the branch - please pull from main | 14:49:02 | 26s | 1h 43m ⏳ | 10 | 3,064 | 3,013 | 4,341,826 |
 | 80 | Does Madden mode work on macOS? | 16:32:38 | 29s | 1m 5s | 6 | 5,244 | 1,360,510 | 820,384 |
 | 81 | I don’t have a Mac - fire up the CI stuff and then can you add macOS d… | 16:34:11 | 2m 28s | 2s | 54 | 49,262 | 55,533 | 19,205,319 |
-| 82 | macOS does have control kry So control shift is still fine Mac has con… | 16:36:41 | 1m 50s | — | 42 | 39,020 | 40,719 | 13,643,288 |
+| 82 | macOS does have control kry So control shift is still fine Mac has con… | 16:36:41 | 8m 40s | — | 92 | 58,694 | 129,403 | 32,430,177 |
 
 **Total turns:** 82  
-**Total agent time spent (excl. flagged):** 1h 19m  
+**Total agent time spent (excl. flagged):** 1h 25m  
 **Total human think time (excl. outliers):** 1h 40m  
 **Average human think time (excl. outliers):** 1m 18s  
 **Think-time outliers (> 15 min):** 4  
-**Total input tokens:** 2,007  
-**Total output tokens:** 1,459,786  
-**Total cache-write tokens:** 3,979,572  
-**Total cache-read tokens:** 342,724,632  
+**Total input tokens:** 2,057  
+**Total output tokens:** 1,479,460  
+**Total cache-write tokens:** 4,068,256  
+**Total cache-read tokens:** 361,511,521  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%
 
 ⏳ Turn(s) 65, 72, 73, 79 had a 'human think time' over 15 min (total 36h 42m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).

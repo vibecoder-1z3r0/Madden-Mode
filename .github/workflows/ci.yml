@@ -18,21 +18,21 @@ permissions:
 # opened from them run as normal.
 
 jobs:
+  # One job, on Linux. Linting is the same on every platform, so it runs once.
+  # Type checking depends on the platform (each has its own code paths), so mypy
+  # runs once per platform with --platform instead of using a runner for each.
   lint-and-typecheck:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v3
       - run: uv sync --extra dev
       - run: uv run ruff check .
       - run: uv run ruff format --check .
-      # On Windows this also type-checks the win32-only code paths.
-      - run: uv run mypy src/
+      - run: uv run mypy --platform linux src/
+      - run: uv run mypy --platform win32 src/
+      - run: uv run mypy --platform darwin src/
 
   tests:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}

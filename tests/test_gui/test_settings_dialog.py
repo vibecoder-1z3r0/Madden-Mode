@@ -302,3 +302,67 @@ def test_the_pen_name_column_is_wide_enough_for_the_longest_name(
         if isinstance(dialog.table.cellWidget(row, 0), QLabel)
     )
     assert dialog.table.columnWidth(0) >= widest + 16  # room to breathe
+
+
+def test_the_mode_column_sits_right_next_to_the_pen_name(qapp: QApplication) -> None:
+    from PySide6.QtWidgets import QComboBox, QDoubleSpinBox
+
+    dialog = SettingsDialog(Settings(), DEFAULT_PENS)
+    headers = [
+        dialog.table.horizontalHeaderItem(c).text()
+        for c in range(dialog.table.columnCount())
+    ]
+    assert headers == [
+        "Pen",
+        "Mode",
+        "Width (px)",
+        "Feather (px)",
+        "Hold (s)",
+        "Fade (s, 0 = never)",
+    ]
+    for row in range(dialog.table.rowCount()):
+        assert isinstance(dialog.table.cellWidget(row, 1), QComboBox)
+        for column in range(2, 6):
+            assert isinstance(dialog.table.cellWidget(row, column), QDoubleSpinBox)
+
+
+def test_each_column_edits_the_value_its_header_says(qapp: QApplication) -> None:
+    """Moving a column must not swap what it edits."""
+    dialog = SettingsDialog(Settings(), DEFAULT_PENS)
+    comet = next(i for i, p in enumerate(DEFAULT_PENS) if p.name == "comet")
+    table = dialog.table
+    table.cellWidget(comet, 1).setCurrentIndex(  # Mode
+        list(DissipationMode).index(DissipationMode.TIMED_FADE)
+    )
+    table.cellWidget(comet, 2).setValue(31)  # Width
+    table.cellWidget(comet, 3).setValue(4.5)  # Feather
+    table.cellWidget(comet, 4).setValue(2.5)  # Hold
+    table.cellWidget(comet, 5).setValue(6)  # Fade
+    pen = dialog.result_values()[1][comet]
+    assert pen.mode == DissipationMode.TIMED_FADE
+    assert (pen.width, pen.feather, pen.hold_s, pen.fade_s) == (31.0, 4.5, 2.5, 6.0)
+
+
+def test_the_fade_reminder_is_in_the_fade_column_header(qapp: QApplication) -> None:
+    from PySide6.QtWidgets import QLabel
+
+    dialog = SettingsDialog(Settings(), DEFAULT_PENS)
+    header = dialog.table.horizontalHeaderItem(5)
+    assert header is not None
+    assert "0 = never" in header.text()
+    assert "never fades" in header.toolTip()
+    # ...and no longer a sentence above the table
+    labels = [w.text() for w in dialog.findChildren(QLabel)]
+    assert not any("never fades" in t for t in labels)
+
+
+def test_the_header_text_fits_its_column_at_the_default_size(
+    qapp: QApplication,
+) -> None:
+    dialog = SettingsDialog(Settings(), DEFAULT_PENS)
+    dialog.show()
+    header = dialog.table.horizontalHeader()
+    fade_text = dialog.table.horizontalHeaderItem(5).text()
+    needed = header.fontMetrics().horizontalAdvance(fade_text)
+    assert header.sectionSize(5) >= needed + 8, (header.sectionSize(5), needed)
+    dialog.close()

@@ -3,20 +3,22 @@
 ## Versions
 
 Madden Mode uses calendar versioning, written `YYYY.M.MICRO`: the year, the
-month of the release **without a leading zero**, and a counter for releases
-within that month, starting at 0. A pre-release adds a suffix, so
-`2026.11.0a1` is the first alpha of the first release of November 2026, and
-`2026.11.0` would be the full release.
+month **without a leading zero**, and a counter within that month, starting at
+0. An `aN` suffix marks an alpha, so `2026.11.0a1` is the first alpha of
+November 2026.
+
+Nothing is released or published. This is code in a repository, and the
+version just says which state of the code you have. The About window shows it.
 
 - The version is written in **one place**, `src/maddenmode/__init__.py`.
-  `pyproject.toml` reads it from there, and the About window shows it.
+  `pyproject.toml` reads it from there.
 - The month has no leading zero because Python rewrites `2026.01.0` as
   `2026.1.0`; writing it that way keeps the app and the installed package in
   agreement. A test checks this.
-- Change the version when you cut a release, not with every change. Tag the
-  release `v` plus the version (for example `v2026.11.0a1`).
-- While the project is young it stays an alpha (`aN`), then beta (`bN`), and
-  loses the suffix when it is a full release.
+- It is changed by hand, when someone decides the code has reached a point
+  worth naming. There is no schedule, and no tags or releases are made.
+- While the project is young it stays an alpha (`aN`). The suffix would become
+  beta (`bN`) and then go away as the project matures.
 
 ## Commits: Conventional Commits
 

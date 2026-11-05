@@ -51,7 +51,7 @@ While draw mode is off, the overlay is invisible to the mouse: clicks go through
 | `Ctrl+Shift+F` | Fade everything out |
 | `Ctrl+Shift+X` | Show or hide the toolbar |
 
-**On macOS** the keys are shown as `Cmd` and `Option` instead of `Ctrl` and `Alt` (so `Cmd+Shift+D` to draw). macOS has no global hotkey support yet, so these only work while Madden Mode's own window has focus; use the toolbar or the menu bar icon to start drawing.
+**On macOS** the same keys work with the **Control** key (`Control+Shift+D` to draw), not Command, which stays free for the Mac's own shortcuts. `Alt` is the **Option** key. macOS has no global hotkey support yet, so these only work while Madden Mode's own window has focus; use the toolbar or the menu bar icon to start drawing.
 
 **While drawing:**
 

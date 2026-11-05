@@ -252,19 +252,82 @@ def test_strokes_are_drawn_over_the_fill_in_full_color(qapp: QApplication) -> No
     window.close()
 
 
-def test_command_on_a_mac_arrives_as_qts_control_modifier_and_matches(
+# -- reading modifier keys on each platform ------------------------------------
+
+CTRL = Qt.KeyboardModifier.ControlModifier  # Control on Windows, Command on a Mac
+META = Qt.KeyboardModifier.MetaModifier  # the Windows key; Control on a Mac
+SHIFT = Qt.KeyboardModifier.ShiftModifier
+ALT = Qt.KeyboardModifier.AltModifier
+
+
+def keypress(key: Qt.Key, mods: Qt.KeyboardModifier) -> QKeyEvent:
+    return QKeyEvent(QKeyEvent.Type.KeyPress, key, mods)
+
+
+@pytest.mark.parametrize("platform", ["win32", "linux"])
+def test_on_windows_and_linux_control_is_ctrl(
+    platform: str, qapp: QApplication
+) -> None:
+    assert key_string(keypress(Qt.Key.Key_D, CTRL | SHIFT), platform) == "Ctrl+Shift+D"
+    assert key_string(keypress(Qt.Key.Key_C, CTRL | ALT), platform) == "Ctrl+Alt+C"
+
+
+@pytest.mark.parametrize("platform", ["win32", "linux"])
+def test_the_windows_key_is_ignored_on_windows_and_linux(
+    platform: str, qapp: QApplication
+) -> None:
+    assert key_string(keypress(Qt.Key.Key_D, META | SHIFT), platform) == "Shift+D"
+
+
+def test_on_a_mac_the_control_key_is_ctrl(qapp: QApplication) -> None:
+    """Qt reports a Mac's Control key as its Meta modifier."""
+    assert key_string(keypress(Qt.Key.Key_D, META | SHIFT), "darwin") == "Ctrl+Shift+D"
+    assert key_string(keypress(Qt.Key.Key_C, META | ALT), "darwin") == "Ctrl+Alt+C"
+    assert key_string(keypress(Qt.Key.Key_X, META | SHIFT), "darwin") == "Ctrl+Shift+X"
+
+
+def test_on_a_mac_the_command_key_is_cmd_and_never_ctrl(qapp: QApplication) -> None:
+    """Qt reports Command as its Control modifier. It must not pass for Ctrl."""
+    assert key_string(keypress(Qt.Key.Key_D, CTRL | SHIFT), "darwin") == "Cmd+Shift+D"
+    assert key_string(keypress(Qt.Key.Key_D, CTRL), "darwin") == "Cmd+D"
+
+
+def test_on_a_mac_holding_both_keys_is_both(qapp: QApplication) -> None:
+    got = key_string(keypress(Qt.Key.Key_D, CTRL | META | SHIFT), "darwin")
+    assert got == "Cmd+Ctrl+Shift+D"
+
+
+def test_keys_without_modifiers_read_the_same_on_every_platform(
     qapp: QApplication,
 ) -> None:
-    """Qt reports the Command key as ControlModifier on macOS, so the internal
-    "Ctrl+Shift+D" chord is what a Cmd+Shift+D press produces. This pins that
-    the key matching depends only on that modifier, not on the platform."""
+    for platform in ("win32", "linux", "darwin"):
+        none = Qt.KeyboardModifier.NoModifier
+        assert key_string(keypress(Qt.Key.Key_3, none), platform) == "3"
+        assert key_string(keypress(Qt.Key.Key_Escape, none), platform) == "Esc"
+        assert key_string(keypress(Qt.Key.Key_BracketRight, none), platform) == "]"
+
+
+def test_a_mac_users_control_shift_d_toggles_draw_mode(qapp: QApplication) -> None:
     window, controller, _ = make()
-    event = QKeyEvent(
-        QKeyEvent.Type.KeyPress,
-        Qt.Key.Key_D,
-        Qt.KeyboardModifier.ControlModifier | Qt.KeyboardModifier.ShiftModifier,
-    )
-    assert key_string(event) == "Ctrl+Shift+D"
-    window.keyPressEvent(event)
+    window.platform = "darwin"
+    window.keyPressEvent(keypress(Qt.Key.Key_D, META | SHIFT))  # Control+Shift+D
     assert controller.draw_mode
+    window.close()
+
+
+def test_a_mac_users_command_shift_d_does_not_toggle_draw_mode(
+    qapp: QApplication,
+) -> None:
+    window, controller, _ = make()
+    window.platform = "darwin"
+    window.keyPressEvent(keypress(Qt.Key.Key_D, CTRL | SHIFT))  # Command+Shift+D
+    assert not controller.draw_mode  # left alone for the Mac and other apps
+    window.close()
+
+
+def test_the_overlay_reads_keys_for_the_platform_it_runs_on(qapp: QApplication) -> None:
+    import sys
+
+    window, _, _ = make()
+    assert window.platform == sys.platform
     window.close()

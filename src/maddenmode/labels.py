@@ -4,11 +4,11 @@ import sys
 
 from maddenmode.pen import DissipationMode, Pen
 
-# On macOS the key that Qt calls "Control" is the Command key, and "Alt" is
-# Option. Internally the key names stay "Ctrl" and "Alt" everywhere (Qt reports
-# Command presses as its Control modifier), so these names are only for showing
-# to the user.
-MAC_MODIFIER_NAMES = {"Ctrl": "Cmd", "Alt": "Option"}
+# A Mac has Control, Option and Command keys. Control and Shift keep their
+# names, so "Ctrl+Shift" is the same on every platform; the Alt key is labelled
+# Option on a Mac, so that is what is shown there. (How key presses are read on
+# a Mac is in gui/keys.py.)
+MAC_MODIFIER_NAMES = {"Alt": "Option"}
 
 
 def is_mac(platform: str = sys.platform) -> bool:
@@ -18,8 +18,8 @@ def is_mac(platform: str = sys.platform) -> bool:
 def display_chord(chord: str, platform: str = sys.platform) -> str:
     """A key chord or prefix as the user should read it on this platform.
 
-    'Ctrl+Shift+D' stays as it is on Windows and Linux and becomes
-    'Cmd+Shift+D' on macOS; 'Ctrl+Alt' becomes 'Cmd+Option'.
+    Unchanged on Windows and Linux. On macOS the Alt key is called Option:
+    'Ctrl+Alt+D' is shown as 'Ctrl+Option+D'. Ctrl and Shift are unchanged.
     """
     if not is_mac(platform):
         return chord

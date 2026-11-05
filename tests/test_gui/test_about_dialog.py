@@ -130,3 +130,10 @@ def test_close_closes_it(qapp: QApplication) -> None:
     box.button(QDialogButtonBox.StandardButton.Close).click()
     assert dialog.result() == QDialog.DialogCode.Accepted
     assert not dialog.isVisible()
+
+
+def test_it_shows_the_project_description(qapp: QApplication) -> None:
+    dialog = AboutDialog()
+    assert dialog.tagline_label.text() == about.TAGLINE
+    assert "John Madden" in dialog.tagline_label.text()
+    assert dialog.tagline_label.wordWrap()  # it is two sentences long

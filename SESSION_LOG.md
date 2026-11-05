@@ -75,17 +75,18 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 69 | fedora is my wsl machine I'm testing from or should I really test this… | 12:48:59 | 28s | 1m 33s | 10 | 5,670 | 2,186 | 2,113,796 |
 | 70 | I'm not concerned about the session stuff - only running really - are … | 12:51:00 | 1m 46s | 6m 32s | 41 | 43,031 | 33,696 | 9,137,139 |
 | 71 | the clicks are going right through to the demo app when running `uv ru… | 12:59:18 | 1m 12s | 46s | 32 | 22,874 | 28,713 | 8,827,758 |
-| 72 | yes i can toggle draw mode | 13:01:16 | 4m 52s | — | 68 | 124,364 | 143,189 | 20,332,135 |
+| 72 | yes i can toggle draw mode | 13:01:16 | 5m 5s | 30m 51s ⏳ | 70 | 125,271 | 145,445 | 20,933,086 |
+| 73 | Yes go ahead make the pr | 13:37:11 | 8s | — | 4 | 1,394 | 1,024 | 1,208,228 |
 
-**Total turns:** 72  
-**Total agent time spent (excl. flagged):** 58m 15s  
+**Total turns:** 73  
+**Total agent time spent (excl. flagged):** 58m 35s  
 **Total human think time (excl. outliers):** 1h 35m  
 **Average human think time (excl. outliers):** 1m 22s  
-**Think-time outliers (> 15 min):** 1  
-**Total input tokens:** 1,592  
-**Total output tokens:** 1,211,627  
-**Total cache-write tokens:** 2,244,552  
-**Total cache-read tokens:** 210,343,315  
+**Think-time outliers (> 15 min):** 2  
+**Total input tokens:** 1,598  
+**Total output tokens:** 1,213,928  
+**Total cache-write tokens:** 2,247,832  
+**Total cache-read tokens:** 212,152,494  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%
 
-⏳ Turn(s) 65 had a 'human think time' over 15 min (total 33h 35m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).
+⏳ Turn(s) 65, 72 had a 'human think time' over 15 min (total 34h 6m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).

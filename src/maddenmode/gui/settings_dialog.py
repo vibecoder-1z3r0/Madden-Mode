@@ -27,7 +27,10 @@ from maddenmode.controller import ModifierPrefix, Settings
 from maddenmode.labels import display_chord, mode_label
 from maddenmode.pen import DEFAULT_PENS, MAX_TIME_S, DissipationMode, Pen
 
-COLUMNS = ["Pen", "Width (px)", "Feather (px)", "Mode", "Hold (s)", "Fade (s)"]
+FADE_HEADER = "Fade (s, 0 = never)"
+FADE_TOOLTIP = "How long the fade takes. A fade of 0 s means the pen never fades."
+# How a pen fades comes right after its name, then the numbers that tune it.
+COLUMNS = ["Pen", "Mode", "Width (px)", "Feather (px)", "Hold (s)", FADE_HEADER]
 
 DEFAULT_SIZE = (940, 580)
 MIN_SIZE = (780, 460)
@@ -101,9 +104,12 @@ class SettingsDialog(QDialog):
         form.addRow("Fade-all time (0 = instant)", self.fade_all_spin)
         layout.addWidget(general)
 
-        layout.addWidget(QLabel("Pens (a fade of 0 s means the pen never fades)"))
+        layout.addWidget(QLabel("Pens"))
         self.table = QTableWidget(len(pens), len(COLUMNS))
         self.table.setHorizontalHeaderLabels(COLUMNS)
+        fade_header = self.table.horizontalHeaderItem(COLUMNS.index(FADE_HEADER))
+        if fade_header is not None:
+            fade_header.setToolTip(FADE_TOOLTIP)
         self.table.verticalHeader().setVisible(False)
         self.width_spins: list[QDoubleSpinBox] = []
         self.feather_spins: list[QDoubleSpinBox] = []
@@ -122,7 +128,7 @@ class SettingsDialog(QDialog):
             hold = _spin(pen.hold_s, 0.0, MAX_TIME_S, 0.1)
             fade = _spin(pen.fade_s, 0.0, MAX_TIME_S, 0.1)
             for column, widget in enumerate(
-                (width, feather, mode, hold, fade), start=1
+                (mode, width, feather, hold, fade), start=1
             ):
                 self.table.setCellWidget(row, column, widget)
             self.width_spins.append(width)

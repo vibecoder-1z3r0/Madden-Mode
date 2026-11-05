@@ -89,7 +89,7 @@ class SettingsDialog(QDialog):
         self.prefix_combo = QComboBox()
         self.prefix_combo.setMinimumHeight(CONTROL_HEIGHT)
         for prefix in ModifierPrefix:
-            # shown as Cmd/Option on macOS; the value stays the ModifierPrefix
+            # Alt is shown as Option on macOS; the value stays the ModifierPrefix
             self.prefix_combo.addItem(display_chord(str(prefix), platform), prefix)
         self.prefix_combo.setCurrentIndex(list(ModifierPrefix).index(settings.prefix))
         form.addRow("Global hotkey prefix", self.prefix_combo)

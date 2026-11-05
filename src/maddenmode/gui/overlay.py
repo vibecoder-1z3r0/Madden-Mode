@@ -71,6 +71,7 @@ class OverlayWindow(QWidget):
             QGuiApplication.platformName()
         )
         self._catching_clicks = False  # click-through until draw mode starts
+        self.platform = sys.platform  # how key presses are read (see gui/keys.py)
 
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating)
@@ -177,7 +178,7 @@ class OverlayWindow(QWidget):
             self.controller.pointer_up(self.clock())
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
-        key = key_string(event)
+        key = key_string(event, self.platform)
         if key is not None and not event.isAutoRepeat():
             if self.controller.press(key, self.clock()):
                 self.update()
@@ -186,7 +187,7 @@ class OverlayWindow(QWidget):
         super().keyPressEvent(event)
 
     def keyReleaseEvent(self, event: QKeyEvent) -> None:
-        key = key_string(event)
+        key = key_string(event, self.platform)
         if key is not None and not event.isAutoRepeat():
             if self.controller.release(key, self.clock()):
                 self.update()

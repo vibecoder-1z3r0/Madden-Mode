@@ -52,11 +52,17 @@ def test_windows_and_linux_keep_the_key_names_as_they_are(platform: str) -> None
     assert display_chord("Ctrl+Alt", platform) == "Ctrl+Alt"
 
 
-def test_macos_shows_command_and_option() -> None:
-    assert display_chord("Ctrl+Shift+D", "darwin") == "Cmd+Shift+D"
-    assert display_chord("Ctrl+Alt+C", "darwin") == "Cmd+Option+C"
-    assert display_chord("Ctrl+Shift", "darwin") == "Cmd+Shift"  # a prefix alone
-    assert display_chord("Ctrl+Alt", "darwin") == "Cmd+Option"
+def test_macos_keeps_control_and_shift_and_calls_alt_option() -> None:
+    # a Mac has a Control key, so Ctrl+Shift is the same there as everywhere
+    assert display_chord("Ctrl+Shift+D", "darwin") == "Ctrl+Shift+D"
+    assert display_chord("Ctrl+Shift", "darwin") == "Ctrl+Shift"
+    assert display_chord("Ctrl+Alt+C", "darwin") == "Ctrl+Option+C"
+    assert display_chord("Ctrl+Alt", "darwin") == "Ctrl+Option"
+
+
+def test_macos_never_says_cmd_in_a_hotkey_we_show() -> None:
+    for chord in ("Ctrl+Shift", "Ctrl+Alt", "Ctrl+Shift+D", "Ctrl+Alt+X"):
+        assert "Cmd" not in display_chord(chord, "darwin")
 
 
 def test_macos_leaves_everything_else_alone() -> None:
@@ -69,5 +75,7 @@ def test_macos_leaves_everything_else_alone() -> None:
 def test_the_default_follows_the_machine_it_runs_on() -> None:
     import sys
 
-    expected = "Cmd+Shift+D" if sys.platform == "darwin" else "Ctrl+Shift+D"
-    assert display_chord("Ctrl+Shift+D") == expected
+    # Ctrl+Shift reads the same on every platform
+    assert display_chord("Ctrl+Shift+D") == "Ctrl+Shift+D"
+    expected_alt = "Ctrl+Option" if sys.platform == "darwin" else "Ctrl+Alt"
+    assert display_chord("Ctrl+Alt") == expected_alt

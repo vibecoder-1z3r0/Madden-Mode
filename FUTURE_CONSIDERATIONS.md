@@ -47,9 +47,10 @@ Drag a rectangle once, and the overlay covers only that area.
 - **All monitors at once,** as one overlay spanning every screen.
 - **True fullscreen (exclusive) games.** Many block overlays. Borderless or
   windowed is the supported case; fullscreen would be best-effort at most.
-- **macOS.** CI now runs the tests and a startup check there, and key names are
-  shown as Cmd and Option, but nothing has been tried on a Mac. What is still
-  missing, all of which needs a Mac to build and verify:
+- **macOS.** CI now runs the tests and a startup check there, and key presses
+  are read allowing for Qt's Control and Command swap on a Mac, but nothing has
+  been tried on one. What is still missing, all of which needs a Mac to build and
+  verify:
   - **Global hotkeys.** A backend for the Mac's system-wide hotkey API, plus the
     permission prompts macOS shows for apps that watch the keyboard.
   - **Window pinning.** Listing and following other apps' windows through the

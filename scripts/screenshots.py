@@ -122,8 +122,7 @@ def overlay_screenshot(out: Path) -> None:
     frame.save(str(out / "overlay.png"))
 
     dialog = SettingsDialog(c.settings, c.pens)
-    dialog.resize(760, 420)
-    dialog.show()
+    dialog.show()  # at its own default size, as a user sees it
     dialog.grab().save(str(out / "settings.png"))
     dialog.close()
 

@@ -49,7 +49,7 @@ While draw mode is off, the overlay is invisible to the mouse: clicks go through
 | `Ctrl+Shift+D` | Toggle draw mode |
 | `Ctrl+Shift+C` | Clear everything instantly |
 | `Ctrl+Shift+F` | Fade everything out |
-| `Ctrl+Shift+H` | Show or hide the toolbar |
+| `Ctrl+Shift+X` | Show or hide the toolbar |
 
 **While drawing:**
 

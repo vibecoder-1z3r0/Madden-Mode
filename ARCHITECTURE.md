@@ -41,7 +41,7 @@ so those are not used.
     - `Ctrl+Shift+D`: toggle draw mode
     - `Ctrl+Shift+C`: clear all (instant)
     - `Ctrl+Shift+F`: fade all
-    - `Ctrl+Shift+H`: show/hide the toolbar
+    - `Ctrl+Shift+X`: show/hide the toolbar
   - Draw mode only (the overlay owns the keyboard, so plain keys are safe):
     - `1` to `8`: pick color
     - `]` / `[`: next / previous pen

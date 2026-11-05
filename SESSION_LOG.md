@@ -79,17 +79,18 @@ Source: `/root/.claude/projects/-home-user/83b6fe43-fdef-5d48-9254-009a9ebfb942.
 | 73 | Yes go ahead make the pr | 13:37:11 | 3m 6s | 52m 44s ⏳ | 74 | 29,537 | 90,579 | 23,579,438 |
 | 74 | it actually works!! :) | 14:33:01 | 37s | 18s | 16 | 7,925 | 8,631 | 5,143,192 |
 | 75 | The settings box needs to be larger - also we need more sensible defau… | 14:33:56 | 2m 49s | 1m 20s | 64 | 55,726 | 79,182 | 20,436,445 |
-| 76 | flash and commet defaults should match - everything else is fine | 14:38:05 | 21s | — | 14 | 5,331 | 1,753 | 2,702,059 |
+| 76 | flash and commet defaults should match - everything else is fine | 14:38:05 | 40s | 6s | 26 | 7,425 | 10,967 | 7,452,057 |
+| 77 | what's the hotkey for clear all? | 14:38:52 | 1m 18s | — | 45 | 15,257 | 31,985 | 12,367,492 |
 
-**Total turns:** 76  
-**Total agent time spent (excl. flagged):** 1h 5m  
-**Total human think time (excl. outliers):** 1h 36m  
-**Average human think time (excl. outliers):** 1m 21s  
+**Total turns:** 77  
+**Total agent time spent (excl. flagged):** 1h 6m  
+**Total human think time (excl. outliers):** 1h 37m  
+**Average human think time (excl. outliers):** 1m 20s  
 **Think-time outliers (> 15 min):** 3  
-**Total input tokens:** 1,762  
-**Total output tokens:** 1,311,053  
-**Total cache-write tokens:** 2,426,953  
-**Total cache-read tokens:** 262,805,400  
+**Total input tokens:** 1,819  
+**Total output tokens:** 1,328,404  
+**Total cache-write tokens:** 2,468,152  
+**Total cache-read tokens:** 279,922,890  
 **Cache hit ratio (cache-read ÷ all prompt-side tokens):** 99%
 
 ⏳ Turn(s) 65, 72, 73 had a 'human think time' over 15 min (total 34h 59m) — likely a break, a resumed session, or time reading a long response rather than active back-and-forth. Excluded from BOTH the total and the average above (still shown per-row).

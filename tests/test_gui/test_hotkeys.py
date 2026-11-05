@@ -60,7 +60,7 @@ def test_bind_controller_registers_the_three_global_chords() -> None:
         "Ctrl+Shift+D",
         "Ctrl+Shift+C",
         "Ctrl+Shift+F",
-        "Ctrl+Shift+H",
+        "Ctrl+Shift+X",
     }
 
 
@@ -72,7 +72,7 @@ def test_bind_controller_follows_the_prefix_setting() -> None:
         "Ctrl+Alt+D",
         "Ctrl+Alt+C",
         "Ctrl+Alt+F",
-        "Ctrl+Alt+H",
+        "Ctrl+Alt+X",
     }
 
 

@@ -67,10 +67,10 @@ DEFAULT_PENS: tuple[Pen, ...] = (
     Pen(
         "comet",
         color=PALETTE[3],
-        width=8.0,
+        width=24.0,
         feather=2.0,
         mode=DissipationMode.TAIL_FIRST,
-        hold_s=0.5,
-        fade_s=1.5,
+        hold_s=1.5,
+        fade_s=3.0,
     ),
 )

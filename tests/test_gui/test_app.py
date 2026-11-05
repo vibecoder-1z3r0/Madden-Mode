@@ -570,3 +570,78 @@ def test_the_app_is_given_its_own_identity(qapp: QApplication, tmp_path: Path) -
     assert QApplication.applicationName() == "Madden Mode"
     assert not QApplication.windowIcon().isNull()
     shutdown(app)
+
+
+def test_pressing_ok_in_the_real_dialog_keeps_the_monitor_and_target(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    from PySide6.QtWidgets import QDialog
+
+    from maddenmode.gui.settings_dialog import SettingsDialog
+
+    class RealDialogAccepted:
+        def __init__(self, settings, pens) -> None:  # type: ignore[no-untyped-def]
+            self.dialog = SettingsDialog(settings, pens)
+
+        def exec(self) -> int:
+            return int(QDialog.DialogCode.Accepted.value)
+
+        def result_values(self):  # type: ignore[no-untyped-def]
+            return self.dialog.result_values()
+
+    settings_store.save(tmp_path / "s.json", Settings(monitor=1), DEFAULT_PENS)
+    app, _ = make_targeted(tmp_path, dialog_factory=RealDialogAccepted)
+    app.start()
+    assert area(app) == (1920, 0, 1280, 720)
+    assert app.open_settings() is True
+    assert app.controller.settings.monitor == 1
+    assert app.controller.target == MonitorTarget(1)
+    assert settings_store.load(tmp_path / "s.json")[0].monitor == 1  # still saved
+    shutdown(app)
+
+
+def test_a_save_that_fails_for_any_reason_is_shown_not_swallowed(
+    qapp: QApplication,
+    tmp_path: Path,
+    monkeypatch,
+    capsys,  # type: ignore[no-untyped-def]
+) -> None:
+    app, _ = make_targeted(tmp_path)
+
+    def broken_save(*args, **kwargs):  # type: ignore[no-untyped-def]
+        raise AttributeError("something unexpected")
+
+    monkeypatch.setattr(settings_store, "save", broken_save)
+    app.apply(Settings(), DEFAULT_PENS)
+    assert "Could not save settings" in app.toast.text
+    assert "AttributeError" in capsys.readouterr().err  # and a traceback is printed
+    shutdown(app)
+
+
+def test_settings_changed_in_the_real_dialog_are_written_to_disk(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    from PySide6.QtWidgets import QDialog
+
+    from maddenmode.gui.settings_dialog import SettingsDialog
+
+    class Accepted:
+        def __init__(self, settings, pens) -> None:  # type: ignore[no-untyped-def]
+            self.dialog = SettingsDialog(settings, pens)
+            self.dialog.fade_all_spin.setValue(6.5)
+            self.dialog.mode_combos[0].setCurrentIndex(1)
+
+        def exec(self) -> int:
+            return int(QDialog.DialogCode.Accepted.value)
+
+        def result_values(self):  # type: ignore[no-untyped-def]
+            return self.dialog.result_values()
+
+    app, _ = make_targeted(tmp_path, dialog_factory=Accepted)
+    assert app.open_settings() is True
+    assert "Could not save" not in app.toast.text
+    saved, pens, warning = settings_store.load(tmp_path / "s.json")
+    assert warning is None
+    assert saved.fade_all_s == 6.5
+    assert pens[0].mode.value == "timed_fade"
+    shutdown(app)

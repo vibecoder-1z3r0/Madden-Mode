@@ -3,6 +3,7 @@
 import argparse
 import sys
 import time
+import traceback
 from collections.abc import Callable
 from dataclasses import replace
 from pathlib import Path
@@ -248,6 +249,9 @@ class MaddenMode:
             )
         except OSError as err:
             self.toast.show_message(f"Could not save settings: {err.strerror or err}")
+        except Exception as err:  # a bug, not a disk problem: never fail silently
+            traceback.print_exc()
+            self.toast.show_message(f"Could not save settings: {err!r}")
 
     def _bind_hotkeys(self) -> str | None:
         """Register the global hotkeys. Returns an error message, or None."""

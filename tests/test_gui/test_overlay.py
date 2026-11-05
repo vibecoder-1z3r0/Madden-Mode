@@ -1,3 +1,5 @@
+import sys
+
 import pytest
 from PySide6.QtCore import QPoint, Qt
 from PySide6.QtGui import QKeyEvent
@@ -11,7 +13,16 @@ from maddenmode.palette import PALETTE
 from maddenmode.pen import DissipationMode, Pen
 from maddenmode.scene import Scene
 
-CTRL_SHIFT = Qt.KeyboardModifier.ControlModifier | Qt.KeyboardModifier.ShiftModifier
+# The physical Control key. Qt reports it as ControlModifier everywhere except
+# macOS, where it reports it as MetaModifier (and the Command key as
+# ControlModifier). The overlay allows for that, so a test that means "press
+# Control+Shift+D" must send the modifier Qt would send on the platform it runs on.
+CONTROL_KEY = (
+    Qt.KeyboardModifier.MetaModifier
+    if sys.platform == "darwin"
+    else Qt.KeyboardModifier.ControlModifier
+)
+CTRL_SHIFT = CONTROL_KEY | Qt.KeyboardModifier.ShiftModifier
 LMB = Qt.MouseButton.LeftButton
 
 
@@ -186,7 +197,7 @@ def test_start_runs_the_frame_timer(qapp: QApplication) -> None:
         (Qt.Key.Key_D, CTRL_SHIFT, "Ctrl+Shift+D"),
         (
             Qt.Key.Key_C,
-            Qt.KeyboardModifier.ControlModifier | Qt.KeyboardModifier.AltModifier,
+            CONTROL_KEY | Qt.KeyboardModifier.AltModifier,
             "Ctrl+Alt+C",
         ),
         (Qt.Key.Key_Escape, Qt.KeyboardModifier.NoModifier, "Esc"),

@@ -83,7 +83,7 @@ Each pen has a color, width, feather (softness of the edge, in pixels; 0 is a ha
 | marker | red | 6 / 0 | held until cleared |
 | highlighter | yellow | 14 / 2 | held until cleared |
 | flash | magenta | 8 / 2 | timed fade: solid for 1 s after you lift the pen, then fade over 2 s |
-| comet | cyan | 8 / 2 | tail-first fade: each point holds 0.5 s, then fades over 1.5 s |
+| comet | cyan | 24 / 2 | tail-first fade: each point holds 1.5 s, then fades over 3 s |
 
 ![The three dissipation modes over time](docs/screenshots/dissipation.png)
 
@@ -91,7 +91,7 @@ Every pen has a **hold** time and a **fade** time, each from 0.0 to 10.0 seconds
 
 ### Settings
 
-Open **Settings** from the toolbar or tray. You can change the hotkey prefix (`Ctrl+Shift` or `Ctrl+Alt`, if a game already uses one), hold-to-draw (draw only while the draw key is held), the fade-all time and each pen. Settings are saved per user:
+Open **Settings** from the toolbar or tray. The dialog opens large enough to see every pen at once, and you can resize it. **Reset to defaults** puts the built-in values back in the form (nothing is saved until you press OK). You can change the hotkey prefix (`Ctrl+Shift` or `Ctrl+Alt`, if a game already uses one), hold-to-draw (draw only while the draw key is held), the fade-all time and each pen. Settings are saved per user:
 
 - Windows: `%APPDATA%\madden-mode\settings.json`
 - Linux: `~/.config/madden-mode/settings.json`

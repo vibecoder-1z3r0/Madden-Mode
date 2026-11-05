@@ -10,6 +10,7 @@ from maddenmode.controller import (
 from maddenmode.palette import PALETTE
 from maddenmode.pen import DEFAULT_PENS, Pen
 from maddenmode.scene import Scene
+from maddenmode.targeting import MonitorTarget, WindowTarget
 
 TOGGLE = "Ctrl+Shift+D"
 CLEAR = "Ctrl+Shift+C"
@@ -280,3 +281,35 @@ def test_apply_settings_replaces_settings_and_pens() -> None:
 def test_apply_settings_needs_a_pen() -> None:
     with pytest.raises(ValueError):
         make().apply_settings(Settings(), ())
+
+
+def test_target_defaults_to_the_saved_monitor() -> None:
+    assert make().target == MonitorTarget(0)
+    assert make(Settings(monitor=2)).target == MonitorTarget(2)
+
+
+def test_set_target_notifies_listeners() -> None:
+    c = make()
+    calls: list[int] = []
+    c.add_listener(lambda: calls.append(1))
+    c.set_target(WindowTarget(42, "Game"))
+    assert c.target == WindowTarget(42, "Game")
+    assert calls == [1]
+
+
+def test_negative_monitor_is_rejected() -> None:
+    with pytest.raises(ValueError):
+        Settings(monitor=-1)
+
+
+def test_applying_settings_moves_a_monitor_target() -> None:
+    c = make()
+    c.apply_settings(Settings(monitor=3), c.pens)
+    assert c.target == MonitorTarget(3)
+
+
+def test_applying_settings_leaves_a_pinned_window_alone() -> None:
+    c = make()
+    c.set_target(WindowTarget(7, "Game"))
+    c.apply_settings(Settings(monitor=3), c.pens)
+    assert c.target == WindowTarget(7, "Game")

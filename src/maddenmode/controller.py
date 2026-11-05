@@ -8,6 +8,7 @@ from maddenmode.palette import PALETTE
 from maddenmode.pen import DEFAULT_PENS, Pen, check_time
 from maddenmode.scene import Scene
 from maddenmode.stroke import Stroke
+from maddenmode.targeting import MonitorTarget, Target
 
 
 class ModifierPrefix(StrEnum):
@@ -49,9 +50,14 @@ class Settings:
     hold_to_draw: bool = False
     # How long "fade all" takes, 0.0 to 10.0 s (0.0 is instant).
     fade_all_s: float = 1.5
+    # Which monitor to draw over (0 is the first/primary screen). A pinned
+    # window is not saved: window handles do not survive a restart.
+    monitor: int = 0
 
     def __post_init__(self) -> None:
         check_time("fade_all_s", self.fade_all_s)
+        if self.monitor < 0:
+            raise ValueError(f"monitor must not be negative, got {self.monitor}")
 
 
 def global_bindings(prefix: ModifierPrefix) -> dict[str, Action]:
@@ -94,6 +100,8 @@ class Controller:
         self.on_draw_mode_changed: Callable[[bool], None] | None = None
         # Whether the on-screen toolbar should be showing (hotkey toggles it).
         self.toolbar_visible = True
+        # Where the overlay draws: a monitor, or a pinned window.
+        self.target: Target = MonitorTarget(self.settings.monitor)
         self._listeners: list[Callable[[], None]] = []
 
     @property
@@ -150,6 +158,10 @@ class Controller:
     def fade_all(self, now: float) -> None:
         self.scene.fade_all(now, self.settings.fade_all_s)
 
+    def set_target(self, target: Target) -> None:
+        self.target = target
+        self._notify()
+
     def toggle_toolbar(self) -> None:
         self.toolbar_visible = not self.toolbar_visible
         self._notify()
@@ -161,6 +173,9 @@ class Controller:
         self.settings = settings
         self.pens = pens
         self.pen_index = min(self.pen_index, len(pens) - 1)
+        if isinstance(self.target, MonitorTarget):
+            # a pinned window stays pinned; a monitor choice follows the setting
+            self.target = MonitorTarget(settings.monitor)
         self._notify()
 
     # -- keyboard ---------------------------------------------------------

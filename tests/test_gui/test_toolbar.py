@@ -184,3 +184,18 @@ def test_draw_button_is_clearly_colored_only_while_drawing(qapp: QApplication) -
     r, g, b = edge_pixel()
     assert g > r + 40 and g > b + 40  # drawing: green
     toolbar.close()
+
+
+def test_target_button_calls_back(qapp: QApplication) -> None:
+    hits: list[int] = []
+    controller = Controller(Scene())
+    toolbar = Toolbar(
+        controller, lambda: True, lambda: None, on_target=lambda: hits.append(1)
+    )
+    toolbar.target_button.click()
+    assert hits == [1]
+
+
+def test_target_button_without_a_callback_is_harmless(qapp: QApplication) -> None:
+    toolbar, _, _ = make()
+    toolbar.target_button.click()  # no callback was given: must not raise

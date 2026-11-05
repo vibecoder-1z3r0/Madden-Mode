@@ -252,3 +252,300 @@ def test_smoke_test_fails_if_the_overlay_or_toolbar_disappear(
     assert "the overlay is not visible" in app.startup_errors
     assert "the toolbar is not visible" in app.startup_errors
     shutdown(app)
+
+
+# -- choosing where to draw ---------------------------------------------------
+
+from maddenmode.targeting import (  # noqa: E402
+    MonitorTarget,
+    Rect,
+    ScreenInfo,
+    WindowTarget,
+)
+from maddenmode.windows import (  # noqa: E402
+    WindowInfo,
+    WindowKind,
+    WindowState,
+)
+
+SCREEN_A = ScreenInfo(0, "Left", Rect(0, 0, 1920, 1080), 1.0, primary=True)
+SCREEN_B = ScreenInfo(1, "Right", Rect(1920, 0, 1280, 720), 1.0)
+SCREENS = [SCREEN_A, SCREEN_B]
+
+
+class FakeWindows:
+    available = True
+
+    def __init__(self) -> None:
+        self.state = WindowState(WindowKind.VISIBLE, Rect(200, 100, 800, 600))
+
+    def list_windows(self) -> list[WindowInfo]:
+        return [WindowInfo(77, "Game", Rect(200, 100, 800, 600))]
+
+    def get_state(self, handle: int) -> WindowState:
+        return self.state
+
+
+class FakeTargetDialog:
+    def __init__(self, accept: bool, target) -> None:  # type: ignore[no-untyped-def]
+        self.accept = accept
+        self.target = target
+
+    def exec(self) -> int:
+        return 1 if self.accept else 0
+
+    def result_target(self):  # type: ignore[no-untyped-def]
+        return self.target
+
+
+def make_targeted(tmp_path: Path, **kwargs):  # type: ignore[no-untyped-def]
+    windows = kwargs.pop("windows", None) or FakeWindows()
+    app = MaddenMode(
+        QApplication.instance(),
+        settings_path=tmp_path / "s.json",
+        screens=lambda: SCREENS,
+        window_backend=windows,
+        **kwargs,
+    )
+    return app, windows
+
+
+def area(app: MaddenMode) -> tuple[int, int, int, int]:
+    g = app.overlay.geometry()
+    return g.x(), g.y(), g.width(), g.height()
+
+
+def test_by_default_the_overlay_covers_the_first_monitor(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app, _ = make_targeted(tmp_path)
+    app.start()
+    assert area(app) == (0, 0, 1920, 1080)
+    shutdown(app)
+
+
+def test_the_saved_monitor_is_used_at_startup(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    settings_store.save(tmp_path / "s.json", Settings(monitor=1), DEFAULT_PENS)
+    app, _ = make_targeted(tmp_path)
+    app.start()
+    assert area(app) == (1920, 0, 1280, 720)
+    shutdown(app)
+
+
+def test_an_unplugged_monitor_falls_back_to_the_primary_with_a_message(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    settings_store.save(tmp_path / "s.json", Settings(monitor=5), DEFAULT_PENS)
+    app, _ = make_targeted(tmp_path)
+    app.start()
+    assert area(app) == (0, 0, 1920, 1080)
+    assert "Monitor 6 was not found" in app.toast.text
+    shutdown(app)
+
+
+def test_a_given_area_overrides_the_target(qapp: QApplication, tmp_path: Path) -> None:
+    app, _ = make_targeted(tmp_path)
+    app.start(geometry=QRect(5, 6, 700, 500))
+    assert area(app) == (5, 6, 700, 500)
+    shutdown(app)
+
+
+def test_choosing_a_monitor_moves_the_overlay_and_is_remembered(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app, _ = make_targeted(tmp_path)
+    app.start()
+    app.set_target(MonitorTarget(1))
+    assert area(app) == (1920, 0, 1280, 720)
+    assert "Drawing over: Monitor 2" in app.toast.text
+    assert settings_store.load(tmp_path / "s.json")[0].monitor == 1
+    shutdown(app)
+
+
+def test_the_toolbar_moves_with_the_chosen_monitor(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app, _ = make_targeted(tmp_path)
+    app.start()
+    app.set_target(MonitorTarget(1))
+    assert app.toolbar.geometry().right() <= 1920 + 1280
+    assert app.toolbar.geometry().x() >= 1920
+    shutdown(app)
+
+
+def test_pinning_a_window_sizes_the_overlay_to_it_and_follows(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app, windows = make_targeted(tmp_path)
+    app.start()
+    app.set_target(WindowTarget(77, "Game"))
+    assert area(app) == (200, 100, 800, 600)
+    assert app.follower.active
+    windows.state = WindowState(WindowKind.VISIBLE, Rect(400, 300, 640, 480))
+    app.follower.tick()
+    assert area(app) == (400, 300, 640, 480)
+    shutdown(app)
+
+
+def test_a_pinned_window_is_not_saved(qapp: QApplication, tmp_path: Path) -> None:
+    app, _ = make_targeted(tmp_path)
+    app.start()
+    app.set_target(WindowTarget(77, "Game"))
+    assert not (tmp_path / "s.json").exists()  # nothing to remember
+    assert app.controller.settings.monitor == 0
+    shutdown(app)
+
+
+def test_a_window_that_is_already_gone_falls_back_to_the_monitor(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app, windows = make_targeted(tmp_path)
+    app.start()
+    windows.state = WindowState(WindowKind.GONE)
+    app.set_target(WindowTarget(77, "Game"))
+    assert app.controller.target == MonitorTarget(0)
+    assert area(app) == (0, 0, 1920, 1080)
+    assert not app.follower.active
+    shutdown(app)
+
+
+def test_a_pinned_window_that_closes_returns_to_the_monitor(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app, windows = make_targeted(tmp_path)
+    app.start()
+    app.set_target(WindowTarget(77, "Game"))
+    windows.state = WindowState(WindowKind.GONE)
+    app.follower.tick()
+    assert app.controller.target == MonitorTarget(0)
+    assert area(app) == (0, 0, 1920, 1080)
+    assert "closed" in app.toast.text
+    assert "Monitor 1" in app.toast.text
+    shutdown(app)
+
+
+def test_a_closed_window_returns_to_the_saved_monitor_not_the_first(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    settings_store.save(tmp_path / "s.json", Settings(monitor=1), DEFAULT_PENS)
+    app, windows = make_targeted(tmp_path)
+    app.start()
+    app.set_target(WindowTarget(77, "Game"))
+    windows.state = WindowState(WindowKind.GONE)
+    app.follower.tick()
+    assert area(app) == (1920, 0, 1280, 720)
+    shutdown(app)
+
+
+def test_a_pinned_window_survives_applying_settings(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app, _ = make_targeted(tmp_path)
+    app.start()
+    app.set_target(WindowTarget(77, "Game"))
+    app.apply(Settings(fade_all_s=3.0), DEFAULT_PENS)
+    assert app.controller.target == WindowTarget(77, "Game")
+    shutdown(app)
+
+
+def test_the_target_dialog_applies_the_choice(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app, _ = make_targeted(
+        tmp_path,
+        target_dialog_factory=lambda s, b, c: FakeTargetDialog(True, MonitorTarget(1)),
+    )
+    app.start()
+    assert app.open_target_dialog() is True
+    assert area(app) == (1920, 0, 1280, 720)
+    shutdown(app)
+
+
+def test_cancelling_or_choosing_nothing_changes_nothing(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    for dialog in (
+        FakeTargetDialog(False, MonitorTarget(1)),
+        FakeTargetDialog(True, None),
+    ):
+        app, _ = make_targeted(
+            tmp_path, target_dialog_factory=lambda s, b, c, d=dialog: d
+        )
+        app.start()
+        assert app.open_target_dialog() is False
+        assert area(app) == (0, 0, 1920, 1080)
+        shutdown(app)
+
+
+def test_the_dialog_is_given_the_screens_windows_and_current_target(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    seen: list[tuple] = []  # type: ignore[type-arg]
+
+    def factory(screens, backend, current):  # type: ignore[no-untyped-def]
+        seen.append((screens, backend, current))
+        return FakeTargetDialog(False, None)
+
+    app, windows = make_targeted(tmp_path, target_dialog_factory=factory)
+    app.open_target_dialog()
+    assert seen == [(SCREENS, windows, MonitorTarget(0))]
+    shutdown(app)
+
+
+def test_quitting_stops_following(
+    qapp: QApplication, tmp_path: Path, monkeypatch
+) -> None:  # type: ignore[no-untyped-def]
+    app, _ = make_targeted(tmp_path)
+    app.start()
+    app.set_target(WindowTarget(77, "Game"))
+    monkeypatch.setattr(app.qapp, "quit", lambda: None)
+    app.quit()
+    assert not app.follower.active
+    shutdown(app)
+
+
+def test_without_window_support_a_monitor_still_works(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    from maddenmode.windows import NullWindowBackend
+
+    app, _ = make_targeted(tmp_path, windows=NullWindowBackend())
+    app.start()
+    app.set_target(MonitorTarget(1))
+    assert area(app) == (1920, 0, 1280, 720)
+    shutdown(app)
+
+
+def test_the_default_window_backend_matches_the_platform(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    import sys
+
+    app = make(tmp_path)
+    assert app.window_backend.available == (sys.platform == "win32")
+    shutdown(app)
+
+
+def test_the_default_target_dialog_is_the_real_one(qapp: QApplication) -> None:
+    from maddenmode.app import _default_target_dialog
+    from maddenmode.gui.target_dialog import TargetDialog
+    from maddenmode.windows import NullWindowBackend
+
+    dialog = _default_target_dialog(SCREENS, NullWindowBackend(), MonitorTarget(0))
+    assert isinstance(dialog, TargetDialog)
+
+
+def test_with_no_screens_at_all_it_still_shows_a_default_area(
+    qapp: QApplication, tmp_path: Path
+) -> None:
+    app = MaddenMode(
+        QApplication.instance(),
+        settings_path=tmp_path / "s.json",
+        screens=lambda: [],
+        window_backend=FakeWindows(),
+    )
+    app.start()
+    assert area(app) == (0, 0, 1280, 720)
+    shutdown(app)

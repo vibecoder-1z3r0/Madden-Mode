@@ -57,6 +57,7 @@ def to_dict(settings: Settings, pens: tuple[Pen, ...]) -> dict[str, Any]:
         "prefix": settings.prefix.value,
         "hold_to_draw": settings.hold_to_draw,
         "fade_all_s": settings.fade_all_s,
+        "monitor": settings.monitor,
         "pens": [pen_to_dict(p) for p in pens],
     }
 
@@ -66,6 +67,8 @@ def from_dict(data: dict[str, Any]) -> tuple[Settings, tuple[Pen, ...]]:
         prefix=ModifierPrefix(data["prefix"]),
         hold_to_draw=bool(data["hold_to_draw"]),
         fade_all_s=float(data["fade_all_s"]),
+        # files saved before monitor targeting existed have no "monitor" key
+        monitor=int(data.get("monitor", 0)),
     )
     pens = tuple(pen_from_dict(p) for p in data["pens"])
     if not pens:

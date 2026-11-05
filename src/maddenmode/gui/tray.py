@@ -36,6 +36,7 @@ class TrayIcon(QSystemTrayIcon):
         on_settings: Callable[[], object],
         on_quit: Callable[[], None],
         clock: Callable[[], float] = time.monotonic,
+        on_target: Callable[[], object] | None = None,
     ) -> None:
         super().__init__()
         self.controller = controller
@@ -75,6 +76,8 @@ class TrayIcon(QSystemTrayIcon):
         self.toolbar_action = menu.addAction("Show toolbar")
         self.toolbar_action.setCheckable(True)
         self.toolbar_action.triggered.connect(controller.toggle_toolbar)
+        self.target_action = menu.addAction("Where to draw...")
+        self.target_action.triggered.connect(lambda: on_target() if on_target else None)
         self.settings_action = menu.addAction("Settings...")
         self.settings_action.triggered.connect(lambda: on_settings())
         menu.addSeparator()

@@ -145,6 +145,15 @@ class Controller:
         self.pen_index = index
         self._notify()
 
+    def select_pen_by_name(self, name: str) -> bool:
+        """Select the pen called `name`. Returns False (and changes nothing) if
+        there is no such pen."""
+        for index, pen in enumerate(self.pens):
+            if pen.name == name:
+                self.select_pen(index)
+                return True
+        return False
+
     def next_pen(self) -> None:
         self.select_pen((self.pen_index + 1) % len(self.pens))
 

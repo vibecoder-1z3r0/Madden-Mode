@@ -327,3 +327,37 @@ def test_every_global_hotkey_is_on_the_left_hand_side_of_the_keyboard() -> None:
 
     assert set(GLOBAL_KEYS) == {"D", "C", "F", "X"}
     assert all(key in "QWERTASDFGZXCVB" for key in GLOBAL_KEYS)
+
+
+def test_select_pen_by_name() -> None:
+    c = make()
+    assert c.select_pen_by_name("comet")
+    assert c.current_pen.name == "comet"
+    assert c.pen_index == next(i for i, p in enumerate(c.pens) if p.name == "comet")
+
+
+def test_selecting_an_unknown_pen_changes_nothing_and_says_so() -> None:
+    c = make()
+    c.select_pen(1)
+    calls: list[int] = []
+    c.add_listener(lambda: calls.append(1))
+    assert not c.select_pen_by_name("no such pen")
+    assert c.pen_index == 1
+    assert calls == []
+
+
+def test_selecting_a_pen_by_name_notifies_listeners() -> None:
+    c = make()
+    calls: list[int] = []
+    c.add_listener(lambda: calls.append(1))
+    c.select_pen_by_name("flash")
+    assert calls == [1]
+
+
+def test_the_controller_itself_still_starts_on_the_first_pen_with_its_own_color() -> (
+    None
+):
+    # the comet-in-yellow start belongs to the app, not to the controller
+    c = make()
+    assert c.pen_index == 0
+    assert c.color_index is None

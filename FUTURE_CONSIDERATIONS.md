@@ -56,6 +56,15 @@ Drag a rectangle once, and the overlay covers only that area.
 - **Pressure-sensitive width** for styluses. Each point already carries a
   pressure value (always 1.0 for now), so the stroke format will not change.
 
+## Starting state
+
+- **Remember the last pen and color between sessions.** The app always starts
+  on the comet in yellow today. Saving the last choice would mean storing which
+  pen and color were active in the settings file.
+- **Per-pen colors.** A picked color currently applies to whichever pen you use,
+  so pens lose their own color once you pick one. Giving each pen its own
+  remembered color is an alternative.
+
 ## Studio mode
 
 A "live feed" of the screen you can pause, rewind and fast forward, then

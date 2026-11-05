@@ -76,6 +76,8 @@ Things to know about pinning: the overlay is always on top, so it also covers an
 
 ### Pens
 
+The app starts with the **comet** pen in **yellow**. Pick another color with `1` to `8`; the color you pick applies to whichever pen you use.
+
 Each pen has a color, width, feather (softness of the edge, in pixels; 0 is a hard edge) and a dissipation mode:
 
 | Pen | Color | Width / feather | What happens to its marks |

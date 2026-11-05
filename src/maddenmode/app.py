@@ -36,6 +36,11 @@ from maddenmode.targeting import (
 )
 from maddenmode.windows import NullWindowBackend, WindowBackend, WindowKind
 
+# The pen and color the app starts with: the comet, in yellow. (The color is a
+# palette index; 0 is yellow. Picking a color applies to whichever pen is used.)
+START_PEN = "comet"
+START_COLOR = 0
+
 
 class SettingsPrompt(Protocol):
     def exec(self) -> int: ...
@@ -97,6 +102,10 @@ class MaddenMode:
 
         settings, pens, self.load_warning = settings_store.load(self.settings_path)
         self.controller = Controller(Scene(), pens=pens, settings=settings)
+        # chosen before any window exists, so nothing announces it on screen;
+        # with custom pens that have no comet, the first pen is kept
+        self.controller.select_pen_by_name(START_PEN)
+        self.controller.select_color(START_COLOR)
         self.overlay = OverlayWindow(self.controller, clock=clock)
         self.toolbar = Toolbar(
             self.controller,
